@@ -186,7 +186,7 @@ export async function pushRemoteHealthAll(payload: RemoteHealthPayload): Promise
     const { sleepSessions, waterEntries, walkSessions, trainingEntries, moods } =
       payload;
 
-    const tasks: Promise<any>[] = [];
+    const tasks: PromiseLike<any>[] = [];
 
     if (sleepSessions.length > 0) {
       tasks.push(
