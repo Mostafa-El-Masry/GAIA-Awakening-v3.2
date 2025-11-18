@@ -1,0 +1,9 @@
+.timeline .tl-form{display:flex;flex-direction:column;gap:8px;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px;background:#fff}
+.timeline .tl-form-top{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+@media (max-width:900px){.timeline .tl-form-top{grid-template-columns:1fr}}
+.timeline .tl-quick{display:flex;gap:6px;flex-wrap:wrap}
+.timeline .tl-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+@media (max-width:900px){.timeline .tl-grid{grid-template-columns:1fr}}
+.timeline .tl-input{padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,.1)}
+.timeline .tl-ta{min-height:100px;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,.1);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+.timeline .tl-btn{appearance:none;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:8px 12px;background:#fff;font-weight:700;cursor:pointer}

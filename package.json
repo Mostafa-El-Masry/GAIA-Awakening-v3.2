@@ -1,0 +1,44 @@
+{
+  "name": "gaia-v1-3-week1-intro",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "gallery:scan": "node scripts/scan-gallery.cjs",
+    "postinstall": "node scripts/patch-next.cjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.925.0",
+    "@codesandbox/sandpack-react": "^2.20.0",
+    "@monaco-editor/react": "^4.7.0",
+    "@supabase/supabase-js": "^2.81.1",
+    "@vercel/speed-insights": "^1.2.0",
+    "clsx": "^2.1.1",
+    "file-saver": "^2.0.5",
+    "idb-keyval": "^6.2.2",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.553.0",
+    "monaco-editor": "^0.54.0",
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/file-saver": "^2.0.7",
+    "@types/node": "20.12.7",
+    "@types/react": "^19.2.2",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.14.0",
+    "eslint-config-next": "^16.0.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18",
+    "typescript": "^5.9.3"
+  },
+  "browserslist": "> 1%"
+}

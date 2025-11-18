@@ -1,0 +1,1139 @@
+:root {
+  color-scheme: light;
+  --gaia-font-sans: "Inter", "Segoe UI", system-ui, -apple-system,
+    BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --gaia-font-mono: "JetBrains Mono", "SFMono-Regular", "Menlo", "Monaco",
+    "Consolas", "Liberation Mono", "Courier New", monospace;
+
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #f8fafc;
+  --gaia-border: #e2e8f0;
+  --gaia-foreground: #0f172a;
+  --gaia-muted: #64748b;
+  --gaia-text-strong: color-mix(in srgb, var(--gaia-foreground) 88%, white 12%);
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 72%,
+    var(--gaia-surface) 28%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 70%,
+    var(--gaia-surface) 30%
+  );
+  --gaia-contrast-bg: var(--gaia-foreground);
+  --gaia-contrast-text: var(--gaia-surface);
+  --gaia-overlay: color-mix(in srgb, #0b1220 38%, transparent 62%);
+  --gaia-glass-strong: color-mix(in srgb, var(--gaia-surface) 88%, transparent);
+  --gaia-glass: color-mix(in srgb, var(--gaia-surface) 70%, transparent);
+  --gaia-ink-soft: color-mix(
+    in srgb,
+    var(--gaia-foreground) 14%,
+    var(--gaia-surface) 86%
+  );
+  --gaia-ink-faint: color-mix(
+    in srgb,
+    var(--gaia-foreground) 9%,
+    var(--gaia-surface) 91%
+  );
+  --gaia-positive: var(--su, #22c55e);
+  --gaia-negative: var(--er, #ef4444);
+  --gaia-warning: var(--wa, #facc15);
+  --gaia-info: var(--in, #38bdf8);
+  --gaia-positive-border: color-mix(
+    in srgb,
+    var(--gaia-positive) 55%,
+    var(--gaia-surface) 45%
+  );
+  --gaia-positive-bg: color-mix(
+    in srgb,
+    var(--gaia-positive) 16%,
+    var(--gaia-surface) 84%
+  );
+  --gaia-negative-border: color-mix(
+    in srgb,
+    var(--gaia-negative) 55%,
+    var(--gaia-surface) 45%
+  );
+  --gaia-negative-bg: color-mix(
+    in srgb,
+    var(--gaia-negative) 16%,
+    var(--gaia-surface) 84%
+  );
+  --gaia-warning-border: color-mix(
+    in srgb,
+    var(--gaia-warning) 55%,
+    var(--gaia-surface) 45%
+  );
+  --gaia-warning-bg: color-mix(
+    in srgb,
+    var(--gaia-warning) 16%,
+    var(--gaia-surface) 84%
+  );
+  --gaia-info-border: color-mix(
+    in srgb,
+    var(--gaia-info) 50%,
+    var(--gaia-surface) 50%
+  );
+  --gaia-info-bg: color-mix(
+    in srgb,
+    var(--gaia-info) 16%,
+    var(--gaia-surface) 84%
+  );
+  --gaia-callout-text: color-mix(
+    in srgb,
+    var(--gaia-foreground) 86%,
+    var(--gaia-surface) 14%
+  );
+}
+
+html[data-theme="modern"] {
+  color-scheme: light;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --gaia-surface: #fdfdff;
+  --gaia-surface-soft: #f3f6ff;
+  --gaia-border: #dbe4f6;
+  --gaia-foreground: #1c2d4b;
+  --gaia-muted: #6f7f9b;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: color-mix(
+    in srgb,
+    var(--gaia-foreground) 92%,
+    white 8%
+  );
+  --gaia-contrast-text: var(--gaia-surface);
+  --gaia-overlay: color-mix(in srgb, #102140 32%, transparent 68%);
+}
+
+html.dark,
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --gaia-surface: #202938;
+  --gaia-surface-soft: #223149;
+  --gaia-border: #3a4c6a;
+  --gaia-foreground: #e2e8f0;
+  --gaia-muted: #a3b0c5;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 65%,
+    white 35%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    white 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    white 40%
+  );
+  --gaia-contrast-bg: color-mix(in srgb, var(--gaia-foreground) 78%, white 22%);
+  --gaia-contrast-text: var(--gaia-surface);
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+}
+
+html[data-theme="night"] {
+  color-scheme: dark;
+  --gaia-surface: #0f1725;
+  --gaia-surface-soft: #152036;
+  --gaia-border: #223047;
+  --gaia-foreground: #dbe6ff;
+  --gaia-muted: #8fa6cc;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 62%,
+    white 38%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    white 40%
+  );
+  --gaia-contrast-bg: color-mix(in srgb, #7cc4ff 65%, #07101d 35%);
+  --gaia-contrast-text: #06101d;
+  --gaia-overlay: color-mix(in srgb, #030711 68%, transparent 32%);
+}
+
+html[data-theme="cyberpunk"] {
+  color-scheme: dark;
+  --gaia-surface: #12031f;
+  --gaia-surface-soft: #1c0531;
+  --gaia-border: #31174f;
+  --gaia-foreground: #fdf5ff;
+  --gaia-muted: #caa4ff;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 74%,
+    white 26%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 62%,
+    white 38%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 58%,
+    white 42%
+  );
+  --gaia-contrast-bg: #ff2da5;
+  --gaia-contrast-text: #150021;
+  --gaia-overlay: color-mix(in srgb, #ff1998 36%, transparent 64%);
+  --gaia-positive: #5be7c4;
+  --gaia-warning: #ffdc5e;
+  --gaia-negative: #ff6b8a;
+}
+
+html[data-theme="synthwave"] {
+  color-scheme: dark;
+  --gaia-surface: #1a0d2b;
+  --gaia-surface-soft: #23123a;
+  --gaia-border: #3b1e5c;
+  --gaia-foreground: #f0e9ff;
+  --gaia-muted: #baa4e6;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    white 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 58%,
+    white 42%
+  );
+  --gaia-contrast-bg: #9a5cfd;
+  --gaia-contrast-text: #1a0d2b;
+  --gaia-overlay: color-mix(in srgb, #6929ff 30%, transparent 70%);
+  --gaia-positive: #6ce9df;
+  --gaia-warning: #ffc86b;
+  --gaia-negative: #ff7b9c;
+}
+
+html[data-theme="retro"] {
+  color-scheme: light;
+  --gaia-surface: #fdf3e3;
+  --gaia-surface-soft: #f7e7cf;
+  --gaia-border: #e2c9a3;
+  --gaia-foreground: #4a3526;
+  --gaia-muted: #8a6d55;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 86%,
+    white 14%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 70%,
+    var(--gaia-surface) 30%
+  );
+  --gaia-contrast-bg: #d97036;
+  --gaia-contrast-text: #fdf3e3;
+  --gaia-overlay: color-mix(in srgb, #3d2412 32%, transparent 68%);
+  --gaia-positive: #4caf50;
+  --gaia-warning: #f6b352;
+  --gaia-negative: #d9534f;
+}
+
+
+html[data-theme="fantasy"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #e8e8e8;
+  --gaia-border: #d1d1d1;
+  --gaia-foreground: #1f2937;
+  --gaia-muted: #cdd0d3;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #ff8600;
+  --gaia-contrast-text: #180600;
+  --gaia-overlay: color-mix(in srgb, #1f2937 32%, transparent 68%);
+  --gaia-positive: #00a96e;
+  --gaia-warning: #ffbe00;
+  --gaia-negative: #ff5861;
+}
+
+html[data-theme="aqua"] {
+  color-scheme: dark;
+  --gaia-surface: #1a368b;
+  --gaia-surface-soft: #162455;
+  --gaia-border: #091444;
+  --gaia-foreground: #b8e6fe;
+  --gaia-muted: #90baff;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #ffe999;
+  --gaia-contrast-text: #161309;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #18a34a;
+  --gaia-warning: #d97708;
+  --gaia-negative: #ff7265;
+}
+
+html[data-theme="lofi"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #f5f5f5;
+  --gaia-border: #ebebeb;
+  --gaia-foreground: #000000;
+  --gaia-muted: #ffffff;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #262626;
+  --gaia-contrast-text: #ffffff;
+  --gaia-overlay: color-mix(in srgb, #000000 32%, transparent 68%);
+  --gaia-positive: #69fec3;
+  --gaia-warning: #ffce69;
+  --gaia-negative: #ff9181;
+}
+
+html[data-theme="bumblebee"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #f5f5f5;
+  --gaia-border: #e4e4e4;
+  --gaia-foreground: #161616;
+  --gaia-muted: #e6e4e3;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #000000;
+  --gaia-contrast-text: #ffffff;
+  --gaia-overlay: color-mix(in srgb, #161616 32%, transparent 68%);
+  --gaia-positive: #00d390;
+  --gaia-warning: #fcb700;
+  --gaia-negative: #ff6266;
+}
+
+html[data-theme="garden"] {
+  color-scheme: light;
+  --gaia-surface: #e9e7e7;
+  --gaia-surface-soft: #d4d2d2;
+  --gaia-border: #bebdbd;
+  --gaia-foreground: #100f0f;
+  --gaia-muted: #e9e7e7;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #5c7f67;
+  --gaia-contrast-text: #ffffff;
+  --gaia-overlay: color-mix(in srgb, #100f0f 32%, transparent 68%);
+  --gaia-positive: #00a96e;
+  --gaia-warning: #ffbe00;
+  --gaia-negative: #ff5861;
+}
+
+html[data-theme="halloween"] {
+  color-scheme: dark;
+  --gaia-surface: #1b1816;
+  --gaia-surface-soft: #0b0908;
+  --gaia-border: #000000;
+  --gaia-foreground: #cdcdcd;
+  --gaia-muted: #d2ccc7;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #42aa00;
+  --gaia-contrast-text: #000000;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #18a34a;
+  --gaia-warning: #d97708;
+  --gaia-negative: #f35248;
+}
+
+html[data-theme="coffee"] {
+  color-scheme: dark;
+  --gaia-surface: #261b25;
+  --gaia-surface-soft: #1e151d;
+  --gaia-border: #120a11;
+  --gaia-foreground: #c59f61;
+  --gaia-muted: #c9c7c9;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #11576d;
+  --gaia-contrast-text: #d0dbe0;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #9db787;
+  --gaia-warning: #ffd260;
+  --gaia-negative: #fc9581;
+}
+
+html[data-theme="emerald"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #e8e8e8;
+  --gaia-border: #d1d1d1;
+  --gaia-foreground: #333c4d;
+  --gaia-muted: #f9fafb;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #f68067;
+  --gaia-contrast-text: #000000;
+  --gaia-overlay: color-mix(in srgb, #333c4d 32%, transparent 68%);
+  --gaia-positive: #00a96e;
+  --gaia-warning: #ffbe00;
+  --gaia-negative: #ff5861;
+}
+
+html[data-theme="cupcake"] {
+  color-scheme: light;
+  --gaia-surface: #faf7f5;
+  --gaia-surface-soft: #efeae6;
+  --gaia-border: #e7e2df;
+  --gaia-foreground: #291334;
+  --gaia-muted: #e4e4e7;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #ffd6a7;
+  --gaia-contrast-text: #9f2d00;
+  --gaia-overlay: color-mix(in srgb, #291334 32%, transparent 68%);
+  --gaia-positive: #00ba7b;
+  --gaia-warning: #eeaf00;
+  --gaia-negative: #fe1c55;
+}
+
+html[data-theme="pastel"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #f9fafb;
+  --gaia-border: #e5e6e7;
+  --gaia-foreground: #161616;
+  --gaia-muted: #dfe5ed;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #a3f2ce;
+  --gaia-contrast-text: #007853;
+  --gaia-overlay: color-mix(in srgb, #161616 32%, transparent 68%);
+  --gaia-positive: #7af1a7;
+  --gaia-warning: #ffb667;
+  --gaia-negative: #ff9fa0;
+}
+
+html[data-theme="nord"] {
+  color-scheme: light;
+  --gaia-surface: #eceff4;
+  --gaia-surface-soft: #e5e9f0;
+  --gaia-border: #d8dee9;
+  --gaia-foreground: #2e3440;
+  --gaia-muted: #d8dee9;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #88c0d0;
+  --gaia-contrast-text: #070d10;
+  --gaia-overlay: color-mix(in srgb, #2e3440 32%, transparent 68%);
+  --gaia-positive: #a3be8d;
+  --gaia-warning: #ebcb8b;
+  --gaia-negative: #bf616a;
+}
+
+html[data-theme="silk"] {
+  color-scheme: light;
+  --gaia-surface: #f7f5f3;
+  --gaia-surface-soft: #f3ede9;
+  --gaia-border: #e2ddd9;
+  --gaia-foreground: #4b4743;
+  --gaia-muted: #c2bdb9;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #1c1c29;
+  --gaia-contrast-text: #00fff8;
+  --gaia-overlay: color-mix(in srgb, #4b4743 32%, transparent 68%);
+  --gaia-positive: #afd89e;
+  --gaia-warning: #efc375;
+  --gaia-negative: #ff7878;
+}
+
+html[data-theme="business"] {
+  color-scheme: dark;
+  --gaia-surface: #202020;
+  --gaia-surface-soft: #1c1c1c;
+  --gaia-border: #181818;
+  --gaia-foreground: #cdcdcd;
+  --gaia-muted: #cecfd0;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #ea6947;
+  --gaia-contrast-text: #130402;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #6bb187;
+  --gaia-warning: #dbae5a;
+  --gaia-negative: #ac3e31;
+}
+
+html[data-theme="acid"] {
+  color-scheme: light;
+  --gaia-surface: #f8f8f8;
+  --gaia-surface-soft: #eeeeee;
+  --gaia-border: #e1e1e1;
+  --gaia-foreground: #000000;
+  --gaia-muted: #c7cadc;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #c8ff00;
+  --gaia-contrast-text: #0f1600;
+  --gaia-overlay: color-mix(in srgb, #000000 32%, transparent 68%);
+  --gaia-positive: #00ff8a;
+  --gaia-warning: #ffe200;
+  --gaia-negative: #ff0000;
+}
+
+html[data-theme="dim"] {
+  color-scheme: dark;
+  --gaia-surface: #2a303c;
+  --gaia-surface-soft: #242933;
+  --gaia-border: #20252e;
+  --gaia-foreground: #b2ccd6;
+  --gaia-muted: #b2ccd6;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #c792e9;
+  --gaia-contrast-text: #0e0813;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #62efbd;
+  --gaia-warning: #efd057;
+  --gaia-negative: #ffae9b;
+}
+
+html[data-theme="caramellatte"] {
+  color-scheme: light;
+  --gaia-surface: #fff7ed;
+  --gaia-surface-soft: #feecd3;
+  --gaia-border: #ffd6a7;
+  --gaia-foreground: #7c2808;
+  --gaia-muted: #fff7ed;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #8c3f27;
+  --gaia-contrast-text: #ffd6a7;
+  --gaia-overlay: color-mix(in srgb, #7c2808 32%, transparent 68%);
+  --gaia-positive: #006044;
+  --gaia-warning: #fcb700;
+  --gaia-negative: #ff6266;
+}
+
+html[data-theme="forest"] {
+  color-scheme: dark;
+  --gaia-surface: #1b1717;
+  --gaia-surface-soft: #161212;
+  --gaia-border: #110d0d;
+  --gaia-foreground: #cac9c9;
+  --gaia-muted: #cdd3d1;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #1fb8ab;
+  --gaia-contrast-text: #010c0b;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #00a96e;
+  --gaia-warning: #ffbe00;
+  --gaia-negative: #ff5861;
+}
+
+html[data-theme="sunset"] {
+  color-scheme: dark;
+  --gaia-surface: #121c22;
+  --gaia-surface-soft: #0e171e;
+  --gaia-border: #091319;
+  --gaia-foreground: #9fb9d0;
+  --gaia-muted: #94a0a9;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #b387fa;
+  --gaia-contrast-text: #0c0615;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #addfad;
+  --gaia-warning: #f1c892;
+  --gaia-negative: #ffbbbd;
+}
+
+html[data-theme="dracula"] {
+  color-scheme: dark;
+  --gaia-surface: #282a36;
+  --gaia-surface-soft: #232530;
+  --gaia-border: #1f202a;
+  --gaia-foreground: #f8f8f3;
+  --gaia-muted: #d6d7db;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #ffb86c;
+  --gaia-contrast-text: #160d04;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #51fa7b;
+  --gaia-warning: #f1fa8c;
+  --gaia-negative: #ff5555;
+}
+
+html[data-theme="luxury"] {
+  color-scheme: dark;
+  --gaia-surface: #09090b;
+  --gaia-surface-soft: #171618;
+  --gaia-border: #1e1d1f;
+  --gaia-foreground: #dca54d;
+  --gaia-muted: #ffe7a4;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #513448;
+  --gaia-contrast-text: #dad3d7;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #87d03a;
+  --gaia-warning: #e2d563;
+  --gaia-negative: #ff6f6f;
+}
+
+html[data-theme="corporate"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #e8e8e8;
+  --gaia-border: #d1d1d1;
+  --gaia-foreground: #181a2a;
+  --gaia-muted: #ffffff;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #009689;
+  --gaia-contrast-text: #ffffff;
+  --gaia-overlay: color-mix(in srgb, #181a2a 32%, transparent 68%);
+  --gaia-positive: #00a43b;
+  --gaia-warning: #fdc700;
+  --gaia-negative: #ff6266;
+}
+
+html[data-theme="autumn"] {
+  color-scheme: light;
+  --gaia-surface: #f1f1f1;
+  --gaia-surface-soft: #dbdbdb;
+  --gaia-border: #c5c5c5;
+  --gaia-foreground: #141414;
+  --gaia-muted: #e5e0dd;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #d59b6b;
+  --gaia-contrast-text: #100904;
+  --gaia-overlay: color-mix(in srgb, #141414 32%, transparent 68%);
+  --gaia-positive: #499380;
+  --gaia-warning: #e97f16;
+  --gaia-negative: #d40014;
+}
+
+html[data-theme="wireframe"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #f5f5f5;
+  --gaia-border: #ebebeb;
+  --gaia-foreground: #161616;
+  --gaia-muted: #242424;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #d4d4d4;
+  --gaia-contrast-text: #242424;
+  --gaia-overlay: color-mix(in srgb, #161616 32%, transparent 68%);
+  --gaia-positive: #006044;
+  --gaia-warning: #963b00;
+  --gaia-negative: #9d0410;
+}
+
+html[data-theme="cmyk"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #eeeeee;
+  --gaia-border: #dedede;
+  --gaia-foreground: #161616;
+  --gaia-muted: #cbcbcb;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #fff234;
+  --gaia-contrast-text: #161401;
+  --gaia-overlay: color-mix(in srgb, #161616 32%, transparent 68%);
+  --gaia-positive: #823290;
+  --gaia-warning: #ee8134;
+  --gaia-negative: #e93f33;
+}
+
+html[data-theme="valentine"] {
+  color-scheme: light;
+  --gaia-surface: #fcf2f8;
+  --gaia-surface-soft: #f9e4f0;
+  --gaia-border: #f9cbe5;
+  --gaia-foreground: #c5005a;
+  --gaia-muted: #f9cbe5;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #71d1fe;
+  --gaia-contrast-text: #014a70;
+  --gaia-overlay: color-mix(in srgb, #c5005a 32%, transparent 68%);
+  --gaia-positive: #5ce8b3;
+  --gaia-warning: #ff8904;
+  --gaia-negative: #f82834;
+}
+
+html[data-theme="abyss"] {
+  color-scheme: dark;
+  --gaia-surface: #001e29;
+  --gaia-surface-soft: #00111d;
+  --gaia-border: #000611;
+  --gaia-foreground: #ffd6a7;
+  --gaia-muted: #ffd6a7;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #505050;
+  --gaia-contrast-text: #f8f8f8;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #01df72;
+  --gaia-warning: #ffbf00;
+  --gaia-negative: #f04e4f;
+}
+
+html[data-theme="winter"] {
+  color-scheme: light;
+  --gaia-surface: #ffffff;
+  --gaia-surface-soft: #f2f7fe;
+  --gaia-border: #e3e9f4;
+  --gaia-foreground: #394e6a;
+  --gaia-muted: #c5cbd2;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #c148ac;
+  --gaia-contrast-text: #0e020b;
+  --gaia-overlay: color-mix(in srgb, #394e6a 32%, transparent 68%);
+  --gaia-positive: #81cfd1;
+  --gaia-warning: #efd7bc;
+  --gaia-negative: #e58b8b;
+}
+
+html[data-theme="lemonade"] {
+  color-scheme: light;
+  --gaia-surface: #f8fdef;
+  --gaia-surface-soft: #e1e6d9;
+  --gaia-border: #cbcfc3;
+  --gaia-foreground: #151614;
+  --gaia-muted: #d2d3c7;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 90%,
+    white 10%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 68%,
+    var(--gaia-surface) 32%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 65%,
+    var(--gaia-surface) 35%
+  );
+  --gaia-contrast-bg: #edd000;
+  --gaia-contrast-text: #141000;
+  --gaia-overlay: color-mix(in srgb, #151614 32%, transparent 68%);
+  --gaia-positive: #b9dbc6;
+  --gaia-warning: #d7d3b0;
+  --gaia-negative: #efc6c2;
+}
+
+html[data-theme="black"] {
+  color-scheme: dark;
+  --gaia-surface: #000000;
+  --gaia-surface-soft: #141414;
+  --gaia-border: #1b1b1b;
+  --gaia-foreground: #d6d6d6;
+  --gaia-muted: #ffffff;
+  --gaia-text-strong: color-mix(
+    in srgb,
+    var(--gaia-foreground) 70%,
+    white 30%
+  );
+  --gaia-text-default: color-mix(
+    in srgb,
+    var(--gaia-foreground) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-text-muted: color-mix(
+    in srgb,
+    var(--gaia-muted) 60%,
+    var(--gaia-surface) 40%
+  );
+  --gaia-contrast-bg: #3a3a3a;
+  --gaia-contrast-text: #ffffff;
+  --gaia-overlay: color-mix(in srgb, black 55%, transparent 45%);
+  --gaia-positive: #028002;
+  --gaia-warning: #ffff00;
+  --gaia-negative: #ff0301;
+}

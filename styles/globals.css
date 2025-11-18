@@ -1,0 +1,322 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset link styles */
+a {
+  color: var(--gaia-text-default) !important;
+  text-decoration: none !important;
+}
+
+a:hover {
+  text-decoration: none !important;
+  color: var(--gaia-text-default) !important;
+}
+
+/* Theme-aware primary colors */
+:root {
+  --p: var(--gaia-text-default);
+  --pf: var(--gaia-text-strong);
+}
+
+/* Theme transition handling */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.theme-loading * {
+  transition: none !important;
+}
+
+body {
+  color: var(--gaia-text-default);
+  font-family: var(--gaia-font-sans);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gaia-surface) 96%, white 4%),
+    var(--gaia-surface-soft)
+  );
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+.dark body,
+html[data-theme="dark"] body {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gaia-surface) 80%, black 20%),
+    color-mix(in srgb, var(--gaia-surface-soft) 85%, black 15%)
+  );
+}
+
+.gaia-surface {
+  background-color: var(--gaia-surface) !important;
+  color: var(--gaia-text-default);
+}
+
+.gaia-surface-soft {
+  background-color: var(--gaia-surface-soft) !important;
+  color: var(--gaia-text-default);
+}
+
+.gaia-border {
+  border-color: var(--gaia-border) !important;
+}
+
+.gaia-muted {
+  color: var(--gaia-text-muted) !important;
+}
+
+.gaia-strong {
+  color: var(--gaia-text-strong) !important;
+}
+
+.gaia-chip {
+  background-color: color-mix(in srgb, var(--gaia-surface) 90%, transparent);
+  color: var(--gaia-text-default);
+  border: 1px solid color-mix(in srgb, var(--gaia-border) 85%, transparent);
+}
+
+.gaia-code {
+  background-color: color-mix(in srgb, var(--gaia-surface-soft) 95%, transparent);
+  color: var(--gaia-text-strong);
+  border: 1px solid color-mix(in srgb, var(--gaia-border) 85%, transparent);
+}
+
+.gaia-panel {
+  background-color: var(--gaia-surface) !important;
+  color: var(--gaia-text-default);
+  border: 1px solid var(--gaia-border);
+}
+
+.gaia-panel-soft {
+  background-color: color-mix(
+    in srgb,
+    var(--gaia-surface-soft) 92%,
+    transparent
+  ) !important;
+  color: var(--gaia-text-default);
+  border: 1px solid color-mix(in srgb, var(--gaia-border) 80%, transparent);
+}
+
+.gaia-glass {
+  background-color: var(--gaia-glass) !important;
+  color: var(--gaia-text-default);
+}
+
+.gaia-glass-strong {
+  background-color: var(--gaia-glass-strong) !important;
+  color: var(--gaia-text-default);
+}
+
+.gaia-overlay {
+  background-color: var(--gaia-overlay) !important;
+}
+
+.gaia-contrast {
+  background-color: var(--gaia-contrast-bg) !important;
+  color: var(--gaia-contrast-text) !important;
+  border-color: var(--gaia-contrast-bg) !important;
+}
+
+.gaia-contrast:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--gaia-contrast-bg) 90%,
+    var(--gaia-surface) 10%
+  ) !important;
+}
+
+.gaia-ink-soft {
+  background-color: var(--gaia-ink-soft) !important;
+  color: var(--gaia-text-default);
+}
+
+.gaia-callout {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.75rem;
+  color: var(--gaia-callout-text);
+}
+
+.gaia-callout-positive {
+  background-color: var(--gaia-positive-bg) !important;
+  border-color: var(--gaia-positive-border) !important;
+}
+
+.gaia-callout-negative {
+  background-color: var(--gaia-negative-bg) !important;
+  border-color: var(--gaia-negative-border) !important;
+}
+
+.gaia-callout-warning {
+  background-color: var(--gaia-warning-bg) !important;
+  border-color: var(--gaia-warning-border) !important;
+}
+
+.gaia-callout-info {
+  background-color: var(--gaia-info-bg) !important;
+  border-color: var(--gaia-info-border) !important;
+}
+
+.gaia-focus {
+  transition: box-shadow 0.2s ease;
+}
+
+.gaia-focus:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--gaia-border) 70%, transparent 30%);
+}
+
+.gaia-ink-faint {
+  background-color: var(--gaia-ink-faint) !important;
+  color: color-mix(
+    in srgb,
+    var(--gaia-text-default) 92%,
+    var(--gaia-text-muted) 8%
+  );
+}
+
+.gaia-ink-line {
+  color: color-mix(in srgb, var(--gaia-foreground) 35%, transparent) !important;
+}
+
+.gaia-hover-soft:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--gaia-surface-soft) 85%,
+    transparent
+  ) !important;
+}
+
+.gaia-axis {
+  background-color: color-mix(
+    in srgb,
+    var(--gaia-border) 80%,
+    transparent
+  ) !important;
+}
+
+.gaia-positive {
+  color: var(--gaia-positive) !important;
+}
+
+.gaia-negative {
+  color: var(--gaia-negative) !important;
+}
+
+.gaia-node-unlocked {
+  border-color: color-mix(
+    in srgb,
+    var(--gaia-positive) 65%,
+    var(--gaia-border) 35%
+  ) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--gaia-positive) 18%,
+    var(--gaia-surface) 82%
+  ) !important;
+}
+
+.gaia-ring-soft {
+  box-shadow: 0 0 0 1px color-mix(
+    in srgb,
+    var(--gaia-border) 70%,
+    transparent
+  );
+}
+
+.prose {
+  color: var(--gaia-text-default);
+}
+
+.prose p,
+.prose li {
+  color: var(--gaia-text-muted);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: var(--gaia-text-strong);
+}
+
+.prose code {
+  background-color: color-mix(in srgb, var(--gaia-surface-soft) 95%, transparent);
+  color: var(--gaia-text-strong);
+  padding: 0.1em 0.3em;
+  border-radius: 0.25rem;
+}
+
+.gaia-input {
+  background-color: color-mix(in srgb, var(--gaia-surface-soft) 95%, transparent) !important;
+  color: var(--gaia-text-default);
+  border-color: var(--gaia-border) !important;
+}
+
+.gaia-input::placeholder {
+  color: color-mix(in srgb, var(--gaia-text-default) 40%, var(--gaia-surface) 60%);
+}
+
+.dark [class*="bg-white"],
+html[data-theme] [class*="bg-white"] {
+  background-color: var(--gaia-surface);
+  color: var(--gaia-text-default);
+}
+
+.dark [class*="border-black/"],
+.dark [class*="border-gray-2"],
+html[data-theme] [class*="border-black/"],
+html[data-theme] [class*="border-gray-2"] {
+  border-color: var(--gaia-border) !important;
+}
+
+.dark [class*="text-black"],
+html[data-theme] [class*="text-black"] {
+  color: var(--gaia-text-default) !important;
+}
+
+.dark [class*="text-black/"],
+html[data-theme] [class*="text-black/"] {
+  color: color-mix(in srgb, var(--gaia-text-default) 65%, var(--gaia-surface) 35%) !important;
+}
+
+.dark [class*="text-gray-6"],
+html[data-theme] [class*="text-gray-6"] {
+  color: var(--gaia-text-muted) !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea,
+html[data-theme] input,
+html[data-theme] select,
+html[data-theme] textarea {
+  background-color: color-mix(in srgb, var(--gaia-surface-soft) 96%, transparent);
+  color: var(--gaia-text-default);
+  border-color: var(--gaia-border);
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+html[data-theme] input::placeholder,
+html[data-theme] textarea::placeholder {
+  color: color-mix(in srgb, var(--gaia-text-muted) 60%, var(--gaia-surface) 40%);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* When AppBar is mounted, add padding to the content so it sits below the fixed navbar */
+.has-navbar .content {
+  padding-top: 4rem; /* Tailwind's pt-16 */
+}

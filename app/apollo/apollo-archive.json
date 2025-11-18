@@ -1,0 +1,47 @@
+{
+  "topics": [
+    {
+      "id": "bxdr430j",
+      "title": "html",
+      "sections": [
+        {
+          "id": "s2k3ey88m308p0r8",
+          "heading": "Basics",
+          "blocks": [
+            "HTML (HyperText Markup Language) is the standard markup language used to create web pages. It structures content on the web and allows for the embedding of images, videos, and other media. Below is an overview of the essential components of HTML.",
+            "### 1. Basic Structure of an HTML Document\nAn HTML document typically follows this structure:",
+            "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Document Title</title>\n</head>\n<body>\n    <h1>Hello, World!</h1>\n    <p>This is a paragraph.</p>\n</body>\n</html>\n```",
+            "### 2. Elements and Tags\nHTML is composed of elements, which are defined by tags. Tags are enclosed in angle brackets. Most tags come in pairs: an opening tag and a closing tag.",
+            "- **Opening Tag**: `<tagname>`\n- **Closing Tag**: `</tagname>`\n- **Self-Closing Tag**: `<tagname />` (e.g., `<br />`, `<img />`)",
+            "### 3. Common HTML Tags\n- **Headings**: `<h1>` to `<h6>` (defines headings)\n- **Paragraph**: `<p>` (defines a paragraph)\n- **Links**: `<a href=\"URL\">Link Text</a>` (defines a hyperlink)\n- **Images**: `<img src=\"image.jpg\" alt=\"description\" />` (embeds an image)\n- **Lists**:\n  - Unordered List: `<ul><li>Item</li></ul>`\n  - Ordered List: `<ol><li>Item</li></ol>`\n- **Divisions**: `<div>` (a block-level container)\n- **Spans**: `<span>` (an inline container)",
+            "### 4. Attributes\nHTML elements can have attributes that provide additional information. Attributes are included in the opening tag.",
+            "Example:\n```html\n<a href=\"https://example.com\" target=\"_blank\">Visit Example</a>\n```",
+            "### 5. Semantic HTML\nSemantic HTML uses tags that convey meaning about the content. Examples include:\n- `<header>`: Defines a header for a document or section.\n- `<footer>`: Defines a footer for a document or section.\n- `<article>`: Represents a self-contained composition.\n- `<section>`: Represents a thematic grouping of content.",
+            "### 6. Forms\nForms are used to collect user input. Basic structure:",
+            "```html\n<form action=\"/submit\" method=\"post\">\n    <label for=\"name\">Name:</label>\n    <input type=\"text\" id=\"name\" name=\"name\" required>\n    <input type=\"submit\" value=\"Submit\">\n</form>\n```",
+            "### 7. Multimedia\nHTML supports embedding multimedia content:\n- **Audio**: `<audio controls><source src=\"audio.mp3\" type=\"audio/mpeg\"></audio>`\n- **Video**: `<video controls><source src=\"video.mp4\" type=\"video/mp4\"></video>`",
+            "### 8. HTML5 Features\nHTML5 introduced new elements and APIs, including:\n- `<canvas>`: For drawing graphics.\n- `<svg>`: For scalable vector graphics.\n- Local storage and offline capabilities.",
+            "### 9. Accessibility\nUse semantic HTML and attributes like `alt` for images to improve accessibility for users with disabilities.",
+            "### 10. Best Practices\n- Use proper indentation for readability.\n- Validate HTML to ensure it meets standards.\n- Keep content organized and structured logically.",
+            "### Conclusion\nHTML is a foundational technology for web development. Understanding its structure, elements, and best practices is essential for creating effective web pages. For further learning, consider exploring CSS (Cascading Style Sheets) and JavaScript to enhance the functionality and design of web pages."
+          ],
+          "editedAt": "2025-10-25T03:49:08.919Z"
+        }
+      ]
+    },
+    {
+      "id": "gb354tk8",
+      "title": "CSS",
+      "sections": [
+        {
+          "id": "fen1yc16yd6y1jop",
+          "heading": "CSS",
+          "blocks": [
+            "### Detailed Explanation of CSS (Cascading Style Sheets)\n\n**Definition**: CSS (Cascading Style Sheets) is a stylesheet language used for describing the presentation of a document written in HTML or XML. CSS controls the layout, colors, fonts, and overall visual appearance of web pages.\n\n#### Key Concepts\n\n1. **Selectors**: CSS uses selectors to target HTML elements for styling. Common types of selectors include:\n   - **Element Selector**: Targets all instances of a specific HTML element.\n     ```css\n     p {\n       color: blue;\n     }\n     ```\n   - **Class Selector**: Targets elements with a specified class attribute.\n     ```css\n     .highlight {\n       background-color: yellow;\n     }\n     ```\n   - **ID Selector**: Targets an element with a specific ID.\n     ```css\n     #header {\n       font-size: 24px;\n     }\n     ```\n   - **Attribute Selector**: Targets elements based on attributes.\n     ```css\n     a[target=\"_blank\"] {\n       color: green;\n     }\n     ```\n\n2. **Properties and Values**: CSS styles are defined using properties and their corresponding values. Each property affects a specific aspect of the element's appearance.\n   - **Color**: Sets the text color.\n     ```css\n     h1 {\n       color: red;\n     }\n     ```\n   - **Background**: Sets the background color or image.\n     ```css\n     body {\n       background-color: lightgrey;\n     }\n     ```\n   - **Margin and Padding**: Controls spacing around and within elements.\n     ```css\n     .box {\n       margin: 20px;\n       padding: 10px;\n     }\n     ```\n\n3. **Box Model**: Every HTML element is represented as a rectangular box. The box model consists of:\n   - **Content**: The actual content of the box (text, images).\n   - **Padding**: Space between the content and the border.\n   - **Border**: A line surrounding the padding (if any).\n   - **Margin**: Space outside the border, separating the element from others.\n\n   Example:\n   ```css\n   .box {\n     width: 300px;\n     padding: 20px;\n     border: 5px solid black;\n     margin: 15px;\n   }\n   ```\n\n4. **Positioning**: CSS provides several positioning schemes to control the layout of elements.\n   - **Static**: Default positioning; elements are positioned according to the normal flow of the document.\n   - **Relative**: Positioned relative to its normal position.\n     ```css\n     .relative {\n       position: relative;\n       top: 10px; /* Moves the element down */\n     }\n     ```\n   - **Absolute**: Positioned relative to the nearest positioned ancestor.\n     ```css\n     .absolute {\n       position: absolute;\n       top: 50px;\n       left: 100px;\n     }\n     ```\n   - **Fixed**: Positioned relative to the viewport, remains in place when scrolling.\n   - **Sticky**: Toggles between relative and fixed, based on scroll position.\n\n5. **Media Queries**: CSS allows for responsive design using media queries, which apply styles based on device characteristics (like screen size).\n   ```css\n   @media (max-width: 600px) {\n     body {\n       background-color: lightblue;\n     }\n   }\n   ```\n\n#### Example of CSS in Action\n\n**HTML Structure**:\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <link rel=\"stylesheet\" href=\"styles.css\">\n    <title>CSS Example</title>\n</head>\n<body>\n    <header id=\"header\">\n        <h1>Welcome to My Website</h1>\n    </header>\n    <div class=\"box\">\n        <p class=\"highlight\">This is a highlighted paragraph.</p>\n    </div>\n</body>\n</html>\n```\n\n**CSS Styles (styles.css)**:\n```css\nbody {\n    font-family: Arial, sans-serif;\n    background-color: #f4f4f4;\n}\n\n#header {\n    background-color: #333;\n    color: white;\n    text-align: center;\n    padding: 20px;\n}\n\n.box {\n    width: 80%;\n    margin: 20px auto;\n    padding: 20px;\n    border: 2px solid #ccc;\n    background-color: white;\n}\n\n.highlight {\n    background-color: yellow;\n}\n```\n\n### Conclusion\n\nCSS is a powerful tool for web design, enabling developers to create visually appealing and responsive websites. By understanding selectors, properties, the box model, positioning, and media queries, developers can effectively control the layout and appearance of web content."
+          ],
+          "editedAt": "2025-10-25T03:56:38.664Z"
+        }
+      ]
+    }
+  ]
+}

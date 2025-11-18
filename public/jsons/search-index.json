@@ -1,0 +1,127 @@
+[
+  {
+    "url": "/dashboard",
+    "title": "Dashboard",
+    "content": "Your daily control room: today’s focus tasks, active learning progress, recent activity, and quick entry actions."
+  },
+  {
+    "url": "/timeline",
+    "title": "Timeline",
+    "content": "Vertical life log where you can record key events, decisions, and milestones across work, health, wealth, and personal life."
+  },
+  {
+    "url": "/gallery",
+    "title": "Gallery",
+    "content": "Local-first gallery for your images and videos with tags, filters, featured items, and lightbox view."
+  },
+  {
+    "url": "/health",
+    "title": "Health",
+    "content": "Health dashboard for daily insulin logs, habits, exercises, and body check snapshots with export and import of your data."
+  },
+  {
+    "url": "/wealth",
+    "title": "Wealth",
+    "content": "Wealth tracker showing levels, plans, and settings for your long-term savings, interest targets, and milestones."
+  },
+  {
+    "url": "/labs",
+    "title": "Labs",
+    "content": "Sandbox area for your builds and experiments, grouped by track, linking finished projects back into GAIA."
+  },
+  {
+    "url": "/Archives",
+    "title": "Archives",
+    "content": "Root of your study notes and references, grouped by subjects like HTML, CSS, JavaScript, Tailwind, Git & CLI, React, Next.js, and Node.js."
+  },
+  {
+    "url": "/ELEUTHIA",
+    "title": "ELEUTHIA · Vault & Backups",
+    "content": "Zero-knowledge vault that stores encrypted secrets and backups; the single home for safety, passwords, and snapshots."
+  },
+  {
+    "url": "/Classic/SiteMap",
+    "title": "Classic · Site Map",
+    "content": "Manual overview of GAIA pages and sections so you can visually navigate the whole OS structure."
+  },
+  {
+    "url": "/Classic/Directory",
+    "title": "Classic · Directory",
+    "content": "Developer-friendly directory listing of routes and files inside GAIA, useful for debugging and orientation."
+  },
+  {
+    "url": "/Classic/WhatsNew",
+    "title": "Classic · What’s New",
+    "content": "Changelog-style feed where you can see the latest additions and tweaks to GAIA across versions."
+  },
+  {
+    "url": "/Classic/Announcements",
+    "title": "Classic · Announcements",
+    "content": "Bulletin page for personal notes, announcements, and bigger shifts in GAIA’s roadmap or behavior."
+  },
+  {
+    "url": "/Classic/DownloadCenter",
+    "title": "Classic · Download Center",
+    "content": "Central place to keep downloadable zips, backups, exports, and other files related to GAIA."
+  },
+  {
+    "url": "/settings",
+    "title": "Settings",
+    "content": "Per-user settings for GAIA, including theme selection and the default button and search bar styles."
+  },
+  {
+    "url": "/TODO",
+    "title": "TODO · All Tasks",
+    "content": "Full view of your daily tasks grouped by Life, Work, and Distraction categories; synced with the dashboard focus panel."
+  },
+  {
+    "url": "/apollo",
+    "title": "Apollo · Archives & Ask",
+    "content": "Space for deep research, long-form notes, and transcripts, where you can review material and later feed it into Academy."
+  },
+  {
+    "url": "/Archives/html",
+    "title": "Archives · HTML",
+    "content": "Semantic HTML, forms, and media elements. This is the base layer for everything else you build. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/Archives/css",
+    "title": "Archives · CSS",
+    "content": "Styling, layout, and responsive behavior. The goal is clean, predictable styles instead of chaos. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/Archives/js",
+    "title": "Archives · JavaScript",
+    "content": "Core language features, DOM manipulation, and browser APIs for interactive behavior. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/Archives/tailwind",
+    "title": "Archives · Tailwind CSS",
+    "content": "Utility-first CSS with Tailwind for fast iteration using classes instead of huge CSS files. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/Archives/git-cli",
+    "title": "Archives · Git & CLI",
+    "content": "Version control with Git and comfort in the command line as the safety net for GAIA changes. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/Archives/react",
+    "title": "Archives · React",
+    "content": "Component-based UI for GAIA’s interactive pieces like Dashboard, Health, Wealth, and Gallery. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/Archives/next",
+    "title": "Archives · Next.js",
+    "content": "Full-stack React with Next.js App Router, data fetching, and routing. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/Archives/node",
+    "title": "Archives · Node.js",
+    "content": "Server-side JavaScript runtime for scripts, tooling, and any future GAIA services. This subject also feeds concepts into the Academy skill tree."
+  },
+  {
+    "url": "/",
+    "title": "GAIA Intro",
+    "content": "Landing view for GAIA as your personal operating system, from which you can jump to the dashboard, archives, gallery, health, and wealth."
+  }
+]

@@ -1,0 +1,14 @@
+node_modules
+*.next
+*.dist
+*.DS_Store
+*.log
+
+*.mp4
+*.jpg
+*.gif
+*.webp
+
+.env.local
+.local
+.env

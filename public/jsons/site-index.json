@@ -1,0 +1,1096 @@
+[
+  {
+    "url": "/Abollo/Academy/ClientView",
+    "title": "{htmlCssPath.title}",
+    "content": "'use client'; ))} ))} Live Playground CodeBin — build beside the lesson Experiment with the current concept, save snapshots to your browser, import previous zips, or export a bundle to share. The environment mirrors Sandpack (CodeSandbox) so what you see here matches production. ); }"
+  },
+  {
+    "url": "/Abollo/Academy/components/LivePlayground",
+    "title": "Preview unavailable",
+    "content": "'use client'; type TemplateKey = StarterKey; type LivePlaygroundProps = ; const templateOptions: Array = [ , , , ]; const defaultFiles = (key: StarterKey): SandpackFiles => ]; } return [path, ]; }) ); }; const buildDownloadName = (lessonId?: string) => `$ .zip`; }) .finally(() => active && setLoading(false)); return () => ; }, [lessonId]); useEffect(() => , [providerKey, files]); const customSetup = useMemo(() => , files, }; } if (currentTemplate === \"react-ts\") , devDependencies: , files, }; } return ; }, [currentTemplate, files]); const handleSwitchTemplate = (next: TemplateKey) => template`); }; const handleReset = () => ; const handleImport = (nextFiles: SandpackFiles) => ; if (loading) return ( ); } type ToolbarProps = ; function PlaygroundToolbar( : ToolbarProps) = useSandpack(); const [isSaving, setIsSaving] = useState(false); const [isExporting, setIsExporting] = useState(false); const fileInputRef = useRef (null); const handleSave = async () => ; const handleRun = () => ; const handleExport = async () => ) ); const blob = await zip.generateAsync( ); saveAs(blob, buildDownloadName(lessonId)); setIsExporting(false); onStatusChange?.(\"ZIP exported\"); }; const handleImportClick = () => ; const handleImportFiles = async (event: React.ChangeEvent ) => ; for (const entry of entries) `; nextFiles[key] = ; } onImport(nextFiles); onStatusChange?.(\"Imported ZIP\"); }; const handleOpenPreview = () => const html = sandpack.files[\"/index.html\"]?.code ?? \" Preview unavailable \"; const blob = new Blob([html], ); const url = URL.createObjectURL(blob); window.open(url, \"_blank\", \"noopener,noreferrer\"); setTimeout(() => URL.revokeObjectURL(url), 15_000); onStatusChange?.(\"Opened fallback preview\"); }; return ( Template onSwitchTemplate(event.target.value as TemplateKey)} className=\"rounded-xl border border-white/10 bg-slate-900/60 px-3 py-2 text-sm text-white focus:outline-none\" > ))} Reset starter Run Import ZIP Open preview } ); } function cloneFiles(source: SandpackFiles): SandpackFiles ]; } return [path, ]; }) ); } function defaultFilesForStored(source: SandpackFiles): SandpackFiles"
+  },
+  {
+    "url": "/Abollo/Academy/hooks/usePlaygroundStore",
+    "content": "'use client'; const PREFIX = \"gaia.playground.\"; function makeKey(lessonId: string) $ `; } }"
+  },
+  {
+    "url": "/Abollo/Academy/lib/starterMaps",
+    "title": "Hello GAIA",
+    "content": "const baseCss = `:root h1 button button:hover `; \"/styles.css\": , \"/index.js\": );`, }, }, react: , }, null, 2 ), }, \"/index.jsx\": from \"react-dom/client\"; const root = createRoot(document.getElementById(\"root\")); root.render( );`, }, \"/App.jsx\": from \"react\"; You've iterated ); }`, }, \"/styles.css\": , \"/index.html\": , }, \"react-ts\": , devDependencies: , }, null, 2 ), }, \"/tsconfig.json\": , }, null, 2 ), }, \"/index.tsx\": from \"react-dom/client\"; const root = createRoot(document.getElementById(\"root\")!); root.render( );`, }, \"/App.tsx\": from \"react\"; type Log = ; ...prev, ]) } > Log iteration ))} ); }`, }, \"/styles.css\": ul `, }, \"/index.html\": , }, };"
+  },
+  {
+    "url": "/Abollo/Academy",
+    "content": ""
+  },
+  {
+    "url": "/api/admin/permissions",
+    "content": "type UpdatePayload = ; ); } let payload: UpdatePayload; try catch , ); } const userId = payload.userId?.trim(); if (!userId) , ); } const shaped = ensurePermissionShape(payload.permissions ?? null); const = await adminClient.from(\"user_storage\").upsert( [ , ], ); if (error) , ); } return NextResponse.json( ); }"
+  },
+  {
+    "url": "/api/admin/users",
+    "content": "const MAX_BATCHES = 50; const USERS_PER_PAGE = 100; type UserSummary = ; type CreateUserPayload = ; ); } try = await adminClient .from(\"user_storage\") .select(\"user_id,value\") .eq(\"key\", PERMISSION_STORAGE_KEY); if (permissionError) for (const row of permissionRows ?? []) catch } permissionMap.set(row.user_id, parsed); } const allUsers: UserSummary[] = []; let page = 1; let batches = 0; while (batches ( )) ); batches += 1; if (batch.length < USERS_PER_PAGE) page += 1; } return NextResponse.json( ); } catch (error) , ); } } ); } let payload: CreateUserPayload; try catch , ); } const email = payload.email?.trim().toLowerCase() ?? \"\"; const password = payload.password ?? \"\"; const name = payload.name?.trim() ?? \"\"; if (!email || !password) , ); } if (!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(email)) , ); } if (password.length < 8) , ); } try = await adminClient.auth.admin.createUser( : undefined, }); if (error) const user = data.user; if (!user) , ); } const responsePayload: UserSummary = ; return NextResponse.json( , ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/apollo/chat",
+    "content": "const OPENAI_API_URL = \"https://api.openai.com/v1/chat/completions\"; const DEFAULT_MODEL = process.env.OPENAI_MODEL ?? \"gpt-4o-mini\"; type ChatMessage = ; type ChatRequest = ; const prompt = body.prompt?.trim(); const history = Array.isArray(body.history) ? body.history : []; if (!prompt) , , ); } const apiKey = process.env.OPENAI_API_KEY; if (!apiKey) , , ); } const sanitizedHistory = history .filter( (message): message is ChatMessage => Boolean(message) && (message.role === \"user\" || message.role === \"assistant\") && typeof message.content === \"string\" && message.content.trim().length > 0, ) .slice(-10); const messages: ChatMessage[] = [ , ...sanitizedHistory, , ]; try `, }, body: JSON.stringify( ), }); const payload = await response.json().catch(() => ({})); if (!response.ok) , ); } const answer = payload?.choices?.[0]?.message?.content?.trim() ?? \"No answer was returned.\"; return NextResponse.json( ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/exchange-rate",
+    "content": "const FALLBACK_RATES = , }; const CACHE_TTL_MS = 1000 * 60 * 10; // 10 minutes is enough for dashboards type CachedResponse = ; let cache: CachedResponse | null = null; function hasValidCache() function respondFromCache(tag: string) ); } } if (hasValidCache()) const requestUrl = `$ /live?access_key=$ &currencies=EGP,KWD&source=USD`; try , }); if (!response.ok) ; using cache/fallback` ); const cached = respondFromCache(\"stale\"); if (cached) throw new Error(`API responded with status $ `); } const data = await response.json(); if (data?.success === false) cache = ; return NextResponse.json(data); } catch (error) // Return fallback on error so UI can continue to render in dev return NextResponse.json(FALLBACK_RATES, ); } }"
+  },
+  {
+    "url": "/api/gallery/r2",
+    "content": "// Get environment variables with fallbacks for build time const R2_ENDPOINT = process.env.CLOUDFLARE_R2_S3_ENDPOINT || \"\"; const ACCESS_KEY_ID = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID || \"\"; const SECRET_ACCESS_KEY = process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || \"\"; const BUCKET_NAME = process.env.CLOUDFLARE_R2_BUCKET || \"\"; // Validate required environment variables at runtime function validateConfig() const s3Client = new S3Client( , }); const response = await s3Client.send(command); if (!response.Contents) return []; return response.Contents.map((item) => ( )); } catch (error) }"
+  },
+  {
+    "url": "/api/gallery",
+    "content": "const IMG_EXTS = new Set([ \".jpg\", \".jpeg\", \".png\", \".webp\", \".gif\", \".bmp\", \".avif\", ]); const VID_EXTS = new Set([\".mp4\", \".webm\", \".mov\", \".mkv\", \".avi\"]); type ManifestItem = ; function hashId(p: string) , ]; while (stack.length) = stack.pop()!; let entries: Dirent[] = []; try ); } catch for (const entry of entries) ); continue; } if (!entry.isFile()) continue; const ext = path.extname(entry.name).toLowerCase(); if (!extensions.has(ext)) continue; const stats = await statSafe(absolute); const addedAt = stats?.mtime instanceof Date ? stats.mtime.toISOString() : new Date(0).toISOString(); items.push( ); } } return items; } }"
+  },
+  {
+    "url": "/api/gallery/scan",
+    "content": ""
+  },
+  {
+    "url": "/api/health/conditions",
+    "content": "/** * app/api/health/conditions/route.ts * * Health Conditions CRUD API * GET: Retrieve all conditions for current user * POST: Create a new condition (with encrypted fields) */ interface HealthCondition /** * GET /api/health/conditions * Returns all conditions for the authenticated user */ } const db = getD1Binding((global as any).ENV); const conditions = await queryAll ( db, \"SELECT * FROM health_conditions WHERE user_id = ? ORDER BY created_at DESC\", [user_id] ); return NextResponse.json( ); } catch (error) , ); } } /** * POST /api/health/conditions * Create a new condition * Body: */ } const body = await req.json(); const = body; if (!name) , ); } const db = getD1Binding((global as any).ENV); const id = crypto.randomUUID(); const now = Date.now(); await execute( db, `INSERT INTO health_conditions (id, user_id, name, notes, created_at) VALUES (?, ?, ?, ?, ?)`, [id, user_id, name, notes || null, now] ); const condition = await queryAll ( db, \"SELECT * FROM health_conditions WHERE id = ?\", [id] ); return NextResponse.json( , ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/health/conditions/[id]",
+    "content": "/** * app/api/health/conditions/[id]/route.ts * * Health Conditions individual CRUD * GET: Retrieve a specific condition * PUT: Update a condition * DELETE: Delete a condition */ interface HealthCondition /** * GET /api/health/conditions/[id] */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const db = getD1Binding((global as any).ENV); const condition = await queryOne ( db, \"SELECT * FROM health_conditions WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!condition) , ); } return NextResponse.json( ); } catch (error) , ); } } /** * PUT /api/health/conditions/[id] * Update a condition */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const body = await req.json(); const = body; const db = getD1Binding((global as any).ENV); // Verify ownership const existing = await queryOne( db, \"SELECT * FROM health_conditions WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!existing) , ); } // Update only provided fields let updates: string[] = []; let values: any[] = []; if (name !== undefined) if (notes !== undefined) if (updates.length === 0) , ); } values.push(id, user_id); await execute( db, `UPDATE health_conditions SET $ WHERE id = ? AND user_id = ?`, values ); const updated = await queryOne ( db, \"SELECT * FROM health_conditions WHERE id = ?\", [id] ); return NextResponse.json( ); } catch (error) , ); } } /** * DELETE /api/health/conditions/[id] */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const db = getD1Binding((global as any).ENV); // Verify ownership const existing = await queryOne( db, \"SELECT * FROM health_conditions WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!existing) , ); } await execute( db, \"DELETE FROM health_conditions WHERE id = ? AND user_id = ?\", [id, user_id] ); return NextResponse.json( ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/health/meds",
+    "content": "/** * app/api/health/meds/route.ts * * Health Medications CRUD API * GET: Retrieve all medications for current user * POST: Create a new medication (with encrypted fields) */ interface HealthMed /** * GET /api/health/meds * Returns all medications for the authenticated user */ } const db = getD1Binding((global as any).ENV); const meds = await queryAll ( db, \"SELECT * FROM health_meds WHERE user_id = ? ORDER BY created_at DESC\", [user_id] ); return NextResponse.json( ); } catch (error) , ); } } /** * POST /api/health/meds * Create a new medication * Body: */ } const body = await req.json(); const = body; if (!name || !dose) , ); } const db = getD1Binding((global as any).ENV); const id = crypto.randomUUID(); const now = Date.now(); await execute( db, `INSERT INTO health_meds (id, user_id, name, dose, unit, schedule, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)`, [id, user_id, name, dose, unit || null, schedule || null, now] ); const med = await queryAll ( db, \"SELECT * FROM health_meds WHERE id = ?\", [id] ); return NextResponse.json( , ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/health/meds/[id]",
+    "content": "/** * app/api/health/meds/[id]/route.ts * * Health Medications individual CRUD * GET: Retrieve a specific medication * PUT: Update a medication * DELETE: Delete a medication */ interface HealthMed /** * GET /api/health/meds/[id] */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const db = getD1Binding((global as any).ENV); const med = await queryOne ( db, \"SELECT * FROM health_meds WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!med) , ); } return NextResponse.json( ); } catch (error) , ); } } /** * PUT /api/health/meds/[id] * Update a medication */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const body = await req.json(); const = body; const db = getD1Binding((global as any).ENV); // Verify ownership const existing = await queryOne( db, \"SELECT * FROM health_meds WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!existing) , ); } // Update only provided fields let updates: string[] = []; let values: any[] = []; if (name !== undefined) if (dose !== undefined) if (unit !== undefined) if (schedule !== undefined) if (updates.length === 0) , ); } values.push(id, user_id); await execute( db, `UPDATE health_meds SET $ WHERE id = ? AND user_id = ?`, values ); const updated = await queryOne ( db, \"SELECT * FROM health_meds WHERE id = ?\", [id] ); return NextResponse.json( ); } catch (error) , ); } } /** * DELETE /api/health/meds/[id] */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const db = getD1Binding((global as any).ENV); // Verify ownership const existing = await queryOne( db, \"SELECT * FROM health_meds WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!existing) , ); } await execute(db, \"DELETE FROM health_meds WHERE id = ? AND user_id = ?\", [ id, user_id, ]); return NextResponse.json( ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/health/metrics",
+    "content": "/** * app/api/health/metrics/route.ts * * Health Metrics CRUD API * GET: Retrieve all metrics for current user (with optional date range) * POST: Create a new metric */ interface HealthMetric /** * GET /api/health/metrics * Returns all metrics for the authenticated user * Query params: ?from=ms&to=ms (optional date range filter) */ } const = new URL(req.url); const from = searchParams.get(\"from\"); const to = searchParams.get(\"to\"); const db = getD1Binding((global as any).ENV); let query = \"SELECT * FROM health_metrics WHERE user_id = ?\"; const params: any[] = [user_id]; if (from) if (to) ); } catch (error) , ); } } /** * POST /api/health/metrics * Create a new metric * Body: */ } const body = await req.json(); const = body; if (!date) , ); } const db = getD1Binding((global as any).ENV); const id = crypto.randomUUID(); const now = Date.now(); await execute( db, `INSERT INTO health_metrics (id, user_id, date, weight, bg_fasting, bg_post, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [ id, user_id, date, weight || null, bg_fasting || null, bg_post || null, notes || null, now, ] ); const metric = await queryAll ( db, \"SELECT * FROM health_metrics WHERE id = ?\", [id] ); return NextResponse.json( , ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/health/metrics/[id]",
+    "content": "/** * app/api/health/metrics/[id]/route.ts * * Health Metrics individual CRUD * GET: Retrieve a specific metric * PUT: Update a metric * DELETE: Delete a metric */ interface HealthMetric /** * GET /api/health/metrics/[id] */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const db = getD1Binding((global as any).ENV); const metric = await queryOne ( db, \"SELECT * FROM health_metrics WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!metric) , ); } return NextResponse.json( ); } catch (error) , ); } } /** * PUT /api/health/metrics/[id] * Update a metric */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const body = await req.json(); const = body; const db = getD1Binding((global as any).ENV); // Verify ownership const existing = await queryOne( db, \"SELECT * FROM health_metrics WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!existing) , ); } // Update only provided fields let updates: string[] = []; let values: any[] = []; if (date !== undefined) if (weight !== undefined) if (bg_fasting !== undefined) if (bg_post !== undefined) if (notes !== undefined) if (updates.length === 0) , ); } values.push(id, user_id); await execute( db, `UPDATE health_metrics SET $ WHERE id = ? AND user_id = ?`, values ); const updated = await queryOne ( db, \"SELECT * FROM health_metrics WHERE id = ?\", [id] ); return NextResponse.json( ); } catch (error) , ); } } /** * DELETE /api/health/metrics/[id] */ req: NextRequest, : ) = await params; if (!user_id || !id) , ); } const db = getD1Binding((global as any).ENV); // Verify ownership const existing = await queryOne( db, \"SELECT * FROM health_metrics WHERE id = ? AND user_id = ?\", [id, user_id] ); if (!existing) , ); } await execute( db, \"DELETE FROM health_metrics WHERE id = ? AND user_id = ?\", [id, user_id] ); return NextResponse.json( ); } catch (error) , ); } }"
+  },
+  {
+    "url": "/api/inventory/pos/terminals/[id]",
+    "content": "interface POSTerminal request: NextRequest, : ) , ); } const = await params; const = await supabase .from(\"pos_terminals\") .select(\"*\") .eq(\"id\", id) .eq(\"user_id\", user.id) .single(); if (error || !data) , ); } return NextResponse.json( ); } catch (error) , ); } } request: NextRequest, : ) , ); } const = await params; const body = await request.json(); // Verify ownership const = await supabase .from(\"pos_terminals\") .select(\"*\") .eq(\"id\", id) .eq(\"user_id\", user.id) .single(); if (fetchError || !existing) , ); } const = body; const updates: Record = {}; if (terminal_name !== undefined) if (is_active !== undefined) if (last_online !== undefined) if (Object.keys(updates).length === 0) , ); } const = await supabase .from(\"pos_terminals\") .update(updates) .eq(\"id\", id) .eq(\"user_id\", user.id) .select() .single(); if (error) throw error; return NextResponse.json( ); } catch (error: any) , ); } } request: NextRequest, : ) , ); } const = await params; // Verify ownership const = await supabase .from(\"pos_terminals\") .select(\"*\") .eq(\"id\", id) .eq(\"user_id\", user.id) .single(); if (fetchError || !existing) , ); } // Soft delete const = await supabase .from(\"pos_terminals\") .update( ) .eq(\"id\", id); if (error) throw error; return NextResponse.json( ); } catch (error: any) , ); } }"
+  },
+  {
+    "url": "/api/search",
+    "content": "const items: Array = JSON.parse(raw || \"[]\"); if (!q) return NextResponse.json([]); const results = items .map((it) => ; }) .filter((r) => r.excerpt !== undefined) .slice(0, 50); return NextResponse.json(results); } catch (err) ); } }"
+  },
+  {
+    "url": "/api/todo",
+    "content": "// app/api/todo/route.ts // Single-user baseline: we derive a user_id from env or default constant. // Later, replace with Supabase Auth user id. const USER_ID = process.env.TODO_USER_ID || \"00000000-0000-0000-0000-000000000001\"; .from(\"tasks\") .select(\"*\") .eq(\"user_id\", USER_ID) .order(\"created_at\", ); if (error) return NextResponse.json( , ); // Also pull statuses const = await supabase .from(\"task_day_status\") .select(\"*\") .in(\"task_id\", (tasks || []).map(t => t.id)); if (err2) return NextResponse.json( , ); return NextResponse.json( ); } const = await supabase.from(\"tasks\").insert(payload).select().single(); if (error) return NextResponse.json( , ); return NextResponse.json( ); } const id = searchParams.get(\"id\"); if (!id) return NextResponse.json( , ); const patch = await req.json(); const = await supabase .from(\"tasks\") .update( ) .eq(\"id\", id) .eq(\"user_id\", USER_ID) .select() .single(); if (error) return NextResponse.json( , ); return NextResponse.json( ); } const id = searchParams.get(\"id\"); if (!id) return NextResponse.json( , ); const = await supabase.from(\"tasks\").delete().eq(\"id\", id).eq(\"user_id\", USER_ID); if (error) return NextResponse.json( , ); return NextResponse.json( ); }"
+  },
+  {
+    "url": "/api/todo/status",
+    "content": "// app/api/todo/status/route.ts const USER_ID = process.env.TODO_USER_ID || \"00000000-0000-0000-0000-000000000001\"; if (!task_id || !date || !status) return NextResponse.json( , ); // Verify task belongs to the user const = await supabase.from(\"tasks\").select(\"id,user_id\").eq(\"id\", task_id).single(); if (terr) return NextResponse.json( , ); if (!task || task.user_id !== USER_ID) return NextResponse.json( , ); const upsert = ; const = await supabase.from(\"task_day_status\").upsert(upsert); if (error) return NextResponse.json( , ); return NextResponse.json( ); }"
+  },
+  {
+    "url": "/api/user-storage",
+    "content": "/** * Server API to read / write / delete per-user entries from `user_storage`. * * Security model: * - Client must send Authorization: Bearer (Supabase access token) * - The server uses the Supabase service role key to validate the token and * perform operations scoped to that user. */ const TABLE = \"user_storage\"; function json(data: unknown, status = 200) ); } const auth = req.headers.get(\"authorization\") ?? \"\"; const token = auth.startsWith(\"Bearer \") ? auth.slice(7) : null; if (!token) return json( , 401); try = await admin.auth.getUser( token ); if (userError || !userData?.user) return json( , 401); const userId = userData.user.id; const = await admin .from(TABLE) .select(\"key,value\") .eq(\"user_id\", userId); if (error) return json( , 500); const out: Record = {}; for (const row of data ?? []) return json( ); } catch (err) , 500); } } const auth = req.headers.get(\"authorization\") ?? \"\"; const token = auth.startsWith(\"Bearer \") ? auth.slice(7) : null; if (!token) return json( , 401); try = await admin.auth.getUser( token ); if (userError || !userData?.user) return json( , 401); const userId = userData.user.id; const body = await req.json(); const key = typeof body?.key === \"string\" ? body.key : null; const value = typeof body?.value === \"string\" ? body.value : null; if (!key) return json( , 400); if (value === null) = await admin .from(TABLE) .delete() .match( ); if (error) return json( , 500); return json( ); } const = await admin.from(TABLE).upsert( [ , ], ); if (error) return json( , 500); return json( ); } catch (err) , 500); } } const auth = req.headers.get(\"authorization\") ?? \"\"; const token = auth.startsWith(\"Bearer \") ? auth.slice(7) : null; if (!token) return json( , 401); try = await admin.auth.getUser( token ); if (userError || !userData?.user) return json( , 401); const userId = userData.user.id; const url = new URL(req.url); const key = url.searchParams.get(\"key\"); if (!key) return json( , 400); const = await admin .from(TABLE) .delete() .match( ); if (error) return json( , 500); return json( ); } catch (err) , 500); } }"
+  },
+  {
+    "url": "/apollo/academy/data/academy",
+    "content": ", , , , ], }, , , , , , ], }, , , , ], }, , , , ], }, , , , , ], }, ], }; section.lessons.map((lesson) => ( -$ `, nodeId: `$ -$ `, trackId: section.id, trackTitle: section.title, title: lesson.title, lesson: lesson.summary, })) );"
+  },
+  {
+    "url": "/apollo/archives",
+    "content": ""
+  },
+  {
+    "url": "/apollo/ask",
+    "content": ""
+  },
+  {
+    "url": "/apollo/tower/components/LessonOutline",
+    "content": "type LessonOutlineProps = ; return ( Lesson outline items ) : null} ))} ))} ); }"
+  },
+  {
+    "url": "/apollo/tower/components/LessonReader",
+    "content": "\"use client\"; type LessonReaderProps = ; type LessonContentState = | | | | | ; const BLOBS_BASE = \"https://github.com/TheOdinProject/curriculum/blob/main/\"; const RAW_BASE = \"https://raw.githubusercontent.com/TheOdinProject/curriculum/main/\"; function toAssetBase(url?: string | null) $ `; } const [activeLessonId, setActiveLessonId] = useState ( lessons[0]?.id ?? null ); const [content, setContent] = useState >( () => lessons.reduce((map, lesson) => ; } return map; }, {} as Record ) ); useEffect(() => ; lessons.forEach((lesson) => ; } }); return next; }); }, [lessons]); const activeLesson = useMemo( () => lessons.find((lesson) => lesson.id === activeLessonId) ?? null, [activeLessonId, lessons] ); const rawUrl = activeLesson ? toRawUrl(activeLesson.url) : null; const assetBase = activeLesson ? toAssetBase(activeLesson.url) : null; useEffect(() => , }; }); return; } if (!rawUrl) , }; }); return; } let shouldFetch = false; setContent((prev) => shouldFetch = true; return }; }); if (!shouldFetch) return; let aborted = false; fetch(rawUrl) .then((res) => )`); } return res.text(); }) .then((body) => , })); }) .catch((error) => , })); }); return () => ; }, [activeLessonId, activeLesson, rawUrl]); if (!lessons.length) return ( Lesson playlist className= > ); })} ))} ) : ( Select a lesson on the left to start reading its content. )} ); } function LessonBody( : ) if (state.status === \"loading\") if (state.status === \"external\") ; } if (state.status === \"error\") ); } const CodeRenderer = (props: any) => = props; return ( ); }; const ImgRenderer = (props: any) => = props; let resolved = \"\"; if (typeof src === \"string\") /` ).toString() : src; } return ( // eslint-disable-next-line @next/next/no-img-element ); }; const AnchorRenderer = (props: any) => ( ); return ( ); } function getLessonNumber(lessons: LessonDetail[], id: string)"
+  },
+  {
+    "url": "/apollo/tower/components/Tower",
+    "content": "\"use client\"; type ModuleState = TrackModule & ; type TrackSummary = ; const pilotName = \"GAIA Pilot\"; const pilotGoal = \"Shape your own Odin-style curriculum.\"; const router = useRouter(); const [selectedTrackId, setSelectedTrackId] = useState ( () => tracks[0]?.id ?? \"\" ); const [activeModuleId, setActiveModuleId] = useState (null); const trackSummaries = useMemo (() => ; } ); const unlockedCount = modulesWithState.filter((m) => m.unlocked).length; const percent = modulesWithState.length > 0 ? Math.round((unlockedCount / modulesWithState.length) * 100) : 0; const totalLessons = modulesWithState.reduce( (sum, m) => sum + m.lessons, 0 ); const totalProjects = modulesWithState.reduce( (sum, m) => sum + m.projects, 0 ); const nextAction = unlockedCount === 0 ? \"Start\" : unlockedCount track.id === selectedTrackId) ?? trackSummaries[0]; const totalModules = trackSummaries.reduce( (sum, track) => sum + track.modules.length, 0 ); const totalLessons = trackSummaries.reduce( (sum, track) => sum + track.totalLessons, 0 ); const totalProjects = trackSummaries.reduce( (sum, track) => sum + track.totalProjects, 0 ); const unlockedTotal = countUnlocked(); const overallPercent = totalModules ? Math.round((unlockedTotal / totalModules) * 100) : 0; useEffect(() => , [selectedTrackId]); const [showSelectedPath, setShowSelectedPath] = useState(false); const handleSelectTrack = (trackId: string) => ); }); } }; const focusModule = (moduleId: string) => `); el?.scrollIntoView( ); }; const handleOpenCourse = (module: ModuleState) => , }) ); } // Normalize the module ID before navigation to match the page's normalization const normalizedId = module.id.trim().replace(/\\s+/g, \"-\").toLowerCase(); router.push(`/apollo/tower/topics/$ `); }; const handleModuleToggle = (module: ModuleState) => else if (module.ready) }; return ( Dashboard of courses unlocked lessons · projects Path courses lessons projects handleSelectTrack(track.id)} className=\"rounded-full border border-cyan-500/60 px-4 py-1.5 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400\" > / unlocked ))} )} className=\"mb-4 flex items-center gap-2 text-sm text-cyan-600 hover:text-cyan-700\" > Back to paths Selected Path % complete / courses unlocked lessons projects lessons projects handleOpenCourse(module)} className= > handleModuleToggle(module)} className= > ); })} )} Mission Status / courses unlocked lessons · projects overall Path navigator className= > Path % / ))} className= > ))} ) : null} ); } type ProgressDonutProps = ; function ProgressDonut( : ProgressDonutProps) % Done ); } function ModuleStatusBadge( : ) ); }"
+  },
+  {
+    "url": "/apollo/tower/components/TowerMiniMap",
+    "content": "\"use client\"; /** * Mini-map (Week 6): clickable squares to jump to a track section. * Each square represents a node; clicking any square in a track scrolls to that track's panel. */ return ( Mini-map `); el?.scrollIntoView( ); }} className=\"h-2 w-2 rounded focus:outline-none focus:ring focus:ring-cyan-400/40 transition-colors shadow-[0_0_6px_rgba(34,211,238,.35)]\" style= } title= · $ `} aria-label= $ `} /> )) )} ); }"
+  },
+  {
+    "url": "/apollo/tower/data/lessonBodies.safe",
+    "content": ""
+  },
+  {
+    "url": "/apollo/tower/data/lessonBodies",
+    "title": "Welcome",
+    "content": ""
+  },
+  {
+    "url": "/apollo/tower/data/lessons",
+    "content": "const CURRICULUM = \"https://github.com/TheOdinProject/curriculum/blob/main\"; const resourceLink = (path: string) => `$ /$ `; , , , , , , , ], \"html-css-m2\": [ , , , , , , , , ], \"html-css-m3\": [ , , , , , , ], \"html-css-m4\": [ , , , , , ], \"html-css-m5\": [ , , , , , , ], \"html-css-m6\": [ , , , , , ], \"html-css-m7\": [ , , , , , ], \"html-css-m8\": [ , , , , , ], \"html-css-m9\": [ , , , , ], \"html-css-m10\": [ , , , , ], \"html-css-m11\": [ , , , , ], \"html-css-m12\": [ , , , , ], };"
+  },
+  {
+    "url": "/apollo/tower/data/tracks",
+    "content": "function modules(prefix: string, data: Array >): Module[] -m$ `, ...module, })); } , , , , // CSS Fundamentals , , , , // Advanced Topics , , , , ]), }, , , , , ]), }, , , , ]), }, , , , ]), }, , , , ]), }, , , , ]), }, , , , ]), }, ];"
+  },
+  {
+    "url": "/apollo/tower/lib/composeDocument",
+    "content": "\"use client\"; type ComposeInput = ; const READY_EVENT = \"practice:preview-ready\"; const ERROR_EVENT = \"practice:preview-error\"; const DEFAULT_TITLE = \"Abollo Practice Preview\"; function stripScripts(value: string) function scrubProtocols(value: string) =\"#\"` ); } function sanitizeHtml(html: string) function escapeScript(value: string) $ $ const __GAIA_PARENT__ = window.parent; Object.defineProperty(window, \"top\", , set() {}, }); Object.defineProperty(window, \"parent\", , set() {}, }); window.__gaiaPreview = , \"*\"); } catch (_) }, notifyError(message) \", ); }, notifyReady() \"); } }, }; window.addEventListener(\"error\", (event) => ); window.addEventListener(\"unhandledrejection\", (event) => ); try } catch (error) finally `; }"
+  },
+  {
+    "url": "/apollo/tower/lib/practiceStore",
+    "content": "\"use client\"; const STORAGE_KEY = \"practice_snippets\"; const EVENT_KEY = \"gaia:practice:update\"; const VERSION = 1; }; type PracticeStoreData = ; type PracticeEventDetail = ; const defaultSnippet = ( snippetId = \"starter\", label = \"Starter snippet\" ): PracticeSnippet => ( , }); const emptyStore = (): PracticeStoreData => ( , }); let memoryStore: PracticeStoreData | null = null; const normalizeTopicId = (topicId: string) => topicId.trim().toLowerCase().replace(/\\s+/g, \"-\"); const sanitizeLabel = (label?: string | null) => ; function readStore(): PracticeStoreData if (parsed.version !== VERSION) , }; } return , }; } function getStore(): PracticeStoreData return memoryStore; } function persistStore(store: PracticeStoreData, topicId?: string) : undefined; window.dispatchEvent( new CustomEvent (EVENT_KEY, ) ); } catch } function ensureTopic(store: PracticeStoreData, rawTopicId: string) , }; store.topics[topicId] = topic; } else if (!topic.snippets[topic.activeSnippetId]) topic.activeSnippetId = \"starter\"; } return topic; } function ensureSnippet( topic: PracticeTopicState, snippetId?: string, label?: string ) else if (label && label.trim().length) return snippet; } function cloneTopic(topic: PracticeTopicState): PracticeTopicState , }, ]) ), }; } function mergeValue( existing: string, incoming: string, mode: \"replace\" | \"append\" ) \\n$ `; } return incoming; } const refresh = useCallback(() => )(); }, [topicId]); useEffect(() => , [refresh]); useEffect(() => function handleCustom(event: Event) } const unsubscribe = subscribe(( ) => }); window.addEventListener(\"storage\", handleStorage); window.addEventListener(EVENT_KEY, handleCustom as EventListener); return () => ; }, [refresh, topicId]); const mutate = useCallback( (mutator: (topic: PracticeTopicState) => void) => , [topicId] ); const snippets = useMemo( () => Object.values(snapshot.snippets).sort((a, b) => ), [snapshot.activeSnippetId, snapshot.snippets] ); const activeSnippet = snapshot.snippets[snapshot.activeSnippetId] ?? snapshot.snippets.starter ?? defaultSnippet(); const setActiveSnippet = useCallback( (id: string) => }); }, [mutate] ); const saveSnippet = useCallback( (draft: SnippetDraft) => }); if (!changed) return; const now = Date.now(); snippet.updatedAt = now; topic.lastTouched = now; topic.activeSnippetId = snippet.id; if (!snippet.awards.firstSave) if (!snippet.awards.complete && isSnippetComplete(snippet)) }); }, [mutate] ); const seedSnippet = useCallback( (payload: LessonSeedPayload) => }); snippet.updatedAt = Date.now(); snippet.awards = {}; topic.lastTouched = snippet.updatedAt; topic.activeSnippetId = snippet.id; }); }, [mutate] ); const markPreviewSuccess = useCallback(() => ); }, [mutate]); return ; }"
+  },
+  {
+    "url": "/apollo/tower/lib/progress",
+    "content": "\"use client\"; type Progress = Record ; const KEY = \"gaia.tower.progress\"; /** * Local-first progress store * - Zero-knowledge local storage of unlocked nodes * - Emits \"gaia:tower:progress\" on change */ function read(): Progress ); } function write(p: Progress) useEffect(() => )(); return () => ; }, []); useEffect(() => ); } } const unsubscribe = subscribe(( ) => ); } catch ); } } }); window.addEventListener(\"storage\", onStorage); return () => ; }, []); const isUnlocked = useCallback((nodeId: string) => !!progress[nodeId], [progress]); const toggleNode = useCallback((nodeId: string, next?: boolean) => ; if (!updated[nodeId]) delete updated[nodeId]; write(updated); window.dispatchEvent(new CustomEvent(\"gaia:tower:progress\", })); return updated; }); }, []); const countUnlocked = useCallback(() => Object.values(progress).filter(Boolean).length, [progress]); return ; }"
+  },
+  {
+    "url": "/apollo/tower/lib/xp",
+    "content": "const clamp = (value: number) => Math.max(0, Math.min(XP_CAP, Math.round(Number.isFinite(value) ? value : 0)));"
+  },
+  {
+    "url": "/apollo/tower",
+    "content": ""
+  },
+  {
+    "url": "/apollo/tower/topics/[slug]/components/LessonPane",
+    "content": "\"use client\"; type LessonPaneProps = ; type LessonSelection = ; const activeLesson = useMemo( () => lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0], [activeLessonId, lessons] ); const selectedCount = Object.keys(selectedBlocks).length; const handleSelectLesson = (lessonId: string) => ); }; const handleSendSelected = () => `, }; Object.values(selectedBlocks).forEach((block) => \\n\\n$ ` : block.code; payload[block.lang] = next; }); onSeedSnippet(payload); setSelectedBlocks({}); }; const handleSeedBlock = (block: LessonSelection) => `, [block.lang]: block.code, }); }; const toggleBlock = (block: LessonSelection) => ; if (next[block.id]) else return next; }); }; return ( Lesson block selected setSelectedBlocks({})} className=\"text-[0.75rem] uppercase tracking-[0.2em] text-cyan-500 transition hover:text-cyan-700\" > Clear ) : null} className= > ))} ) : ( Lessons will appear here once they are published for this topic. )} Send selected to Practice Pick multiple code blocks, then send them into the editor. ); } function LessonBody( : ) : any) ); } const raw = String(children ?? \"\").replace(/\\n$/, \"\"); const langMatch = /language-(\\w+)/.exec(className ?? \"\"); const lang = (langMatch?.[1] ?? \"text\").toLowerCase(); if (lang !== \"html\" && lang !== \"css\" && lang !== \"js\") ); } const blockId = `$ -code-$ `; const block: LessonSelection = ; const selected = Boolean(selectedBlocks[blockId]); return ( onSeedBlock(block)} className=\"rounded-full border border-cyan-300/60 px-3 py-0.5 text-[0.65rem] font-semibold text-cyan-200 transition hover:border-cyan-200 hover:text-white\" > Try in editor onToggleBlock(block)} className= > ); }, h3( ) ); }, p( ) ; }, ul( ) ); }, ol( ) ); }, li( ) ; }, table( ) ); }, thead( ) ); }, th( ) ; }, td( ) ; }, }; return ( ); } function activeBody(body?: string) return body; }"
+  },
+  {
+    "url": "/apollo/tower/topics/[slug]/components/PracticePane",
+    "content": "\"use client\"; const MonacoEditor = dynamic(() => import(\"@monaco-editor/react\"), ); type PracticePaneProps = ; ✔ onBlur= /> ))} ); } function SnippetTabs( : ) className= > ))} ); } function Toolbar( : ) function CodeEditorField( : ) setUseMonaco(true)} className=\"text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-cyan-300 hover:text-white\" > setUseMonaco(true)} > onMount= } theme=\"vs-dark\" options= , scrollBeyondLastLine: false, roundedSelection: false, wordWrap: \"on\", }} height=\"220px\" /> ) : ( onChange(event.target.value)} onBlur= className=\"h-56 w-full resize-none rounded-b-3xl bg-transparent p-4 font-mono text-sm focus:outline-none\" placeholder= here`} /> )} ); }"
+  },
+  {
+    "url": "/apollo/tower/topics/[slug]/components/PreviewPane",
+    "content": "\"use client\"; type PreviewPaneProps = ; if (data.type === previewChannels.error) } window.addEventListener(\"message\", handleMessage); return () => window.removeEventListener(\"message\", handleMessage); }, [onReady, onError]); return ( Preview Live iframe output Updates after ~250ms of idle time ) : ( No runtime errors detected. )} ); }"
+  },
+  {
+    "url": "/apollo/tower/topics/[slug]",
+    "content": "type Params = ; const normalize = (value?: string) => (value ?? \"\") .normalize(\"NFKD\") .replace(/[^\\w\\s-]/g, \"\") .trim() .replace(/\\s+/g, \"-\") .toLowerCase(); function findModule(slug: string) ; } } } return null; } const match = findModule(slug); if (!match) const lessons = lessonsByModuleId[match.module.id] ?? []; return ( ); }"
+  },
+  {
+    "url": "/apollo/tower/topics/[slug]/TopicShell",
+    "title": "{moduleTitle}",
+    "content": "\"use client\"; type TopicShellProps = ; type DraftState = Record ; const [draft, setDraft] = useState (() => ( )); const [isSaving, setIsSaving] = useState(false); const [savedAt, setSavedAt] = useState ( activeSnippet.updatedAt || null ); const [previewDoc, setPreviewDoc] = useState(() => composeDocument( ) ); const [previewVersion, setPreviewVersion] = useState(0); const [previewError, setPreviewError] = useState (null); const saveTimer = useRef (null); const previewTimer = useRef (null); const lastPreviewSnippetId = useRef (activeSnippet.id); const previewErrored = useRef(false); useEffect(() => ); setSavedAt(activeSnippet.updatedAt || null); }, [activeSnippet.id, activeSnippet.updatedAt]); const dirty = draft.html !== activeSnippet.html || draft.css !== activeSnippet.css || draft.js !== activeSnippet.js; const = activeSnippet; const commitSave = useCallback(() => saveSnippet( ); setIsSaving(false); const timestamp = Date.now(); setSavedAt(timestamp); }, [dirty, saveSnippet, activeSnippetId, activeSnippetLabel, draft]); useEffect(() => if (!dirty) setIsSaving(true); saveTimer.current = window.setTimeout(commitSave, 600); return () => }; }, [dirty, commitSave]); const commitRef = useRef(commitSave); useEffect(() => , [commitSave]); useEffect(() => commitRef.current(); }; }, []); const schedulePreview = useCallback( (immediate = false) => const run = () => ) ); setPreviewVersion((prev) => prev + 1); lastPreviewSnippetId.current = activeSnippetId; previewErrored.current = false; }; if (immediate) else }, [draft, activeSnippetId, moduleTitle] ); useEffect(() => , [draft.html, draft.css, draft.js, schedulePreview]); const handleRun = () => ; const handleReset = () => ); }; const handleCopy = async () => catch }; const handleLessonSeed = (payload: LessonSeedPayload) => ; const handleChange = (lang: PracticeLanguage, value: string) => )); }; const handlePreviewReady = () => setPreviewError(null); } }; const handlePreviewError = (message: string) => ; const statItems = [ /100`, }, %`, }, , ]; return ( Abollo Tower ))} ); }"
+  },
+  {
+    "url": "/apollo/tower/tracker",
+    "content": "# Tower tracker.md Files in this feature: - `page.tsx` (Tower Home) - `components/SubjectCard.tsx` References: - Linked from `app/apollo/(tabs)/_components/TabNav.tsx`."
+  },
+  {
+    "url": "/apollo/_components/TabNav",
+    "content": "\"use client\"; const tabs = [ , , ]; ); })} ); }"
+  },
+  {
+    "url": "/apollo/ApolloApp",
+    "title": "APOLLO",
+    "content": "\"use client\"; const panelClasses = \"gaia-surface rounded-3xl border gaia-border p-5 shadow-sm ring-1 ring-black/5\"; const subtleButton = \"inline-flex items-center justify-center rounded-2xl border gaia-border gaia-surface px-4 py-2 text-sm font-semibold shadow-sm transition hover:shadow focus:outline-none focus:ring-2 focus:ring-black/10\"; const [prefs, setPrefs] = useState ({}); const [editing, setEditing] = useState(false); const topic = useMemo( () => getTopicById(data, prefs.topicId), [data, prefs.topicId] ); const section = useMemo( () => getSectionById(topic, prefs.sectionId), [topic, prefs.sectionId] ); useEffect(() => , []); useEffect(() => function onCustom() window.addEventListener(\"storage\", refreshFromStorage); window.addEventListener(\"gaia:apollo:data\", onCustom as EventListener); return () => ; }, []); const commitPrefs = useCallback((partial: Partial ) => ; savePrefs(next); return next; }); }, []); const handleSave = useCallback( (sec: Section, text: string) => ); setEditing(false); }, [data] ); const handleDeleteActiveSection = useCallback(() => \"? This cannot be undone.`); if (!ok) return; setData((prev) => : t ), } as typeof prev; saveData(next as any); return next; }); // Clear active selection commitPrefs( ); setEditing(false); }, [section, prefs.topicId, commitPrefs]); useEffect(() => } else if (e.key.toLowerCase() === \"n\") else if (e.key === \"Escape\") } window.addEventListener(\"keydown\", onKey); return () => window.removeEventListener(\"keydown\", onKey); }, [editing, handleSave, section]); return ( APOLLO setData(updated)} /> setEditing((prev) => !prev)}> Delete /> ) : ( )} ) : ( commitPrefs( )} sectionId= setSectionId= )} /> )} ); }"
+  },
+  {
+    "url": "/apollo/components/ArchiveFullView",
+    "title": "Apollo — Full Archives",
+    "content": "\"use client\"; }, []); const handleExportJSON = useCallback(() => ); const url = URL.createObjectURL(blob); const a = document.createElement(\"a\"); a.href = url; a.download = \"apollo-archives.json\"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }, [data]); return ( Apollo — Full Archives All topics, sections and saved blocks — full width view. // Save and notify user saveData(parsed as ApolloData); setMessage(\"Imported archives successfully. Refresh to apply.\"); } catch (err: any) finally }} /> fileRef.current?.click()} title=\"Import JSON\" > Import JSON Export JSON } title=\"Close view\" > Close location.reload()} style= } > Refresh now )} )} handleCopy(blk)} title=\"Copy block\" > Copy ))} )) )} )) )} ); }"
+  },
+  {
+    "url": "/apollo/components/ArchiveSidebar",
+    "content": "\"use client\"; \"use client\"; const inputStyles = \"gaia-input w-full rounded-2xl px-4 py-2 text-sm font-semibold shadow-sm placeholder:gaia-muted focus:outline-none focus:ring-2 focus:ring-black/10\"; const buttonStyles = \"inline-flex items-center justify-center rounded-2xl border gaia-border gaia-surface px-4 py-2 text-sm font-semibold shadow-sm transition hover:shadow focus:outline-none focus:ring-2 focus:ring-black/10\"; const STORAGE_KEY = \"gaia_apollo_v1_notes\"; function BookIcon() }, [topicId, topics, setTopicId]); function handleAddTopic() ); const existing = payload.topics.find( (t) => t.title.toLowerCase() === title.toLowerCase() ); if (existing) const id = Math.random().toString(36).slice(2, 10); payload.topics.push( ); writeJSON(STORAGE_KEY, payload); setTopicId(id); setNewTopic(\"\"); } const visibleSections = current?.sections.filter((section) => section.heading.toLowerCase().includes(filter.toLowerCase()) ) ?? []; return ( setTopicId(e.target.value)} > ))} setNewTopic(e.target.value)} /> Add setFilter(e.target.value)} /> Sections > ); })} )} ); }"
+  },
+  {
+    "url": "/apollo/components/AskPanel",
+    "content": "'use client'; type ChatMessage = ; const fieldStyles = 'gaia-input rounded-2xl px-4 py-2 text-sm font-medium shadow-sm placeholder:gaia-muted focus:outline-none focus:ring-2 focus:ring-black/10'; const primaryButton = 'inline-flex items-center justify-center rounded-2xl border border-transparent bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-600 disabled:cursor-not-allowed disabled:gaia-muted'; const subtleButton = 'inline-flex items-center justify-center rounded-2xl border gaia-border gaia-surface px-4 py-2 text-sm font-semibold shadow-sm transition hover:shadow focus:outline-none focus:ring-2 focus:ring-black/10 disabled:gaia-muted'; type AskPanelProps = ; const [topic, setTopic] = useState('HTML'); const [section, setSection] = useState('Basics'); const [prompt, setPrompt] = useState(''); const [buffer, setBuffer] = useState( 'Ask Apollo anything, then append the important parts to your archive.' ); const [loading, setLoading] = useState(false); const [error, setError] = useState (null); const [history, setHistory] = useState ([]); const taRef = useRef (null); useEffect(() => , []); const hasHistory = history.length > 0; const trimmedPrompt = prompt.trim(); async function askModel() , body: JSON.stringify( ), }); const payload = await response.json().catch(() => ({})); if (!response.ok) const answer: string = payload?.answer ?? payload?.choices?.[0]?.message?.content ?? 'No answer was returned.'; setHistory((prev) => [ ...prev, , , ]); setBuffer(answer); setPrompt(''); setTimeout(() => taRef.current?.focus(), 0); } catch (err) finally } function appendSelection() const freshData = loadData(); const t = upsertTopic(freshData, topic); const s = upsertSection(t, section); appendToSection(s, selection); saveData(freshData); setData(freshData); onChange?.(freshData); try }) ); } catch setError(null); } function clearBuffer() function resetChat() const statusMessage = useMemo(() => , [loading, error]); return ( setTopic(e.target.value)} placeholder='Topic (e.g., HTML)' /> setSection(e.target.value)} placeholder='Section (H2, e.g., Inline vs Block)' /> Append + setPrompt(e.target.value)} placeholder='Ask ChatGPT something...' /> } } setBuffer(e.target.value)} /> Clear ); }"
+  },
+  {
+    "url": "/apollo/components/SearchBox",
+    "content": "'use client'; const inputStyles = 'gaia-input w-full rounded-2xl px-4 py-2 text-sm font-medium shadow-sm placeholder:gaia-muted focus:outline-none focus:ring-2 focus:ring-black/10'; } window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey); }, []); return ( onChange(e.target.value)} /> ); }"
+  },
+  {
+    "url": "/apollo/components/SectionEditor",
+    "content": "'use client'; const textareaStyles = 'gaia-input min-h-[260px] w-full rounded-2xl px-4 py-3 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-black/10'; const buttonStyles = 'inline-flex items-center justify-center rounded-2xl border border-transparent bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-600'; return ( setText(e.target.value)} /> onSave(text)}> Save (Ctrl/Cmd+S) ); }"
+  },
+  {
+    "url": "/apollo/components/SectionFullView",
+    "title": "Section not found",
+    "content": "\"use client\"; } if (!foundSection) return ( Back to archives ); }"
+  },
+  {
+    "url": "/apollo/components/SectionViewer",
+    "title": "${line.replace(/^#\\s+/, \"\")}",
+    "content": "\"use client\"; function renderMarkdown(text: string) html += ` $ `; } else if (/^###\\s+/.test(line)) html += ` $ `; else if (/^##\\s+/.test(line)) html += ` $ `; else if (/^#\\s+/.test(line)) html += ` $ `; else if (line.trim() === \"\") html += \" \"; else html += ` $ `; } } if (inList) html += \" \"; return ; }"
+  },
+  {
+    "url": "/apollo/components/Toolbar",
+    "content": "\"use client\"; // Primary button explicitly sets bg and text to avoid accidental overrides and ensure contrast const primaryButton = \"inline-flex items-center justify-center rounded-2xl border border-transparent bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-sky-600\";"
+  },
+  {
+    "url": "/apollo",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/apollo/lib/id",
+    "content": "export function nid():string"
+  },
+  {
+    "url": "/apollo/lib/store",
+    "content": "'use client'; const DATA_KEY='gaia_apollo_v1_notes';const PREF_KEY='gaia_apollo_v1_prefs';"
+  },
+  {
+    "url": "/apollo/lib/types",
+    "content": ""
+  },
+  {
+    "url": "/apollo",
+    "content": ""
+  },
+  {
+    "url": "/apollo/section/[sectionId]",
+    "content": "// app/apollo/section/[sectionId]/page.tsx return ; }"
+  },
+  {
+    "url": "/apollo/tower/[moduleId]",
+    "content": "type PageProps = ; }; const normalize = (value?: string) => decodeURIComponent(value ?? \"\") .trim() .replace(/\\s+/g, \"-\") .toLowerCase(); redirect(`/apollo/tower/topics/$ `); }"
+  },
+  {
+    "url": "/apollo/tracker",
+    "content": "# Apollo tracker.md Files in this feature: - `app/apollo/page.tsx` (Apollo root with TabNav) - `app/apollo/(tabs)/_components/TabNav.tsx` - `app/apollo/(tabs)/archives/page.tsx` - `app/apollo/(tabs)/tower/page.tsx` - `app/apollo/(tabs)/tower/components/SubjectCard.tsx` - `app/apollo/(tabs)/academy/page.tsx` Notes: - Move any existing Archives content under `/apollo/archives` when ready."
+  },
+  {
+    "url": "/Archives/components/SubjectsClient",
+    "content": "'use client'; function refresh() ; subjects.forEach(s => ); setTeachableCount(map); } useEffect(() => window.addEventListener(\"storage\", onAny); return () => window.removeEventListener(\"storage\", onAny); }, []); return ( lessons marked teachable ))} ); }"
+  },
+  {
+    "url": "/Archives/components/SubjectsWrapper",
+    "content": "\"use client\"; const SubjectsClient = dynamic(() => import(\"./SubjectsClient\"), );"
+  },
+  {
+    "url": "/Archives/data/subjects",
+    "content": ", , , ] }, , , , ] }, , , , ] }, , , , ] }, , , , ] }, , , , ] }, , , , ] }, , , , ] }, ];"
+  },
+  {
+    "url": "/Archives/HTML",
+    "title": "HTML",
+    "content": ""
+  },
+  {
+    "url": "/Archives",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/Archives/lib/teachables",
+    "content": "'use client'; const KEY = \"gaia.academy.teachables\"; // Record function readObj(): Record ); } function writeObj(obj: Record ) // ---- Push to Academy custom concepts ---- const CUSTOM_KEY = \"gaia.citadel.customConcepts\"; function readCustom(): CustomConcept[] function writeCustom(list: CustomConcept[]) const list = readCustom(); if (list.some(c => c.id === id)) const concept: CustomConcept = -t1`, // Tier 1 mapping title: `$ : $ `, lesson: lesson.summary, quiz: [ ?`, choices: [lesson.title, \"Unrelated topic\", \"Neither\"], answer: 0 }, , , ], }; const next = [concept, ...list]; writeCustom(next); window.dispatchEvent(new Event(\"storage\")); return concept; }"
+  },
+  {
+    "url": "/Archives",
+    "title": "Archives",
+    "content": ""
+  },
+  {
+    "url": "/Archives/tracker",
+    "content": "# Archives — tracker (Week 14) **Routes** - `/Archives` — subjects grid - `/Archives/[subject]` — lessons with “Teachable” toggle + “Add to Academy” **Files** - `app/Archives/page.tsx` - `app/Archives/components/SubjectsClient.tsx` - `app/Archives/[subject]/page.tsx` - `app/Archives/[subject]/components/SubjectClient.tsx` - `app/Archives/data/subjects.ts` - `app/Archives/lib/teachables.ts` **Notes** - Mark “Teachable” to track what you want to study. - “Add to Academy” creates a custom Tier‑1 concept in local storage; Academy now shows those items automatically."
+  },
+  {
+    "url": "/Archives/[subject]/components/ClientWrapper",
+    "content": "\"use client\"; const SubjectClient = dynamic(() => import(\"./SubjectClient\"), );"
+  },
+  {
+    "url": "/Archives/[subject]/components/SubjectClient",
+    "content": "'use client'; useEffect(() => ; subj.lessons.forEach(l => ); setTeach(map); }, [subj]); if (!subj) const onToggle = (l: Lesson, on: boolean) => )); }; const onAddToAcademy = (l: Lesson) => `); }; return ( Track: onToggle(l, e.target.checked)} /> Teachable onAddToAcademy(l)} className=\"shrink-0\">Add to Academy ))} Marking “Teachable” helps you track what to study. “Add to Academy” creates a Tier‑1 concept that shows up in the Academy list. ); }"
+  },
+  {
+    "url": "/Archives/[subject]",
+    "content": "}) = params; // Client will validate and render errors; page shell stays light. return ( ); }"
+  },
+  {
+    "url": "/auth/login/actions",
+    "content": "\"use server\"; } redirect(\"/auth/login\"); }"
+  },
+  {
+    "url": "/auth/login",
+    "content": "\"use client\"; type SubmitStatus = ; // Avoid using next/navigation hooks at build/prerender time -- read params on client useEffect(() => , []); const handleSubmit = useCallback( async (event: FormEvent ) => ); return; } setIsSubmitting(true); setSubmitStatus( ); try = await supabase.auth.signUp( : undefined, }, }); if (error) sessionToken = data.session?.access_token ?? null; if (!sessionToken) ); setIsSubmitting(false); return; } } else = await supabase.auth.signInWithPassword( ); if (error) sessionToken = data.session?.access_token ?? null; } recordUserLogin( ); setSubmitStatus( ); const target = redirectTo || \"/\"; setTimeout(() => catch }, 400); } catch (error) ); setIsSubmitting(false); } }, [isSubmitting, mode, redirectTo] ); const submitLabel = mode === \"signup\" ? \"Create account\" : \"Sign in\"; const switchHref = mode === \"signup\" ? `/auth/login?redirect=$ ` : `/auth/login?mode=signup&redirect=$ `; const switchLabel = mode === \"signup\" ? \"Already have an account?\" : \"Need an account?\"; const switchCta = mode === \"signup\" ? \"Sign in\" : \"Create one\"; return ( } alt=\"GAIA\" className=\"w-[22vw] max-w-[360px] min-w-[220px] opacity-90\" /> Email Password )} Contact Support ); }"
+  },
+  {
+    "url": "/Classic/Announcements/components/AnnouncementsClient",
+    "content": "'use client'; ))} ); }"
+  },
+  {
+    "url": "/Classic/Announcements/data/posts",
+    "content": "];"
+  },
+  {
+    "url": "/Classic/Announcements",
+    "title": "Announcements",
+    "content": "); }"
+  },
+  {
+    "url": "/Classic/Announcements/tracker",
+    "content": "# Announcements — tracker (Week 12) **Route:** `/Classic/Announcements` **Files** - `app/Classic/Announcements/page.tsx` - `app/Classic/Announcements/components/AnnouncementsClient.tsx` - `app/Classic/Announcements/data/posts.ts`"
+  },
+  {
+    "url": "/Classic/Directory/components/DirectoryClient",
+    "content": "'use client'; return ( } ))} ); }"
+  },
+  {
+    "url": "/Classic/Directory/data",
+    "content": ", , , , , , , , , , , , , , , , ];"
+  },
+  {
+    "url": "/Classic/Directory",
+    "title": "Dev Directory",
+    "content": "); }"
+  },
+  {
+    "url": "/Classic/Directory/tracker",
+    "content": "# Dev-only Directory — tracker (Week 12) **Route:** `/Classic/Directory` **Files** - `app/Classic/Directory/page.tsx` - `app/Classic/Directory/components/DirectoryClient.tsx` - `app/Classic/Directory/data/routes.ts` **Notes** - Hidden in production via `process.env.NODE_ENV` check in the client."
+  },
+  {
+    "url": "/Classic/DownloadCenter/components/DownloadCenterClient",
+    "content": "'use client'; function copy(text: string) catch {} } const list = useMemo(() => , [tag]); return ( Filter setTag(e.target.value)} className=\"gaia-input rounded-md border px-3 py-2 text-sm\"> )} Download copy(location.origin + f.href)}>Copy URL ))} ); }"
+  },
+  {
+    "url": "/Classic/DownloadCenter/data/files",
+    "content": ", , , ];"
+  },
+  {
+    "url": "/Classic/DownloadCenter",
+    "title": "Download Center",
+    "content": "); }"
+  },
+  {
+    "url": "/Classic/DownloadCenter/tracker",
+    "content": "# Download Center — tracker (Week 12) **Route:** `/Classic/DownloadCenter` **Files** - `app/Classic/DownloadCenter/page.tsx` - `app/Classic/DownloadCenter/components/DownloadCenterClient.tsx` - `app/Classic/DownloadCenter/data/files.ts` **Notes** - Edit `data/files.ts` to add your zips; for local files, place them under `/public/downloads/`."
+  },
+  {
+    "url": "/Classic",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/Classic/Shared/components/LastUpdatedBadge",
+    "content": "'use client'; return ( Last updated: ); }"
+  },
+  {
+    "url": "/Classic/Shared/components/ViewCounter",
+    "content": "'use client'; const KEY = \"gaia.classic.views\"; function readAll(): Record ); } function writeAll(obj: Record ) return ( Views (local): ); }"
+  },
+  {
+    "url": "/Classic/Shared/tracker",
+    "content": "# Classic Shared — tracker (Week 12) **Components** - `app/Classic/Shared/components/LastUpdatedBadge.tsx` — shows document lastModified (or provided date) - `app/Classic/Shared/components/ViewCounter.tsx` — local-only per-path view counter"
+  },
+  {
+    "url": "/Classic/SiteMap/components/SiteMapClient",
+    "content": "'use client'; function copy(text: string) catch {} } const byGroup = list.reduce((acc: Record , r) => , {} as Record ); return ( } className=\"rounded border gaia-border px-2 py-1 text-xs gaia-muted opacity-0 transition group-hover:opacity-100\" > Copy URL ))} ))} ”. )} ); }"
+  },
+  {
+    "url": "/Classic/SiteMap/data",
+    "content": ", , , , , , , , , , , , , , , , , ];"
+  },
+  {
+    "url": "/Classic/SiteMap",
+    "title": "Manual Site Map",
+    "content": "); }"
+  },
+  {
+    "url": "/Classic/SiteMap/tracker",
+    "content": "# Manual Site Map — tracker (Week 12) **Route:** `/Classic/SiteMap` **Files** - `app/Classic/SiteMap/page.tsx` - `app/Classic/SiteMap/components/SiteMapClient.tsx` - `app/Classic/SiteMap/data/routes.ts`"
+  },
+  {
+    "url": "/Classic/WhatsNew/components/WhatsNewClient",
+    "content": "'use client'; function daysSince(date: string) const list = useMemo(() => , [tag]); return ( Filter setTag(e.target.value)} className=\"gaia-input rounded-md border px-3 py-2 text-sm\"> )} )} ))} ); }"
+  },
+  {
+    "url": "/Classic/WhatsNew/data/entries",
+    "content": ", , , ];"
+  },
+  {
+    "url": "/Classic/WhatsNew",
+    "title": "What’s New",
+    "content": "); }"
+  },
+  {
+    "url": "/Classic/WhatsNew/tracker",
+    "content": "# What’s New — tracker (Week 12) **Route:** `/Classic/WhatsNew` **Files** - `app/Classic/WhatsNew/page.tsx` - `app/Classic/WhatsNew/components/WhatsNewClient.tsx` - `app/Classic/WhatsNew/data/entries.ts`"
+  },
+  {
+    "url": "/components/AppBar",
+    "content": "\"use client\"; /** * Slim App Bar */ const [open, setOpen] = useState(false); const [mounted, setMounted] = useState(false); const closeTimeout = useRef | null>(null); const clearCloseTimer = () => }; const handleToggle = (value: boolean) => else , 250); } }; const = useMemo(() => ; }, [profile, status]); const router = useRouter(); const [query, setQuery] = useState(\"\"); const submitSearch = (e: React.FormEvent) => `); setQuery(\"\"); }; useEffect(() => document.body.classList.add(\"has-navbar\"); return () => ; } catch }, [pathname]); useEffect(() => , []); if (!mounted || pathname === \"/\" || pathname.startsWith(\"/auth\")) return null; return ( } alt=\"GAIA\" className=\"h-9 w-auto\" /> GAIA Home Search the site setQuery(e.target.value)} placeholder=\"Search site...\" className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm bg-white/6 placeholder:gaia-muted\" /> isLoggedIn && handleToggle(true)} onMouseLeave= > onBlur= > )} )} ) : ( Sign in )} ); }"
+  },
+  {
+    "url": "/components/AuthHydrator",
+    "content": "\"use client\"; /** * Keeps the local auth cache (gaia.auth.*) in sync with Supabase. * Ensures a refresh or new tab after a browser restart still knows * whether the user has an active Supabase session. */ if (cancelled) return; if (error) const session = data?.session ?? null; ensureAuthFromSupabaseSession(session); await hydrateUserStorage(session); } catch (error) } hydrate(); const = supabase.auth.onAuthStateChange( (_event, session) => ); return () => ; }, []); return null; }"
+  },
+  {
+    "url": "/components/Loading",
+    "content": ""
+  },
+  {
+    "url": "/components/LogoutButton",
+    "content": "\"use client\"; type LogoutButtonProps = ; try catch } catch } }); }, []); return ( ); }"
+  },
+  {
+    "url": "/context/AuthContext",
+    "content": "\"use client\"; interface AuthContextType const AuthContext = React.createContext (undefined); setLoading(false); }); // Subscribe to auth changes const subscription = onAuthStateChange((event, session) => ); return () => ; }, []); return ( ); }; return context; };"
+  },
+  {
+    "url": "/dashboard/ClientPage",
+    "title": "Dashboard",
+    "content": "'use client'; /** * Week 10 — Dashboard (local-first, read-only views). * Everything uses Tailwind inline; no global CSS here. */ return ( ⟵ GAIA Dashboard Updated: Weight trend Open Health Wealth trend Open Wealth Recent activity Open Timeline ); }"
+  },
+  {
+    "url": "/dashboard/components/Active",
+    "content": "'use client'; type Result = ; const [results, setResults] = useState ([]); const [vault, setVault] = useState (false); const [buildCount, setBuildCount] = useState (0); useEffect(() => )); setResults(readJSON (\"gaia.apollo.academy.results\", [])); setVault(hasVault()); try catch } void load(); function onAny() window.addEventListener(\"storage\", onAny); window.addEventListener(\"gaia:tower:progress\", onAny as any); return () => ; }, []); const unlocked = useMemo(() => Object.values(progress).filter(Boolean).length, [progress]); const last = useMemo( () => results.slice().sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0))[0], [results] ); const cards = [ , /$ ` : \"\\u2014\", helper: last ? new Date(last.completedAt).toLocaleString() : \"No sessions yet\", accent: \"from-sky-500/30 via-transparent to-transparent text-sky-100\", }, , , ]; return ( Live snapshot Active Quick health check across the tower, academy, labs, and vault. Tap any tile to drill in. ))} ); }"
+  },
+  {
+    "url": "/dashboard/components/DashboardClient",
+    "content": "\"use client\";"
+  },
+  {
+    "url": "/dashboard/components/DashboardWrapper",
+    "content": "\"use client\"; const DashboardClient = dynamic(() => import(\"./DashboardClient\"), );"
+  },
+  {
+    "url": "/dashboard/components/Entry",
+    "content": "'use client'; const entries = [ , , , , , , ]; ))} Tip: use global search (Cmd+K / Ctrl+K) to hop anywhere instantly. ); }"
+  },
+  {
+    "url": "/dashboard/components/OverviewCards",
+    "content": "'use client'; type SnapshotMap = Record ; function scan(prefix:string, keys:string[]) function parseValue(key:string, snapshot: SnapshotMap) catch } function latestByDate(keys:string[], snapshot: SnapshotMap) ; const d = new Date(v?.date || v?.updatedAt || v?.createdAt || 0).getTime(); if (!best || d > best.when) ; bestKey=k; } } return best ? : null; } // health snapshot try (weight/glucose) let weight = null, glucose = null; for(const k of healthKeys) const galleryCount = galleryKeys.length; setData( ); })(); return () => ; }, []); return ( Apollo Last note Gallery Items Health Weight / Glucose kg • mg/dL Wealth Snapshot Labs Last Timeline Recent ); }"
+  },
+  {
+    "url": "/dashboard/components/QuickActions",
+    "content": "'use client';"
+  },
+  {
+    "url": "/dashboard/components/TodoDaily",
+    "content": "// app/Dashboard/components/TodoDaily.tsx \"use client\"; return ( · Asia/Kuwait Today's Focus ); }"
+  },
+  {
+    "url": "/dashboard/components/TodoList",
+    "content": "\"use client\"; type CategoryMeta = ; const CATEGORY_META: CategoryMeta[] = [ , , , ]; type DraftPayload = ; const createEmptyDrafts = (): Record => ( , programming: , distraction: , }); function makeId() return `daily-$ -$ `; } const [currentDay, setCurrentDay] = useState (null); const [drafts, setDrafts] = useState >( createEmptyDrafts() ); const [ready, setReady] = useState(false); const syncStore = useCallback(() => , []); const hydrate = useCallback(() => , [syncStore]); useEffect(() => ; }, [hydrate, syncStore]); useEffect(() => , [currentDay, syncStore]); const dayData: DailyTrioByDate = useMemo(() => ; return store[currentDay] ?? {}; }, [currentDay, store]); const pendingCount = useMemo(() => , 0); }, [currentDay, dayData]); const allDone = pendingCount === 0; const jumpToDay = (target: string) => ; const handlePrev = () => ; const handleNext = () => ; const handleToday = () => ; const handleAdd = (category: Category, payload: DraftPayload) => ; upsertTask(task); syncStore(); setDrafts((prev) => ( })); }; const handleToggle = (category: Category, done: boolean) => ; const handleEditTask = (category: Category, payload: DraftPayload) => ); syncStore(); }; if (!ready || !currentDay) return ( Pending: / ) : ( Work in progress for )} )) } onAdd= onToggle= onEdit= onJumpToToday= /> ))} ); } function DayNavigator( : ) Tomorrow → Today ); } function CategoryCard( : ) ); useEffect(() => ); setEditing(false); setError(null); }, [task?.id, task?.title, date]); const handleAdd = (event: React.FormEvent) => onAdd(category.id, drafts); setError(null); }; const handleEditSubmit = (event: React.FormEvent) => onEdit(category.id, editDraft); setError(null); setEditing(false); }; const handleEditCancel = () => ); setError(null); setEditing(false); }; const handleStartEdit = () => ); setError(null); setEditing(true); }; const badgeColor = category.accent; return ( Date: )} )) } placeholder= task`} /> } Save changes Cancel ) : ( <> } onClick= /> : } onClick= /> } onClick= /> ) ) : ( Title onDraftChange( ) } placeholder= task`} /> } Save )} ); } type IconButtonProps = Omit , \"children\" > & ; function IconButton( : IconButtonProps) ); } const iconBase = \"h-4 w-4\"; function EditIcon() function CheckIcon() function UndoIcon() function TodayIcon()"
+  },
+  {
+    "url": "/dashboard/components/TodoQuickAdd",
+    "content": "// app/Dashboard/components/TodoQuickAdd.tsx \"use client\"; type Props = ; setTitle(e.target.value)} autoFocus /> } > Add ); } function labelOf(c: Category)"
+  },
+  {
+    "url": "/dashboard/components/TodoSlot",
+    "content": "// app/Dashboard/components/TodoSlot.tsx \"use client\"; type Props = ; const [showAdd, setShowAdd] = useState(false); const catStyle = useMemo(() => styleForCategory(category), [category]); return ( Today )} onDelete(task.id)} title=\"Delete task\" > onSkip(category)} title=\"Skip this task\" > onDone(category)} title=\"Mark as done\" > > Next ▸ )} ) : ( — No task today > + Quick Add ) : ( setShowAdd(false)} /> )} )} ); } function labelOf(c: Category) function categoryIcon(c: Category) function styleForCategory(c: Category) ; }"
+  },
+  {
+    "url": "/dashboard/hooks/useTodoDaily",
+    "content": "// app/Dashboard/hooks/useTodoDaily.ts \"use client\"; | \"none\" | \"daily\" | \"weekdays\" | \"weekends\" | `weekly:Mon` | `weekly:Tue` | `weekly:Wed` | `weekly:Thu` | `weekly:Fri` | `weekly:Sat` | `weekly:Sun`; type StorageShape = ; const STORAGE_KEY = \"gaia.todo.v2.0.6\"; const SELECTION_PREFIX = \"gaia.todo.v2.0.6.selection.\"; const KUWAIT_TZ = \"Asia/Kuwait\"; function safeNowISO() function uuid(): string -$ -$ -$ -$ $ `; } function getTodayInTZ(tz: string = KUWAIT_TZ): string ).formatToParts(now); const y = parts.find(p=>p.type===\"year\")?.value ?? \"0000\"; const m = parts.find(p=>p.type===\"month\")?.value ?? \"01\"; const d = parts.find(p=>p.type===\"day\")?.value ?? \"01\"; return `$ -$ -$ `; } function weekdayNameInTZ(date: Date, tz: string = KUWAIT_TZ): \"Mon\"|\"Tue\"|\"Wed\"|\"Thu\"|\"Fri\"|\"Sat\"|\"Sun\" ).formatToParts(date); return (parts.find(p=>p.type===\"weekday\")?.value ?? \"Mon\").slice(0,3) as any; } function matchesRepeat(rule: RepeatRule, dateStr: string, tz: string = KUWAIT_TZ): boolean function loadStorage(): StorageShape ; try ; const parsed = JSON.parse(raw); if (!Array.isArray(parsed.tasks)) return ; return parsed as StorageShape; } catch ; } } function saveStorage(data: StorageShape) function loadSelection(date: string): DailySelection }; const raw = window.localStorage.getItem(SELECTION_PREFIX + date); if (!raw) return }; try catch }; } } function saveSelection(sel: DailySelection) function compareDates(a?: string, b?: string): number function rankCandidates(tasks: Task[]): Task[] ); } function taskMatchesToday(t: Task, today: string): boolean ) } }); if (!res.ok) throw new Error(await res.text()); return res.json() as Promise ; } for (const t of payload.tasks) , }; } for (const s of payload.statuses) const merged = Object.values(byId); setStorage(prev => ; saveStorage(next); return next; }); } catch (e) })(); const onVis = () => ; document.addEventListener(\"visibilitychange\", onVis); const timer = setInterval(onVis, 60*60*1000); return () => }, []); const byCategory = useMemo(() => ; for (const t of tasks) map[t.category].push(t); return map; }, [tasks]); const candidatesByCat = useMemo(() => ; for (const c of cats) ); out[c] = rankCandidates(cands); } return out; }, [byCategory, today]); const slotInfo = useMemo >(()=> ; ([\"life\",\"work\",\"distraction\"] as Category[]).forEach(c => ; }); return info; }, [candidatesByCat, selection]); const refresh = useCallback(()=> , []); const replaceTask = useCallback((t: Task) => ; saveStorage(next); return next; }); }, []); const addQuickTask = useCallback(async (category: Category, title: string, note?: string, priority: 1|2|3 = 2, pinned=false) => , }; // optimistic local insert setStorage(prev => ; saveStorage(next); return next; }); setSelection(prev => }; saveSelection(s); return s; }); // server insert try )}); // replace with server copy replaceTask( ); } catch(e) }, [replaceTask]); const markDone = useCallback(async (category: Category) => ), [today]: \"done\" }, updated_at: safeNowISO() }); try )}); } catch(e) }, [slotInfo, today, replaceTask]); const skipTask = useCallback( async (category: Category) => ), [today]: \"skipped\" }, updated_at: safeNowISO() }); try )}); } catch(e) }, [slotInfo, today, replaceTask]); const showNext = useCallback((category: Category) => }; saveSelection(s); return s; }); }, [candidatesByCat, slotInfo, today]); const deleteTask = useCallback(async (taskId: string) => ; saveStorage(next); return next; }); setSelection(prev => ; ([\"life\",\"work\",\"distraction\"] as Category[]).forEach(c => ); const s: DailySelection = ; saveSelection(s); return s; }); try `, ); } catch(e) }, []); const editTask = useCallback(async (taskId: string, patch: Partial >) => ; const next = ; saveStorage(next); return next; }); try `, ); } catch(e) }, []); return ; }"
+  },
+  {
+    "url": "/dashboard",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/dashboard",
+    "title": "Dashboard",
+    "content": ""
+  },
+  {
+    "url": "/dashboard/tracker",
+    "content": "# Dashboard — tracker (Week 10 polish) **Route:** `/dashboard` **Files** - `app/dashboard/page.tsx` — Page shell (client-only render for live stats) - `app/dashboard/components/DashboardClient.tsx` — Sections container - `app/dashboard/components/Active.tsx` — Live stats: Citadel unlocks, last Academy score, Labs builds, ELEUTHIA vault presence - `app/dashboard/components/Entry.tsx` — Action cards linking to Citadel, Labs, ELEUTHIA, Settings, Gallery, Intro **Notes** - Tailwind-only (no CSS). Reads local-first state keys: - `gaia.citadel.progress` - `gaia.citadel.academy.results` - `eleu.meta` / `eleu.vault` via `hasVault()` - Depends on Labs utils for build counting."
+  },
+  {
+    "url": "/dashboard/widgets/ActivityFeed",
+    "content": "'use client'; /** * Builds a tiny recent feed using any *createdAt/updatedAt/date* fields it finds. */ const when = new Date(v?.updatedAt || v?.createdAt || v?.date || 0).getTime(); if (when>0) ); } } items.sort((a,b)=> b.when - a.when); setRows(items.slice(0, 12)); })(); return () => ; }, []); if (!rows.length) return No recent activity. ; return ( ))} ); }"
+  },
+  {
+    "url": "/dashboard/widgets/WealthSpark",
+    "content": "\"use client\"; /** * Wealth sparkline: looks for wealth_history = [number,…] or similar. */ if (arr.length === 0) setPoints(arr.slice(-30)); })(); return () => ; }, []); if (!points.length) return No data ; const min = Math.min(...points); const max = Math.max(...points); const norm = (v: number) => (max === min ? 0.5 : (v - min) / (max - min)); const w = 320, h = 64; const step = points.length > 1 ? w / (points.length - 1) : w; const d = points .map((p, i) => `$ $ ,$ `) .join(\" \"); return ( ); }"
+  },
+  {
+    "url": "/dashboard/widgets/WeightSpark",
+    "content": "\"use client\"; /** * Lightweight SVG sparkline (no libs). * Looks for arrays like health_weight_history = [ , …] or health_weights. */ if (arr.length === 0) setPoints(arr.slice(-30)); })(); return () => ; }, []); if (!points.length) return No data ; const min = Math.min(...points); const max = Math.max(...points); const norm = (v: number) => (max === min ? 0.5 : (v - min) / (max - min)); const w = 320, h = 64; const step = points.length > 1 ? w / (points.length - 1) : w; const d = points .map((p, i) => `$ $ ,$ `) .join(\" \"); return ( ); }"
+  },
+  {
+    "url": "/DesignSystem/components/Button",
+    "content": "'use client'; type Props = React.ButtonHTMLAttributes & ; const base = 'inline-flex items-center justify-center rounded-md px-3 py-2 text-sm transition focus:outline-none gaia-focus'; let style = ''; if (button === 'solid') else if (button === 'outline') else return ( ); }"
+  },
+  {
+    "url": "/DesignSystem/components/SearchInput",
+    "content": "'use client'; const [q, setQ] = useState(''); const router = useRouter(); let style = 'w-full px-3 py-2 border text-sm focus:outline-none gaia-focus'; if (search === 'rounded') else if (search === 'pill') else function onKeyDown(e: React.KeyboardEvent ) `); } } return ( setQ(e.target.value)} onKeyDown= className= aria-label=\"Global search\" /> ); }"
+  },
+  {
+    "url": "/DesignSystem/context/DesignProvider",
+    "content": "\"use client\"; type DesignState = ; const THEME_KEY = \"gaia.theme\"; const BTN_KEY = \"gaia.ui.button\"; const SRCH_KEY = \"gaia.ui.search\"; const VALID_THEMES: Theme[] = [...THEMES]; const VALID_BUTTONS: ButtonStyle[] = [\"solid\", \"outline\", \"ghost\"]; const VALID_SEARCHES: SearchStyle[] = [\"rounded\", \"pill\", \"underline\"]; const VALID_THEME_SET = new Set (VALID_THEMES); function read ( k: string, fallback: T, allowed?: readonly string[] ): T return fallback; } } catch } if (!allowed || allowed.includes(raw)) return fallback; } function write (k: string, v: T) function persistTheme(value: Theme) try ; path=/; max-age=31536000; samesite=lax`; } catch {} if (typeof window !== \"undefined\") }) ); } catch {} } } type ThemeCacheSource = typeof THEME_KEY | null; function readCachedTheme(): ; } return ; } function getThemeFromKey(key: string): Theme | null function readDocumentTheme(): Theme | null function coerceThemeCandidate(value: unknown): Theme | null try } catch return null; } if ( typeof value === \"object\" && value !== null && typeof (value as Record ).name === \"string\" ) return null; } return () => ; }, []); useEffect(() => , [theme]); useEffect(() => , [button]); useEffect(() => , [search]); const setTheme = useCallback((value: Theme) => , []); const value = useMemo ( () => ( ), [theme, button, search, setTheme] ); return ; }"
+  },
+  {
+    "url": "/DesignSystem/hooks/useClientSetting",
+    "content": "'use client'; /** * Simple hook to read a stored key (client-only) and update when it changes. */ } else })(); const unsubscribe = subscribe(( ) => catch }); return () => ; }, [key, fallback]); const update = useCallback( (next: T) => catch setValue(next); }, [key] ); return [value, update] as const; }"
+  },
+  {
+    "url": "/DesignSystem/index",
+    "content": ""
+  },
+  {
+    "url": "/DesignSystem/theme",
+    "content": "\"modern\", \"light\", \"dark\", \"night\", \"cyberpunk\", \"synthwave\", \"retro\", \"fantasy\", \"aqua\", \"lofi\", \"bumblebee\", \"garden\", \"halloween\", \"coffee\", \"emerald\", \"cupcake\", \"pastel\", \"nord\", \"silk\", \"business\", \"acid\", \"dim\", \"caramellatte\", \"forest\", \"sunset\", \"dracula\", \"luxury\", \"corporate\", \"autumn\", \"wireframe\", \"cmyk\", \"valentine\", \"abyss\", \"winter\", \"lemonade\", \"black\", ] as const;"
+  },
+  {
+    "url": "/DesignSystem/ThemeRoot",
+    "content": "\"use client\"; const THEME_KEY = \"gaia.theme\"; const VALID_THEMES = new Set (THEMES as readonly string[]); function parseTheme(raw: string | null): Theme | null try } catch return null; } function readDocumentTheme(): Theme | null function applyTheme(theme: Theme) const unsubscribe = subscribe(( ) => ); const onTheme = (event: CustomEvent ) => }; window.addEventListener(\"gaia:theme\", onTheme as EventListener); return () => ; }, []); return <> ; }"
+  },
+  {
+    "url": "/docs/whats-new/v2.1/week-1-merge-safe",
+    "title": "What’s New · GAIA v2.1 — Week 1 (Merge‑Safe)",
+    "content": ""
+  },
+  {
+    "url": "/ELEUTHIA/Backups/components/BackupsClient",
+    "content": "'use client'; function uid(prefix = \"snap\") _$ $ `; } function createSnapshot() const s: Snapshot = ; addSnapshot(s); setName(\"\"); refresh(); } function restoreSnapshot(s: Snapshot) function exportEncrypted() const blob = new Blob([JSON.stringify(payload)], ); const a = document.createElement(\"a\"); a.href = URL.createObjectURL(blob); a.download = `ELEUTHIA-encrypted-$ .json`; a.click(); URL.revokeObjectURL(a.href); } const fileRef = useRef (null); function onImportClick() async function onImportFile(e: React.ChangeEvent ) catch finally } return ( Backups (ELEUTHIA) Encrypted-only backups live here. Export current (encrypted) Import encrypted Snapshot name setName(e.target.value)} placeholder=\"e.g., Before-reset\" className=\"mt-1 block w-64 rounded-md border gaia-border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> Create snapshot restoreSnapshot(s)} className=\"opacity-90\">Restore }} className=\"opacity-75\">Delete )) )} ); }"
+  },
+  {
+    "url": "/ELEUTHIA/Backups",
+    "content": ""
+  },
+  {
+    "url": "/ELEUTHIA/Backups/tracker",
+    "content": "# Backups — tracker (Week 8) **Route:** `/ELEUTHIA/Backups` **Files** - `app/ELEUTHIA/Backups/page.tsx` — Page shell - `app/ELEUTHIA/Backups/components/BackupsClient.tsx` — Export/Import encrypted backups + local snapshots - `app/ELEUTHIA/lib/snapshots.ts` — Snapshot utilities (encrypted payload only)"
+  },
+  {
+    "url": "/ELEUTHIA/components/EleuGate",
+    "content": "'use client'; /** * EleuGate * - Asks for ELEUTHIA passphrase * - Validates by attempting to decrypt the vault payload * - On success, stores a session flag in sessionStorage ('eleu.session' = 'ok') for this tab * - Renders children while session is valid */ async function unlock() catch (e: any) finally } if (ok) return <> ; return ( Protected area Enter your ELEUTHIA passphrase to unlock this section (in this tab). No data leaves your browser. setPass(e.target.value)} placeholder=\"ELEUTHIA passphrase\" className=\"w-full rounded-md border gaia-border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> } Unlock Vault must exist already. ); }"
+  },
+  {
+    "url": "/ELEUTHIA/components/EleuthiaClient",
+    "content": "'use client'; ); } return ( } /> ); }"
+  },
+  {
+    "url": "/ELEUTHIA/components/ImportChrome",
+    "content": "'use client'; type Props = ; function parseCSV(text: string): string[][] function normalizeHeader(h: string) function toEntries(rows: string[][]): EleuEntry[] } /> Import Chrome CSV ); }"
+  },
+  {
+    "url": "/ELEUTHIA/components/Unlock",
+    "content": "'use client'; /** * Unlock / Create screen */ async function handleUnlock() catch (e: any) finally } async function handleCreate() setBusy(true); setError(null); try ; const payload = await encryptJSON(key, emptyVault); writeMeta( ); writeVaultCipher(payload); onUnlock(key, emptyVault); } catch finally } return ( ELEUTHIA Zero-knowledge, local-first vault. Data is encrypted in your browser. Passphrase setPass(e.target.value)} className=\"mt-1 w-full rounded-md border gaia-border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> className=\"mt-1 w-full rounded-md border gaia-border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> )} } ); }"
+  },
+  {
+    "url": "/ELEUTHIA/components/Vault",
+    "content": "'use client'; function copy(text: string) catch {} } type Props = ; function hostname(url?: string) catch } function allSites() ); return [\"all\", ...Array.from(s).sort()]; } function filtered(entries: EleuEntry[]) if (site !== \"all\") if (onlyPw) return list; } async function saveEntry(e: EleuEntry) ; setVault(next); await persist(next); setEditing(null); } async function importEntries(entries: EleuEntry[]) ; setVault(next); await persist(next); } function onExport() ); const a = document.createElement(\"a\"); a.href = URL.createObjectURL(blob); a.download = `ELEUTHIA-encrypted-$ .json`; a.click(); URL.revokeObjectURL(a.href); } const entries = useMemo(() => filtered(vault.entries), [vault.entries, q, site, onlyPw]); const sites = useMemo(() => allSites(), [vault.entries]); return ( ELEUTHIA Zero-knowledge Â· local-first Â· AES-GCM 256 Export (encrypted) Backups â†’ Lock Search setQ(e.target.value)} placeholder=\"title, user, urlâ€¦\" className=\"gaia-input mt-1 block w-64 rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> Site setSite(e.target.value)} className=\"gaia-input mt-1 block w-56 rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" > ))} setOnlyPw(e.target.checked)} /> Has password } className=\"opacity-75\">Reset setEditing( )}> Add entry } )} } className=\"opacity-90\">Copy password } setEditing(e)} className=\"opacity-90\">Edit ))} )} Title setEditing( )} className=\"gaia-input mt-1 w-full rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> Username setEditing( )} className=\"gaia-input mt-1 w-full rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> Password setEditing( )} className=\"gaia-input mt-1 w-full rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> URL setEditing( )} className=\"gaia-input mt-1 w-full rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> Notes setEditing( )} rows= className=\"gaia-input mt-1 w-full rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" /> saveEntry( )} disabled= >Save setEditing(null)} className=\"opacity-75\">Cancel )} ); }"
+  },
+  {
+    "url": "/ELEUTHIA/lib/crypto",
+    "content": "'use client'; /** * ELEUTHIA crypto (browser-only) * - PBKDF2(SHA-256) -> AES-GCM(256) * - All data encrypted; only decrypted in memory * - Stored via the per-user Supabase-backed store (`eleu.meta` + `eleu.vault`) */ const textEncoder = new TextEncoder(); const textDecoder = new TextDecoder(); function b64encode(bytes: Uint8Array): string function b64decode(base64: string): Uint8Array keyMaterial, , false, [\"encrypt\", \"decrypt\"] ); return key; } key, encoded.buffer.slice(0) as ArrayBuffer ); return ; } key, dataBytes.buffer.slice(0) as ArrayBuffer ); const json = textDecoder.decode(buf); return JSON.parse(json) as T; }"
+  },
+  {
+    "url": "/ELEUTHIA/lib/snapshots",
+    "content": "\"use client\"; const SNAP_KEY = \"eleu.snapshots\"; // array of function read(): Snapshot[] function write(list: Snapshot[])"
+  },
+  {
+    "url": "/ELEUTHIA/lib/storage",
+    "content": "\"use client\"; const META_KEY = \"eleu.meta\"; const VAULT_KEY = \"eleu.vault\";"
+  },
+  {
+    "url": "/ELEUTHIA/lib/uid",
+    "content": "}"
+  },
+  {
+    "url": "/ELEUTHIA",
+    "content": ""
+  },
+  {
+    "url": "/ELEUTHIA/tracker",
+    "content": "# ELEUTHIA — tracker (Week 8 features) **Routes:** `/ELEUTHIA`, `/ELEUTHIA/Backups` **New** - `app/ELEUTHIA/Backups/page.tsx` — Backups inside ELEUTHIA (encrypted export/import + local snapshots) - `app/ELEUTHIA/Backups/components/BackupsClient.tsx` - `app/ELEUTHIA/lib/snapshots.ts` — snapshot utilities - `app/ELEUTHIA/components/ImportChrome.tsx` — Chrome CSV import helper **Updated** - `app/ELEUTHIA/components/Vault.tsx` — search refinements (site filter, has-password), Import Chrome CSV button, link to Backups **Notes** - Import supports typical Chrome CSV headers; fields are mapped to title/url/username/password. - Backups are encrypted-only; plaintext export is intentionally not implemented."
+  },
+  {
+    "url": "/ELEUTHIA/types",
+    "content": ""
+  },
+  {
+    "url": "/gallery/components/PasswordProtection",
+    "content": "\"use client\"; const PASSWORD = \"1081991\"; const AUTH_KEY = \"gallery_auth\"; interface PasswordProtectionProps } catch (e) }, []); const handleSubmit = (e: React.FormEvent) => catch (e) } else }; if (isAuthenticated) return ( Gallery Access Enter the shared password to continue. setPassword(e.target.value)} placeholder=\"Enter password\" className= autoFocus autoComplete=\"off\" /> } Enter Gallery ); }"
+  },
+  {
+    "url": "/gallery/components/Toggle",
+    "content": "\"use client\"; interface ToggleProps []; onChange: (value: string) => void; } > ))} ); }"
+  },
+  {
+    "url": "/gallery/GalleryClient",
+    "content": "\"use client\"; const FILTER_MODES: Mode[] = [\"images\", \"videos\"]; const ACCESS_KEY = \"gaia_gallery_access\"; const IMAGE_PREFIX = \"media/images\"; const VIDEO_PREFIX = \"media/videos\"; const PREVIEW_PREFIX = \"media/previews\"; function ensureLocalPath(value: string | undefined, prefix: string) /$ `; } function normalizeGalleryItem(item: GalleryItem): GalleryItem ; } function deriveTagsFromFilename(src: string, limit = 6): string[] } return unique; } function arraysEqual(a: string[], b: string[]): boolean ); if (res.ok) } catch {} const res = await fetch(\"/api/gallery/scan\", ); const js = (await res.json()) as ScanResp; return Array.isArray(js.items) ? js.items.map(normalizeGalleryItem) : []; } const [items, setItems] = useState ([]); const [openId, setOpenId] = useState (null); const [viewsVersion, setViewsVersion] = useState(0); const [pendingFeaturedId, setPendingFeaturedId] = useState ( null ); const sortBtnRef = useRef (null); const sortMenuRef = useRef (null); const filtersBtnRef = useRef (null); const filtersMenuRef = useRef (null); const [sortMenuOpen, setSortMenuOpen] = useState(false); const [filtersOpen, setFiltersOpen] = useState(false); const [selectedCategoriesByMode, setSelectedCategoriesByMode] = useState >( ); const [selectedTagsByMode, setSelectedTagsByMode] = useState >( ); const [tagMap, setTagMap] = useState >({}); const [titleMap, setTitleMap] = useState >({}); const filtersPanelId = useId(); const selectedCategories = selectedCategoriesByMode[mode]; const selectedTags = selectedTagsByMode[mode]; const categoryOptionsByMode = useMemo(() => ; items.forEach((it) => else if (it.type === \"video\") }); const buildOptions = (values: Set ) => Array.from(values) .sort() .map((ext) => ( )); return ; }, [items]); const videoAutoTags = useMemo(() => ; items.forEach((it) => const stored = tagMap[it.id] ?? []; stored .filter(Boolean) .forEach((tag) => manual.add(tag.trim().toLowerCase())); const derived = deriveTagsFromFilename(it.src).filter( (tag) => tag && !manual.has(tag) ); if (derived.length) }); return map; }, [items, tagMap]); const tagOptionsByMode = useMemo(() => ; items.forEach((it) => ); } const localTags = tagMap[it.id]; if (Array.isArray(localTags)) ); } if (targetMode === \"videos\") }); FALLBACK_TAGS.forEach((tag) => collected.images.add(tag)); const toOptions = (set: Set ) => Array.from(set) .sort() .map((value) => ( )); return ; }, [items, tagMap, videoAutoTags]); const categoryOptions = categoryOptionsByMode[mode]; const tagOptions = tagOptionsByMode[mode]; const displayTagMap = useMemo(() => ; Object.entries(videoAutoTags).forEach(([id, auto]) => }); return merged; }, [tagMap, videoAutoTags]); useEffect(() => ; FILTER_MODES.forEach((key) => }); return changed ? next : prev; }); }, [categoryOptionsByMode]); useEffect(() => ; FILTER_MODES.forEach((key) => }); return changed ? next : prev; }); }, [tagOptionsByMode]); useEffect(() => catch ); } }; syncTags(); const syncTitles = () => catch ); } }; syncTitles(); window.addEventListener(\"storage\", syncTags); window.addEventListener(\"gallery:tags-updated\", syncTags); window.addEventListener( \"gallery:titles-updated\", syncTitles as EventListener ); return () => ; }, []); const loadItems = useCallback(async () => ; }); setItems(merged); }, []); useEffect(() => , [loadItems]); useEffect(() => else if (e.key.toLowerCase() === \"s\" && e.ctrlKey) else if (e.key.toLowerCase() === \"i\") else if (e.key.toLowerCase() === \"v\") } window.addEventListener(\"keydown\", onKey); return () => window.removeEventListener(\"keydown\", onKey); }, [setMode, setSort, sort]); useEffect(() => function onEsc(e: KeyboardEvent) document.addEventListener(\"mousedown\", onDocClick); document.addEventListener(\"keydown\", onEsc); return () => ; }, [sortMenuOpen]); useEffect(() => function onEsc(e: KeyboardEvent) document.addEventListener(\"mousedown\", onDocClick); document.addEventListener(\"keydown\", onEsc); return () => ; }, [filtersOpen]); useEffect(() => }, [mode]); useEffect(() => ; }, []); useEffect(() => ; window.addEventListener(\"gallery:refresh\", handleRefresh); return () => ; }, [loadItems]); const filtered = useMemo(() => ) : base; const tagged = tagSet ? categorized.filter((i) => return false; }) : categorized; if (sort === \"newest\") const watchTotals = typeof window === \"undefined\" ? {} : getWatchTimeMap(); return [...tagged].sort( (a, b) => (watchTotals[b.id] || 0) - (watchTotals[a.id] || 0) ); }, [ items, mode, selectedCategories, selectedTags, sort, tagMap, viewsVersion, videoAutoTags, ]); const activeIndex = useMemo(() => , [filtered, openId]); function openAt(idx: number) function close() function prev() function next() function openFeatured(idx: number) const exists = filtered.some((i) => i.id === selected.id); if (exists) else } useEffect(() => , [filtered, pendingFeaturedId]); const activeFilterLabels = useMemo(() => ); } if (selectedTags.length) ); } return labels; }, [categoryOptions, selectedCategories, selectedTags, tagOptions]); const activeFiltersCount = useMemo(() => , [selectedCategoriesByMode, selectedTagsByMode]); const filtersActive = activeFiltersCount > 0; const filtersSummary = useMemo(() => ; }); }, [categoryOptions, mode] ); const handleTagSelect = useCallback( (value: string) => ; }); }, [mode, tagOptions] ); const handleClearFilters = useCallback(() => ); setSelectedTagsByMode( ); setFiltersOpen(false); }, []); const handleTagsChange = useCallback((id: string, tags: string[]) => ; if (!sanitized.length) else return next; }); }, []); const handleTitleChange = useCallback((id: string, title: string | null) => catch setTitleMap((prev) => ; if (title && title.trim()) next[id] = title.trim(); else delete next[id]; return next; }); }, []); return ( } disabled= aria-label= > setFiltersOpen((open) => !open)} aria-haspopup=\"true\" aria-expanded= aria-controls= > Filters )} > ); })} )} > ); })} )} )} void} /> setSortMenuOpen((open) => !open)} aria-haspopup=\"menu\" aria-expanded= > , , ].map((opt) => } > )} ); })} )} opt.value)} /> ; return ; })()} ); }"
+  },
+  {
+    "url": "/gallery/GalleryPageClient",
+    "content": "'use client';"
+  },
+  {
+    "url": "/gallery",
+    "content": "\"use client\";"
+  },
+  {
+    "url": "/global-error",
+    "title": "Something went wrong",
+    "content": "\"use client\"; type GlobalErrorProps = ; reset: () => void; }; )} ); }"
+  },
+  {
+    "url": "/health/ClientPage",
+    "title": "Health - Week 5",
+    "content": "'use client'; setInsulinOpen(false)} /> ); }"
+  },
+  {
+    "url": "/health/components/BodyCheck",
+    "content": "'use client'; useEffect(()=> ; for (const m of metas) } setUrls(map); return ()=> ; })(); }, []); function addEntry() ); setList(prev=>[...prev, item]); setWeightKg(''); setBodyFatPct(''); setWaistCm(''); } async function onPhotoChange(e: any, kind: 'front'|'side'|'other') , blob: f }); const metas = await listPhotos(); setPhotos(metas); const b = await getPhotoBlob(id); if (b) )); } e.currentTarget.value=''; } return ( Body check (monthly) Metrics Date setDate(e.target.value)} /> setHeightCm(e.target.value)} /> setWeightKg(e.target.value)} /> setBodyFatPct(e.target.value)} /> setWaistCm(e.target.value)} /> Add entry Body photos Upload front onPhotoChange(e,'front')} /> Upload side onPhotoChange(e,'side')} /> Upload other onPhotoChange(e,'other')} /> - KB }>Delete ))} ); }"
+  },
+  {
+    "url": "/health/components/Exercises",
+    "content": "'use client'; function updatePlan(id: string, patch: Partial ) : p)); setPlans(next); savePlans(next); } function addPlan() ; const list = [...plans, next]; setPlans(list); savePlans(list); } function removePlan(id: string) function logActual(p: ExercisePlan, value: number, note?: string) const todayTotals = useMemo(() => ; for (const e of logs) return map; }, [logs, date]); return ( Exercises - plan vs actual setDate(e.target.value)} /> setShowManage(s => !s)}> )} /> updatePlan(p.id, )}> min reps updatePlan(p.id, )} /> removePlan(p.id)}>Delete ))} + Add exercise )} /> ))} Summary for Planned: - Logged: ))} ); } function ExerciseRow( : ) Planned: - Logged today: setActual(e.target.value===''? '' : Number(e.target.value))} min= /> setActual(plan.target)}>= setNote(e.target.value)} /> }>Log ); }"
+  },
+  {
+    "url": "/health/components/ExportImport",
+    "content": "'use client'; type Snapshot = ; function takeSnapshot(): Snapshot ; } function handleExport() `); } async function handleImport() ); setStatus( didImport ? `Import complete $ ` : 'Import canceled' ); } finally } return ( Export / Import Download a backup of your health data (photos are stored separately) or import a JSON Download export Daily records Habits Insulin entries Body metrics Exercise plan items Workout logs } ); }"
+  },
+  {
+    "url": "/health/components/HabitList",
+    "content": "'use client'; function daysOfWeek() -$ -$ `); } return out; } const dayShort = (iso:string) => ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(iso).getDay()]; function addHabit() }]; setHabits(next); saveHabits(next); } function removeHabit(id:string) function setName(id:string, name:string) :h); setHabits(next); saveHabits(next); } const streak = (h:Habit)=> return s; }; return ( Habits + Add habit /> Streak: removeHabit(h.id)}>Delete } /> ))} ))} ); }"
+  },
+  {
+    "url": "/health/components/InsulinDrawer",
+    "content": "'use client'; function add() const last7 = useMemo(()=> , [list]); const weeklyTotal = last7.reduce((sum,e)=>sum+e.units,0); return ( Insulin log Close setDate(e.target.value)} /> setTime(e.target.value)} /> setKind(e.target.value as any)}> Basal Bolus setUnits(e.target.value)} /> setContext(e.target.value as InsulinEntry['context'] | '')}> Context (optional) pre-meal post-meal correction other setNote(e.target.value)} /> Add Last 7 days total: units Date Time Type Units }>Delete ))} ); }"
+  },
+  {
+    "url": "/health/components/TodayQuick",
+    "content": "'use client'; useEffect(()=> ); }, [date]); function patch(p: Partial ) ; setRec(next); upsertRecord(next); } return ( Today setDate(e.target.value)} /> Water ml patch( )}>+250 ml patch( )}>Reset Sleep patch( )} /> hours Mood / Energy )}> ))} / )}> ))} Notes patch( )} placeholder=\"Free text...\" /> ); }"
+  },
+  {
+    "url": "/health/components/TrendBars",
+    "content": "'use client'; type Datum = ; // Simple exponential scaler to make differences more visible function expScale(value: number, min: number, max: number, k = 1.6) Height exp: setK(parseFloat(e.target.value))} /> × ); })} Bars use exponential height scaling to avoid looking flat. ); }"
+  },
+  {
+    "url": "/health/components/WeekView",
+    "content": "'use client'; function daysBack(n: number): string -$ -$ `; } function spark(values: number[], w=120, h=32): string ,$ `; }).join(' '); return `M0,$ L $ L $ ,$ Z`; } const list = days.map(d => records.find(r=>r.date===d) || ); const water = list.map(r=>r.waterMl ?? 0); const sleep = list.map(r=>r.sleepHrs ?? 0); const avg = (arr:number[]) => (arr.reduce((a,b)=>a+b,0) / (arr.length||1)); const textSummary = useMemo(()=>[ `Week $ .. $ `, `Water avg: $ ml`, `Sleep avg: $ h`, `Notes: $ ` ].join('\\n'), [records]); return ( This week navigator.clipboard.writeText(textSummary)}>Copy weekly summary Water (ml) Avg: ml Sleep (hrs) Avg: h ); }"
+  },
+  {
+    "url": "/health/conditions",
+    "title": "Conditions",
+    "content": "/** * app/health/conditions/page.tsx * * Health Conditions Management Page * List of conditions with add/edit/delete functionality */ \"use client\"; interface Condition interface DecryptedCondition extends Condition await fetchConditions(); } catch (err) finally }; init(); }, []); const fetchConditions = async () => , }); if (!res.ok) throw new Error(\"Failed to fetch\"); const = await res.json(); // Decrypt each condition const decrypted = await Promise.all( data.map(async (c: Condition) => ( )) ); setConditions(decrypted); } catch (err) }; const handleSubmit = async (e: React.FormEvent) => setSubmitting(true); try , body: JSON.stringify( ), }); if (!res.ok) throw new Error(\"Failed to create condition\"); const newData = await res.json(); // Optimistic UI update setConditions((prev) => [ as DecryptedCondition, ...prev, ]); setName(\"\"); setNotes(\"\"); setShowForm(false); setError(null); } catch (err) finally }; const handleDelete = async (id: string) => `, , }); if (!res.ok) throw new Error(\"Failed to delete\"); setConditions((prev) => prev.filter((c) => c.id !== id)); } catch (err) }; if (loading) return ( ← Back to Health Conditions setShowForm(!showForm)} className=\"rounded-lg border gaia-border px-4 py-2 text-sm font-semibold gaia-hover-soft transition\" > setError(null)} className=\"float-right text-xs underline\" > Dismiss )} className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., Type 2 Diabetes\" required /> Notes setNotes(e.target.value)} className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., Diagnosed 2020...\" rows= /> )} )} Created: handleDelete(condition.id)} className=\"ml-4 text-xs text-red-500 hover:text-red-700 transition font-medium\" > Delete )) )} ); }"
+  },
+  {
+    "url": "/health",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/health/lib/photos",
+    "content": "'use client'; const DB_NAME = 'gaia_health_photos'; const STORE = 'photos'; function openDB(): Promise ); }; req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error); }); } } } } }"
+  },
+  {
+    "url": "/health/lib/store",
+    "content": "\"use client\"; } function get (key: string, fallback: T): T function set (key: string, value: T) // Records else list.push( ); saveRecords(list); return list; } // Habits }, ]; saveHabits(seeded); return seeded; } // Prefs show: , weekStart: 'sun' }); } // Insulin list.push(item); saveInsulin(list); return item; } // Body metrics list.push(item); saveBody(list); return item; } // Exercises , , , ]; savePlans(seeded); return seeded; } list.push(item); saveLogs(list); return item; } // Export/Import (photos excluded) const blob = new Blob([JSON.stringify(payload,null,2)], ); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'gaia-health-export.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),0); } resolve(); }; inp.click(); }); }"
+  },
+  {
+    "url": "/health/lib/types",
+    "content": "show: ; weekStart: 'sat' | 'sun' | 'mon'; }"
+  },
+  {
+    "url": "/health/meds",
+    "title": "Medications",
+    "content": "/** * app/health/meds/page.tsx * * Health Medications Management Page * List of medications with add/edit/delete functionality */ \"use client\"; interface Medication interface DecryptedMedication extends Medication const [submitting, setSubmitting] = useState(false); useEffect(() => ); await fetchMeds(); } catch (err) finally }; init(); }, []); const fetchMeds = async () => , }); if (!res.ok) throw new Error(\"Failed to fetch\"); const = await res.json(); const decrypted = await Promise.all( data.map(async (m: Medication) => ( )) ); setMeds(decrypted); } catch (err) }; const handleSubmit = async (e: React.FormEvent) => setSubmitting(true); try , body: JSON.stringify( ), }); if (!res.ok) throw new Error(\"Failed to create medication\"); const newData = await res.json(); setMeds((prev) => [ as DecryptedMedication, ...prev, ]); setFormData( ); setShowForm(false); setError(null); } catch (err) finally }; const handleDelete = async (id: string) => `, , }); if (!res.ok) throw new Error(\"Failed to delete\"); setMeds((prev) => prev.filter((m) => m.id !== id)); } catch (err) }; if (loading) return ( ← Back to Health Medications setShowForm(!showForm)} className=\"rounded-lg border gaia-border px-4 py-2 text-sm font-semibold gaia-hover-soft transition\" > setError(null)} className=\"float-right text-xs underline\" > Dismiss )} ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., Metformin\" required /> Dose * setFormData( ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., 500\" required /> Unit setFormData( ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., mg\" /> Schedule setFormData( ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., Twice daily with meals\" /> )} Dose: ` : \"\"} )} Created: handleDelete(med.id)} className=\"ml-4 text-xs text-red-500 hover:text-red-700 transition font-medium\" > Delete )) )} ); }"
+  },
+  {
+    "url": "/health/metrics",
+    "title": "Health Metrics",
+    "content": "/** * app/health/metrics/page.tsx * * Health Metrics Management Page * Log and view health measurements (weight, blood glucose, etc.) */ \"use client\"; interface Metric interface DecryptedMetric extends Metric const [submitting, setSubmitting] = useState(false); useEffect(() => ); await fetchMetrics(); } catch (err) finally }; init(); }, []); const fetchMetrics = async () => , }); if (!res.ok) throw new Error(\"Failed to fetch\"); const = await res.json(); const decrypted = await Promise.all( data.map(async (m: Metric) => ( )) ); setMetrics(decrypted); } catch (err) }; const handleSubmit = async (e: React.FormEvent) => setSubmitting(true); try , body: JSON.stringify( ), }); if (!res.ok) throw new Error(\"Failed to create metric\"); const newData = await res.json(); setMetrics((prev) => [ as DecryptedMetric, ...prev, ]); setFormData( ); setShowForm(false); setError(null); } catch (err) finally }; const handleDelete = async (id: string) => `, , }); if (!res.ok) throw new Error(\"Failed to delete\"); setMetrics((prev) => prev.filter((m) => m.id !== id)); } catch (err) }; if (loading) return ( ← Back to Health Health Metrics setShowForm(!showForm)} className=\"rounded-lg border gaia-border px-4 py-2 text-sm font-semibold gaia-hover-soft transition\" > setError(null)} className=\"float-right text-xs underline\" > Dismiss )} ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" required /> Weight (kg) setFormData( ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., 75.5\" /> Fasting Blood Glucose (mg/dL) setFormData( ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., 110\" /> Post-Meal Blood Glucose (mg/dL) setFormData( ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., 180\" /> Notes setFormData( ) } className=\"w-full rounded-lg border gaia-border px-3 py-2 text-sm gaia-input\" placeholder=\"e.g., Felt good today, normal activity...\" rows= /> )} kg )} mg/dL )} mg/dL )} )} Logged: handleDelete(metric.id)} className=\"ml-4 text-xs text-red-500 hover:text-red-700 transition font-medium\" > Delete )) )} ); }"
+  },
+  {
+    "url": "/health",
+    "content": ""
+  },
+  {
+    "url": "/health/tracker",
+    "content": "# GAIA v1.3 — Week 5: Health (merged with Exercises) Route: /health Components: - TodayQuick — water, sleep, mood, energy, notes for a date. - WeekView — 7-day sparkline for water & sleep + copy summary. - HabitList — simple habits with per-day checkboxes + streak. - Exercises — plan vs actual logging (minutes/reps) + daily summary. - InsulinDrawer — right-side drawer for insulin entries (weekly total). - BodyCheck — monthly metrics & body photos (photos in IndexedDB). - ExportImport — JSON round-trip (photos excluded). Lib: - types.ts, store.ts, photos.ts Notes: - All client files start with 'use client' as the first line. - Styling is Tailwind inline in TSX. - Local only (LocalStorage + IndexedDB)."
+  },
+  {
+    "url": "/IntroClient",
+    "content": "\"use client\"; /** * Intro v3.0 (Phase 5 Â· Week 1) * - Removes local/glass search (global search now lives in the Slim App Bar) * - Keeps 8 quick links (no /search) * - Mobile-first layout, centered symbol */ , , , ]; const right = [ , , , , ]; const more = [ , , ]; const [radius, setRadius] = useState (180); useEffect(() => , []); return ( } alt=\"GAIA\" className=\"h-36 w-auto sm:h-48 md:h-56 lg:h-64\" /> deg) translate(0,-$ px) rotate(-$ deg)`; return ( ); }); })()} ); }"
+  },
+  {
+    "url": "/apollo/labs/ClientPage",
+    "title": "${title || 'My Lab Project'}",
+    "content": "'use client'; function useQueryParam(name: string) , []); return value; } useEffect(()=> }, [openSlug, list]); useEffect(()=> }, [openNew]); function onControlsChange(s: ) const filtered = useMemo(()=> else return out; }, [list, q, cat, sort]); function resetForm() function startAdd() function startEdit(p: LabProject) async function handleSave() if (editing) ); } else as any); } setList(loadProjects()); (document.getElementById('labs-form') as HTMLDialogElement)?.close(); resetForm(); } async function handleDelete(p:LabProject) function downloadHtmlStarter() html,body body $ Starter template. Edit me. `; const blob = new Blob([html], ); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'index.html'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),0); alert('Save to /public/apollo/labs/'+slug+'/index.html and set path to /apollo/labs/'+slug+'/index.html'); } return ( ⟵ GAIA Labs — Week 6 Add project HTML starter } /> onEdit= onDelete= /> ))} } /> resetForm()}>Close Title setTitle(e.target.value)} placeholder=\"Project title\" /> Category setCategory(e.target.value as LabCategory)}> HTML CSS JS Other Tags (comma separated) setTags(e.target.value)} placeholder=\"forms, layout, DOM\" /> Path (public) setPath(e.target.value)} placeholder=\"/apollo/labs/my-lab/index.html\" /> Summary (optional) setSummary(e.target.value)} rows= placeholder=\"Short description...\" /> Cover image (optional) setCoverFile(e.target.files?.[0] || null)} /> }>Delete } }>Save ); }"
+  },
+  {
+    "url": "/apollo/labs/components/BuildCard",
+    "content": "'use client'; type BuildEntry = ; / )} )} ); }"
+  },
+  {
+    "url": "/apollo/labs/components/Card",
+    "content": "'use client'; })(); return ()=> ; }, [proj.coverId]); return ( • views ))} } } Open Edit Delete ); }"
+  },
+  {
+    "url": "/apollo/labs/components/Controls",
+    "content": "'use client'; return ( ); }} placeholder=\"Search title or tags...\" className=\"gaia-input w-[260px] rounded-lg border px-3 py-1.5\" /> /apollo/labs?open=&lt;slug&gt; ); }} className= > ))} ); }} className=\"gaia-input rounded-lg border px-3 py-1.5\"> Newest Trend ); }"
+  },
+  {
+    "url": "/apollo/labs/components/apollo/labsClient",
+    "content": "\"use client\"; useEffect(() => window.addEventListener(\"storage\", onAnyChange); window.addEventListener(\"gaia:tower:progress\", onAnyChange as any); return () => ; }, []); const tracks = useMemo(() => , [builds]); const filtered = useMemo(() => , [builds, track]); return ( setActiveTab(\"systems\")} className= `} > 💻 Systems setActiveTab(\"academy\")} className= `} > 🎓 Academy Builds className=\"gaia-input rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" > ))} Refresh )} )} ); }"
+  },
+  {
+    "url": "/apollo/labs/components/ViewerDrawer",
+    "content": "'use client'; return ( Close ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory/accounting",
+    "title": "Cost Accounting",
+    "content": "\"use client\"; className=\"text-blue-600 hover:text-blue-700 text-sm font-medium mb-2\" > &larr; Back Cost Accounting Profit & loss tracking and analysis 💰 Cost accounting dashboard coming soon. This page will show: Daily/monthly profit & loss reports Profit margins by location Cost of goods sold (COGS) analysis Revenue vs. cost comparison Detailed cost breakdown by product Performance metrics and KPIs ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory",
+    "content": "\"use client\"; /** * app/apollo/labs/inventory/layout.tsx * * Layout for inventory management system */ ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory/locations",
+    "title": "Locations",
+    "content": "\"use client\"; /** * app/apollo/labs/inventory/locations/page.tsx * * Locations management * Create, edit, and manage up to 8 locations */ interface Location const [locations, setLocations] = useState ([]); const [loading, setLoading] = useState(true); const [error, setError] = useState (null); const [showForm, setShowForm] = useState(false); const [editingId, setEditingId] = useState (null); const [formData, setFormData] = useState( ); useEffect(() => fetchLocations(); }, [user, authLoading, router]); const fetchLocations = async () => catch (err) finally }; const handleSubmit = async (e: React.FormEvent) => ` : \"/api/inventory/locations\"; const res = await authenticatedFetch(url, ); if (!res.ok) throw new Error( editingId ? \"Failed to update location\" : \"Failed to create location\" ); await fetchLocations(); resetForm(); } catch (err) }; const handleEdit = (location: Location) => ); setEditingId(location.id); setShowForm(true); }; const handleDelete = async (id: string) => `, ); if (!res.ok) throw new Error(\"Failed to delete location\"); await fetchLocations(); } catch (err) }; const resetForm = () => ); setEditingId(null); setShowForm(false); }; if (loading) return ( router.back()} className=\"text-blue-600 hover:text-blue-700 text-sm font-medium mb-2\" > &larr; Back Locations Manage warehouse and retail locations ( /8) className=\"bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700\" > + Add Location )} )} Name * setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500\" placeholder=\"Main Warehouse\" /> Code * setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500\" placeholder=\"LOC001\" /> Type * setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500\" > Warehouse Retail Store Storage Address setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500\" /> City setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500\" /> State setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500\" /> ZIP Code setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500\" /> Cancel )} )} `} `} )} handleEdit(location)} className=\"text-sm text-blue-600 hover:text-blue-700 flex-1 py-1 hover:bg-blue-50 rounded\" > Edit handleDelete(location.id)} className=\"text-sm text-red-600 hover:text-red-700 flex-1 py-1 hover:bg-red-50 rounded\" > Delete ))} )} ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory",
+    "title": "Inventory Management",
+    "content": "\"use client\"; /** * app/apollo/labs/inventory/page.tsx * * Main inventory dashboard * Shows: 8 locations, 8 POS terminals status, key metrics */ interface Location interface POSTerminal interface DashboardStats const [locations, setLocations] = useState ([]); const [terminals, setTerminals] = useState ([]); const [stats, setStats] = useState ( ); const [loading, setLoading] = useState(true); const [error, setError] = useState (null); useEffect(() => fetchDashboardData(); }, [user, authLoading, router]); const fetchDashboardData = async () => ); } catch (err) finally }; if (loading) return ( Inventory Management Manage products, locations, stock levels, and POS terminals 💡 Development Mode: To use the full inventory system with persistent storage, deploy to Cloudflare Pages with D1 database binding. )} Locations / 8 Available POS Terminals Active / Total Today's Sales $ Profit: $ Locations Manage locations Products Catalog and pricing Stock Levels By location tracking POS Terminals active terminals Cost Accounting Profit & loss tracking Sales Reports Transaction history More Features Coming soon More Features Coming soon POS Terminal Status `} ` : \"Never active\"} ))} )} ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory/pos",
+    "title": "POS Terminals",
+    "content": "\"use client\"; className=\"text-blue-600 hover:text-blue-700 text-sm font-medium mb-2\" > &larr; Back POS Terminals Manage 8 checkout stations 🛒 POS terminal management interface coming soon. This page will allow: Create/configure 8 POS terminals (1-8) Assign terminals to locations View terminal status and last activity Start checkout sessions Generate receipts ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory/products",
+    "title": "Products",
+    "content": "\"use client\"; /** * app/apollo/labs/inventory/products/page.tsx * * Products management * Create, edit, manage product catalog with pricing */ interface Product const [products, setProducts] = useState ([]); const [loading, setLoading] = useState(true); const [error, setError] = useState (null); const [showForm, setShowForm] = useState(false); const [editingId, setEditingId] = useState (null); const [formData, setFormData] = useState( ); useEffect(() => fetchProducts(); }, [user, authLoading, router]); const fetchProducts = async () => catch (err) finally }; const handleSubmit = async (e: React.FormEvent) => ` : \"/api/inventory/products\"; const res = await authenticatedFetch(url, ), }); if (!res.ok) throw new Error( editingId ? \"Failed to update product\" : \"Failed to create product\" ); await fetchProducts(); resetForm(); } catch (err) }; const handleEdit = (product: Product) => ); setEditingId(product.id); setShowForm(true); }; const handleDelete = async (id: string) => `, ); if (!res.ok) throw new Error(\"Failed to delete product\"); await fetchProducts(); } catch (err) }; const resetForm = () => ); setEditingId(null); setShowForm(false); }; const getMargin = (cost: number, price: number) => ; if (loading) return ( router.back()} className=\"text-blue-600 hover:text-blue-700 text-sm font-medium mb-2\" > &larr; Back Products Manage product catalog ( products) className=\"bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700\" > + Add Product )} )} SKU * setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500\" placeholder=\"SKU12345\" /> Product Name * setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500\" placeholder=\"Widget Pro\" /> Description setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500\" rows= /> Unit Cost ($) * setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500\" placeholder=\"0.00\" /> Unit Price ($) * setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500\" placeholder=\"0.00\" /> Category setFormData( ) } className=\"w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500\" placeholder=\"Electronics\" /> Cancel )} )} $ $ 0 ? \"bg-green-100 text-green-700\" : \"bg-red-100 text-red-700\" }`} > % handleEdit(product)} className=\"text-blue-600 hover:text-blue-700\" > Edit handleDelete(product.id)} className=\"text-red-600 hover:text-red-700\" > Delete ))} )} ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory/sales",
+    "title": "Sales Reports",
+    "content": "\"use client\"; className=\"text-blue-600 hover:text-blue-700 text-sm font-medium mb-2\" > &larr; Back Sales Reports View transaction history and trends 📊 Sales reporting interface coming soon. This page will display: Transaction history with filters Daily/weekly/monthly sales totals Payment method breakdown Top selling products Sales by location and terminal ); }"
+  },
+  {
+    "url": "/apollo/labs/inventory/stock",
+    "title": "Stock Management",
+    "content": "\"use client\"; className=\"text-blue-600 hover:text-blue-700 text-sm font-medium mb-2\" > &larr; Back Stock Management Track inventory levels by location 📦 Stock management interface coming soon. This page will show: Stock levels for all products at each location Low stock alerts Reorder suggestions Stock adjustment tracking ); }"
+  },
+  {
+    "url": "/apollo/labs",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/apollo/labs/lib/apollo/labs",
+    "content": "\"use client\"; const RESULT_KEY = \"gaia.apollo.academy.results\"; const BUILD_KEY = \"gaia.apollo.academy.builds\"; function readResults(): Array function readBuildNotesObj(): Record ); } function parseFirstUrl(text: string): string | undefined }) .filter((b) => typeof b.score === \"number\"); // show only completed concepts }"
+  },
+  {
+    "url": "/apollo/labs/lib/store",
+    "content": "\"use client\"; const PROJ_KEY = 'gaia_labs_projects_v1'; const DB_NAME = 'gaia_labs_covers'; const STORE = 'covers'; // LocalStorage helpers function get (key: string, fallback: T): T function set (key: string, value: T) list.push(item); saveProjects(list); return item; } } } // IndexedDB for covers function openDB(): Promise ); }; req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error); }); } tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error); }); } } }"
+  },
+  {
+    "url": "/apollo/labs/lib/types",
+    "content": ""
+  },
+  {
+    "url": "/apollo/labs",
+    "title": "Labs",
+    "content": ""
+  },
+  {
+    "url": "/apollo/labs/tracker",
+    "content": "# Labs — tracker (Week 6) **Route:** `/apollo/labs` **Files** - `app/apollo/labs/page.tsx` — Page shell - `app/apollo/labs/components/apollo/labsClient.tsx` — Lists private builds from Academy - `app/apollo/labs/components/BuildCard.tsx` – Renders embed/notes for each build - `app/apollo/labs/lib/apollo/labs.ts` – Reads Academy results + notes from the per-user Supabase store, parses first URL for embed **Notes** - Private by default; data comes from the authenticated Supabase-backed user store. - If a note contains a URL, an iframe preview appears. Otherwise, the note text is shown."
+  },
+  {
+    "url": "/",
+    "title": "GAIA",
+    "content": "} } } } catch (e) const initialTheme: Theme = SUPPORTED_THEMES.has(cookieTheme) ? cookieTheme : DEFAULT_THEME; return ( ); }"
+  },
+  {
+    "url": "/Locked",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/Locked",
+    "title": "Locked (ELEUTHIA-gated demo)",
+    "content": "'use client'; Use this component to protect sensitive pages (e.g., private docs, download mirrors, API keys). It validates by decrypting your existing ELEUTHIA vault (zero-knowledge). Session persists per tab until you close or clear it. ); }"
+  },
+  {
+    "url": "/not-found",
+    "title": "Page not found",
+    "content": "// app/not-found.tsx"
+  },
+  {
+    "url": "/",
+    "content": "\"use client\"; interface NavLink /** * New GAIA Home (v2.0) * - Circular layout with links around central symbol * - Responsive radius based on viewport */ const email = profile?.email ?? status?.email ?? null; const permissions = useCurrentPermissions(); const isAdmin = useMemo(() => isCreatorAdmin(email), [email]); // All links in one array for circular layout const links: NavLink[] = [ , , , , , , , // Archives moved under Apollo; remove from main intro links , ]; const visibleLinks = isAdmin ? links : links.filter((link) => Boolean(permissions[link.permission])); return ( px, $ px)`, }; return ( ); })} ); }"
+  },
+  {
+    "url": "/search",
+    "title": "Search results",
+    "content": "\"use client\"; type Result = ; .then((r) => r.json()) .then((data) => ) .catch(() => setResults([])) .finally(() => setLoading(false)); return () => ; }, [q]); return ( Search results )} ))} ); }"
+  },
+  {
+    "url": "/settings/ClientPage",
+    "title": "Settings",
+    "content": "'use client'; type Tab = 'appearance' | 'scene' | 'accessibility' | 'privacy' | 'defaults' | 'backup'; const TABS: [] = [ , , , , , , ]; window.addEventListener('hashchange', onHash); return () => window.removeEventListener('hashchange', onHash); }, []); return ( ⟵ GAIA Settings `);}} className= > ))} All settings are saved locally (LocalStorage). ); }"
+  },
+  {
+    "url": "/settings/components/PrimitivesPicker",
+    "content": "'use client'; /** * Baseline primitives (single default for each) * - We still persist keys so future variants can reuse the same storage. */ return ( Default Button Primary Action One default style for Phase 5 baseline. Default Search Bar Single global style, used in the App Bar. ); }"
+  },
+  {
+    "url": "/settings/components/ThemePicker",
+    "content": "'use client'; return ( Theme setTheme(event.target.value as Theme)} className=\"gaia-input w-full max-w-xs rounded-md border px-3 py-2 text-sm focus:outline-none gaia-focus\" > ))} Phase 5 baseline: themes apply globally via data-theme . ); }"
+  },
+  {
+    "url": "/settings",
+    "title": "Settings",
+    "content": "\"use client\"; const BUTTONS: ButtonStyle[] = [\"solid\", \"outline\", \"ghost\"]; const SEARCHES: SearchStyle[] = [\"rounded\", \"pill\", \"underline\"]; const THEME_OPTIONS = THEMES.map((value) => ( )); type GalleryStatus = ; type ManifestResponse = ; type TabId = \"appearance\" | \"gallery\" | \"users\"; async function fetchGalleryManifest(): Promise ); if (res.ok) } catch const fallback = await fetch(\"/api/gallery/scan\", ); if (!fallback.ok) `); } const json = (await fallback.json()) as ManifestResponse; return Array.isArray(json.items) ? json.items : []; } const [syncing, setSyncing] = useState(false); const [autoTagging, setAutoTagging] = useState(false); const [autoTagProgress, setAutoTagProgress] = useState(0); const [galleryStatus, setGalleryStatus] = useState ( null ); const [activeTab, setActiveTab] = useState (\"appearance\"); const availableTabs = useMemo(() => , , , ]; return tabs; }, []); const [users, setUsers] = useState (null); const [usersLoading, setUsersLoading] = useState(false); const [usersError, setUsersError] = useState (null); // Fetch users when users tab is active const fetchUsers = async () => `); } setUsers(json.users ?? []); } catch (err: any) finally }; // Effect to fetch users when activeTab changes to 'users' useEffect(() => // eslint-disable-next-line react-hooks/exhaustive-deps }, [activeTab]); const handleSyncGallery = useCallback(async () => ); try ); if (!res.ok) `); } window.dispatchEvent(new Event(\"gallery:refresh\")); setGalleryStatus( ); } catch (error) ); } finally }, []); const handleResetViews = useCallback(() => ); }, []); const handleAutoTagging = useCallback(async () => ); try ); return; } const tagMap = getTagsMap(); const autoMeta = getAutoTagMeta(); let updatedItems = 0; let totalNewTags = 0; let previouslyTagged = 0; for (let i = 0; i ([ ...(manualTags ?? []), ...(item.tags ?? []), ]); const newTags = derived.tags.filter((t) => !existingTags.has(t)); if (newTags.length > 0) else if (autoMeta[item.id]) // update auto-tag metadata entry autoMeta[item.id] = ; const progress = (i + 1) / items.length; setAutoTagProgress(progress); setGalleryStatus( %`, detail: `Processed $ of $ items`, }); } // Persist auto tag metadata per item for (const [id, meta] of Object.entries(autoMeta)) window.dispatchEvent( new CustomEvent(\"gallery:tags-updated\", }) ); window.dispatchEvent(new Event(\"storage\")); setGalleryStatus( items ($ new tags). $ items were already up to date.`, }); } catch (error) ); } finally }, [autoTagging]); const handleExportApollo = useCallback(() => , []); const handleImportApollo = useCallback(() => }) ); } catch }); }, []); return ( Settings > ); })} > ))} Applies everywhere. Stored in your browser. Button className= `} > ))} Search bar className= `} > ))} Apollo archives Export a backup of your local Apollo notes or import a saved JSON file. Export archive Import archive Data stays on this device; imports overwrite your current local archive. )} Reset watch data %` : \"Auto-tag media\"} )} )} )} )} ))} )} )} ); }"
+  },
+  {
+    "url": "/settings/sections/AccessibilityCard",
+    "content": "'use client'; return () => ; }, []); useEffect(()=> , [reduceMotion, highContrast, underlineLinks]); return ( Accessibility Reduce motion setReduceMotion(e.target.checked)} /> High-contrast text setHighContrast(e.target.checked)} /> Underline links setUnderlineLinks(e.target.checked)} /> ); }"
+  },
+  {
+    "url": "/settings/sections/BackupPanel",
+    "content": "'use client'; \"use client\"; type Snapshot = Record ; function snapshotUserStorage(): Snapshot function downloadSnapshot(data: Snapshot) ); const url = URL.createObjectURL(blob); const anchor = document.createElement('a'); anchor.href = url; anchor.download = `gaia-backup-$ .json`; anchor.click(); URL.revokeObjectURL(url); } function ExportPanel() keys).`); }} > Download backup } ); } function ImportPanel() if (typeof window === 'undefined') return; await waitForUserStorage(); if (mode === 'replace') let count = 0; Object.entries(parsed as Record ).forEach(([key, value]) => catch }); setMessage(`Imported $ keys via $ mode.`); setError(null); } catch (err) } return ( setMode('merge')} /> Merge setMode('replace')} /> Replace existing data } className=\"shrink-0\" > Choose backup file }} /> Merge keeps existing keys. Replace clears local data before writing the backup. } } ); }"
+  },
+  {
+    "url": "/settings/sections/DefaultsCard",
+    "content": "'use client'; return ( Defaults Reset Settings ); }"
+  },
+  {
+    "url": "/settings/sections/PrivacyCard",
+    "content": "'use client'; return () => ; }, []); function savePin() if (!/^\\d $/.test(pin)) setItem('settings_lock_pin', pin); alert('PIN saved'); } return ( Privacy & Lock Lock PIN (4 digits) setPin(e.target.value.replace(/\\D/g,''))} /> Save ); }"
+  },
+  {
+    "url": "/settings/sections/SceneCard",
+    "content": "'use client'; return () => ; }, []); useEffect(()=> , [landing, introStyle]); return ( Scene preferences Default landing page setLanding(e.target.value as any)} className=\"gaia-input rounded border px-2 py-1 text-sm\"> Intro Gallery Dashboard Search Intro style setIntroStyle(e.target.value as any)} className=\"gaia-input rounded border px-2 py-1 text-sm\"> GAIA only GAIA + glass search ); }"
+  },
+  {
+    "url": "/settings/sections/ThemeCard",
+    "content": "\"use client\"; const THEME_OPTIONS = THEMES.map((value) => ( )); const [mode, setMode] = useState (\"auto\"); const [accent, setAccent] = useState(\"#111111\"); const [scale, setScale] = useState(100); const [density, setDensity] = useState (\"cozy\"); const [glass, setGlass] = useState(6); // blur intensity 0-12 useEffect(() => )(); return () => ; }, []); useEffect(() => else }, [mode, accent, scale, density, glass]); return ( Appearance Theme setTheme(event.target.value as Theme)} className=\"gaia-input rounded border px-2 py-1 text-sm min-w-[140px]\" > ))} Mode setMode(e.target.value as any)} className=\"gaia-input rounded border px-2 py-1 text-sm\" > Auto Light Dark Accent setAccent(e.target.value)} className=\"gaia-border h-8 w-14 rounded border\" /> Font scale setScale(Number(e.target.value))} /> Density setDensity(e.target.value as any)} className=\"gaia-input rounded border px-2 py-1 text-sm\" > Cozy Compact Glass intensity setGlass(Number(e.target.value))} /> ); }"
+  },
+  {
+    "url": "/settings/tracker",
+    "content": "# Settings — tracker Files in this feature: - `app/Settings/page.tsx` — Per-user Settings UI (Theme + primitives baseline) - `app/Settings/components/ThemePicker.tsx` – Theme selection (per-user Supabase-backed store + `data-theme`) - `app/Settings/components/PrimitivesPicker.tsx` — Shows baseline Button/Search primitives References in other features: - `app/layout.tsx` — wraps the app with `ThemeRoot` (DesignSystem) for theme application - `app/components/AppBar.tsx` — uses `SearchInput` from DesignSystem"
+  },
+  {
+    "url": "/timeline/ClientPage",
+    "content": "\"use client\"; const SEED: TLEvent[] = [ , color: \"#0ea5e9\", createdAt: new Date().toISOString(), }, , color: \"#0ea5e9\", createdAt: new Date().toISOString(), }, , color: \"#0ea5e9\", createdAt: new Date().toISOString(), }, , color: \"#0ea5e9\", createdAt: new Date().toISOString(), }, , color: \"#0ea5e9\", createdAt: new Date().toISOString(), }, , color: \"#10b981\", createdAt: new Date().toISOString(), }, , color: \"#10b981\", createdAt: new Date().toISOString(), }, , color: \"#10b981\", createdAt: new Date().toISOString(), }, , color: \"#10b981\", createdAt: new Date().toISOString(), }, ]; const [prefs, setPrefs] = useState (loadPrefs()); useEffect(() => setData(d); }, []); function setAndSavePrefs(p: TimelinePrefs) const remove = (id: string) => ; saveData(d); setData(d); }; const personalCount = useMemo( () => data.events.filter((e) => e.era === \"personal\").length, [data.events] ); return ( From the Big Bang to Today Add your own milestones — local-only, exportable JSON. Personal events: ; saveData(d); setData(d); }} /> data} setData= } /> • → $ ` : ev.range.startYear.toLocaleString()} } remove(ev.id)}> Delete ))} ); }"
+  },
+  {
+    "url": "/timeline/components/EventForm",
+    "content": "'use client'; type ApolloSection = ; 'gaia_apollo_v1_notes', ); const opts: ApolloSection[] = []; for (const t of data.topics || []) – $ `, sectionId: s.id, topicId: t.id }); } } setApolloOptions(opts); }, []); function submit() , color: era==='cosmic' ? '#0ea5e9' : era==='human' ? '#10b981' : '#8b5cf6' }); onAdded(ev); setEndYear(''); } // Quick presets function quick(label: string) return ( setTitle(e.target.value)} /> quick('GAIA — Week completed')}>Quick: GAIA week quick('GAIA — Milestone')}>Quick: Milestone quick('Personal — Today')}>Quick: Today setEra(e.target.value as Era)}> Cosmic Human Personal setStartYear(Number(e.target.value))} /> setEndYear(e.target.value===''? '' : Number(e.target.value))} /> setLink(e.target.value)} /> `); }}> Link to Apollo section… )} setNote(e.target.value)} /> Add event ); }"
+  },
+  {
+    "url": "/timeline/components/FilterBar",
+    "content": "'use client'; } window.addEventListener('keydown', onKey); return ()=>window.removeEventListener('keydown', onKey); }, [prefs, setPrefs]); return ( Timeline setPrefs( )}> Cosmic Human Personal Press Z to cycle zoom setPrefs( )}/> Cosmic setPrefs( )}/> Human setPrefs( )}/> Personal setPrefs( )}> Chronological Recently added ); }"
+  },
+  {
+    "url": "/timeline/components/ImportExport",
+    "content": "'use client'; ); }"
+  },
+  {
+    "url": "/timeline/components/TimelineCanvas",
+    "content": "'use client'; return ( } → : } ); })} ); }"
+  },
+  {
+    "url": "/timeline/components/TimelineWrapper",
+    "content": "\"use client\"; const VerticalTimeline = dynamic(() => import(\"./VerticalTimeline\"), );"
+  },
+  {
+    "url": "/timeline/components/VerticalTimeline",
+    "content": "'use client'; type E = typeof seed[number]; function byDate(a: E, b: E) } window.addEventListener(\"keydown\", onKey); return () => window.removeEventListener(\"keydown\", onKey); }, [active, events]); function jump(id: string) ); } return ( Jump className= `} title= > — ))} } className=\"relative pl-12\" > } ID: ))} ); }"
+  },
+  {
+    "url": "/timeline/data/events",
+    "content": ", , , , ];"
+  },
+  {
+    "url": "/timeline",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/timeline/lib/scale",
+    "content": "/** * Convert a year to a 0..100 percentage using a domain (minYear..maxYear). * Supports large negatives (BCE) by using plain numbers instead of Date. */"
+  },
+  {
+    "url": "/timeline/lib/store",
+    "content": "\"use client\"; const DATA_KEY = 'gaia_timeline_v1_events'; const PREF_KEY = 'gaia_timeline_v1_prefs'; } } d.events.push(e); saveData(d); return e; } } const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'gaia-timeline.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 0); } resolve(); }; inp.click(); }); }"
+  },
+  {
+    "url": "/timeline/lib/types",
+    "content": ""
+  },
+  {
+    "url": "/timeline",
+    "title": "Timeline",
+    "content": ""
+  },
+  {
+    "url": "/timeline/tracker",
+    "content": "# Timeline — tracker (Week 11) **Route:** `/Timeline` **Files** - `app/Timeline/page.tsx` — Page shell (client for smooth scrolling & key nav) - `app/Timeline/components/VerticalTimeline.tsx` — Vertical timeline (top → bottom), sticky \"Jump\" list, j/k navigation - `app/Timeline/data/events.ts` — Sample events (replace with real data later) **Notes** - Tailwind-only. The vertical line is a 1px absolute div; items indent with a dot per event."
+  },
+  {
+    "url": "/TODO",
+    "title": "TODO · All Tasks",
+    "content": "// app/TODO/page.tsx \"use client\"; const byCat = useMemo(() => ; for (const t of tasks) map[t.category].push(t); return map; }, [tasks]); return ( TODO · All Tasks )} P )} \"?`)) }} className=\"btn btn-ghost btn-xs text-error hover:bg-error/20\" title=\"Delete task\" > ✕ ))} )} ))} ); }"
+  },
+  {
+    "url": "/TODO/tracker",
+    "content": "# TODO v2.0.6 — tracker This feature adds a Dashboard widget (Daily 3) and a simple TODO list page. ## Files - `app/Dashboard/components/TodoDaily.tsx` — main \"Daily 3\" widget for the Dashboard - `app/Dashboard/components/TodoSlot.tsx` — renders one category slot (Life / Work / Distraction) - `app/Dashboard/components/TodoQuickAdd.tsx` — inline quick add form for empty slots - `app/Dashboard/hooks/useTodoDaily.ts` — state, storage, ranking, and actions hook - `app/TODO/page.tsx` — simple page listing all tasks (seed for future management UI) ## Notes - Storage is localStorage now using key `gaia.todo.v2.0.6`. - Timezone is fixed to `Asia/Kuwait` for daily reset and date display. - Ranking: pinned → priority desc → due_date asc → created_at asc. - Candidate pool: (repeat matches today) OR (due_date ≤ today), excluding tasks marked done/skipped for today. - Daily selections are stored per-day under `gaia.todo.v2.0.6.selection. `."
+  },
+  {
+    "url": "/wealth/add-certificates",
+    "content": "// Add first certificate (25,000 EGP) addInvestment( ); // Add second certificate (10,000 EGP) addInvestment( );"
+  },
+  {
+    "url": "/wealth/check-items",
+    "content": "const items = loadNetItems(); console.log(\"Current net items:\", JSON.stringify(items, null, 2));"
+  },
+  {
+    "url": "/wealth/ClientPage",
+    "title": "Wealth",
+    "content": "\"use client\";"
+  },
+  {
+    "url": "/wealth/components/APRScheduleEditor",
+    "content": "interface Props // Ensure APR is at least 0.1% const validValue = Math.max(0.1, value); next.aprSchedule = next.aprSchedule.map((row, i) => i === index ? : row ); setSettings(next); }; const addRow = () => ; const nextIndex = next.aprSchedule.length; next.aprSchedule = [ ...next.aprSchedule, , ]; setSettings(next); }; const removeRow = (index: number) => ; next.aprSchedule = next.aprSchedule .filter((_, i) => i !== index) .map((r, i) => ( )); setSettings(next); }; return ( Certificate APR Schedule updateApr(idx, Number(e.target.value))} className=\"w-28 p-1 rounded border gaia-border\" /> % APR removeRow(idx)} className=\"ml-auto text-sm text-red-600\" > Remove ))} Add month ); }"
+  },
+  {
+    "url": "/wealth/components/Budgets",
+    "content": "'use client'; function monthKey(d: string) function fmt(n: number) ); } const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const INPUT = \"gaia-input rounded-lg px-3 py-1.5\"; const BUTTON = \"gaia-border gaia-surface rounded-lg px-3 py-1.5 text-sm font-semibold shadow-sm\"; const tx = useMemo(()=> loadTx().filter(t => monthKey(t.date)===month && t.type==='expense'), [month]); const byCat = useMemo(()=> ; for (const t of tx) const curr = list.filter(b => b.month===month); return curr.map(b => ( )); }, [tx, list, month]); function addBudget() as Budget]; saveBudgets(next); setList(next); setCat('General'); setAmt(0); } return ( Budgets setMonth(e.target.value)} /> / ); })} setCat(e.target.value)} /> setAmt(Number(e.target.value))} /> Add / Update ); }"
+  },
+  {
+    "url": "/wealth/components/CombinedSettingsPanel",
+    "content": "\"use client\"; interface Props if (rate > 0) } else } catch (error) finally }; useEffect(() => = await getExchangeRate(); if (isCached) }; // Initial check checkAndUpdate(); // Set up periodic updates every 24 hours const interval = setInterval(updateExchangeRate, 24 * 60 * 60 * 1000); // Also update when the tab becomes visible after being hidden const handleVisibilityChange = () => }; document.addEventListener(\"visibilitychange\", handleVisibilityChange); return () => ; }, []); const updateField = (k: keyof AppSettings, v: any) => as AppSettings; setSettings(next); }; // Derive financial metrics used by plan calculation const metrics: FinancialMetrics = React.useMemo(() => ); // Estimate current monthly investment income (EGP) from starting principal const aprs = (settings.aprSchedule || []).map((r) => r.aprPercent || 0); const avgApr = aprs.length ? aprs.reduce((s, v) => s + v, 0) / aprs.length : 0; const monthlyInvestmentIncome = ((settings.startingPrincipalEgp || 0) * (avgApr / 100)) / 12; return ; }, [settings.expenses, settings.fxEgpPerKd, settings.startingPrincipalEgp]); const activePlan = React.useMemo( () => determineActivePlan(metrics), [metrics] ); // Persist active plan in settings so other parts of the app can read it useEffect(() => }, [activePlan.type]); const updateExpense = (id: string, amount: number) => ; next.expenses = next.expenses.map((e) => e.id === id ? : e ); setSettings(next); }; const updateApr = (index: number, value: number) => ; next.aprSchedule = next.aprSchedule.map((row, i) => i === index ? : row ); setSettings(next); }; const addAprRow = () => ; const nextIndex = next.aprSchedule.length; next.aprSchedule = [ ...next.aprSchedule, , ]; setSettings(next); }; const removeAprRow = (index: number) => ; next.aprSchedule = next.aprSchedule .filter((_, i) => i !== index) .map((r, i) => ( )); setSettings(next); }; const addExpense = () => ; const id = `exp-$ `; next.expenses = [ ...next.expenses, , ]; setSettings(next); }; const updateExpenseName = (id: string, name: string) => ; next.expenses = next.expenses.map((e) => e.id === id ? : e ); setSettings(next); }; const removeExpense = (id: string) => ; next.expenses = next.expenses.filter((e) => e.id !== id); setSettings(next); }; return ( Settings Income & Expenses Summary Monthly income (KD) updateField(\"monthlyIncomeKD\", Number(e.target.value)) } /> Monthly Income (EGP) EGP Monthly expenses (KD) Exchange Rate (EGP/KD) )} )} )} Monthly Expenses Add Expense className=\"w-28 p-1 text-sm rounded border gaia-border\" placeholder=\"Expense name\" /> updateExpense(exp.id, Number(e.target.value)) } className=\"p-1 rounded border gaia-border w-full\" placeholder=\"Amount (KD)\" /> removeExpense(exp.id)} className=\"text-red-600 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity\" > × ))} Current plan Ravenu target (EGP/month) Plan — )} EGP / month Starting principal (EGP) updateField(\"startingPrincipalEgp\", Number(e.target.value)) } /> updateField(\"reinvest\", e.target.checked)} /> Reinvest interest /> % )} ); }"
+  },
+  {
+    "url": "/wealth/components/ExportImport",
+    "content": "'use client'; const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const BUTTON_PRIMARY = \"gaia-border gaia-surface rounded-lg px-3 py-1.5 text-sm font-semibold shadow-sm\"; const BUTTON = \"gaia-border gaia-surface rounded-lg px-3 py-1.5 text-sm shadow-sm\"; const blob = new Blob([JSON.stringify(payload, null, 2)], ); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gaia-wealth-data.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 0); } async function doImport() catch }; input.click(); } return ( Export / Import Export JSON Import JSON ); }"
+  },
+  {
+    "url": "/wealth/components/Filters",
+    "content": "\"use client\"; const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const INPUT = \"gaia-input rounded-lg px-3 py-1.5\"; const BUTTON = \"gaia-border gaia-surface rounded-lg px-3 py-1.5 text-sm font-semibold shadow-sm\"; } return ( setQ(e.target.value)} onBlur= /> } > All Income Expense Transfer setCategory(e.target.value)} onBlur= /> ); }"
+  },
+  {
+    "url": "/wealth/components/Goals",
+    "content": "\"use client\"; function fmt(n: number) ); } const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const CARD = \"gaia-surface rounded-lg border gaia-border p-3 shadow-sm\"; const INPUT = \"gaia-input rounded-lg px-3 py-1.5\"; const BUTTON_SM = \"gaia-border gaia-surface rounded-lg px-2 py-1 text-xs font-semibold shadow-sm\"; const BUTTON = \"gaia-border gaia-surface rounded-lg px-3 py-1.5 text-sm font-semibold shadow-sm\"; function add() ]; saveGoals(next); setList(next); setTitle(\"\"); setTarget(0); } function adjust(id: string, delta: number) : g ); saveGoals(next); setList(next); } function remove(id: string) return ( Goals / adjust(g.id, 1000)} > +1k adjust(g.id, -1000)} > -1k remove(g.id)} > Delete ); })} setTitle(e.target.value)} /> setTarget(Number(e.target.value))} /> Add Goal ); }"
+  },
+  {
+    "url": "/wealth/components/Ledger",
+    "content": "'use client'; function match(t: Transaction, f: FilterState): boolean if (f.from && t.date new Date(f.to + 'T23:59:59').toISOString()) return false; return true; } function fmt(n: number) ); } const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const BUTTON = \"gaia-border gaia-surface rounded-lg px-2 py-1 text-xs font-semibold shadow-sm\"; const filtered = useMemo(()=> list.filter(t => match(t, filter)).sort((a,b)=> a.date.localeCompare(b.date)), [list, filter]); function remove(id: string) return ( Ledger Date Type Category Tags Note Amount remove(t.id)}>Delete ))} ); }"
+  },
+  {
+    "url": "/wealth/components/LevelsCombined",
+    "content": "\"use client\"; interface LevelsViewProps className= `} > ))} Target savings: EGP Progress % Required Buffer × monthly expenses ( EGP) Current Status × monthly expenses ( EGP liquid) EGP Current EGP = targetAmount ? \"bg-green-500\" : \"bg-primary\" }`} style= %`, }} /> )} ); }"
+  },
+  {
+    "url": "/wealth/components/LevelsView",
+    "content": "\"use client\"; interface LevelsViewProps className= `} > ))} Target savings: EGP Progress % Required Buffer × monthly expenses ( EGP) Current Status × monthly expenses ( EGP liquid) EGP Current EGP = targetAmount ? \"bg-green-500\" : \"bg-primary\" }`} style= %`, }} /> )} ); }"
+  },
+  {
+    "url": "/wealth/components/LevelsViewWithTabs",
+    "content": "\"use client\"; interface LevelsViewProps const TAB_BUTTON = \"px-4 py-2 text-sm font-medium transition-colors\"; const ACTIVE_TAB = `$ bg-primary text-primary-foreground rounded-lg shadow-sm`; const INACTIVE_TAB = `$ text-muted-foreground hover:text-foreground`; > ))} Target savings: EGP Progress % Required Monthly Buffer × monthly expenses Current Buffer × monthly expenses EGP Current: EGP = targetAmount ? \"bg-green-500\" : \"bg-primary\" }`} style= %`, }} /> )} Level Details • Buffer requirement: × monthly expenses ( EGP) • Current progress: % of target ); }"
+  },
+  {
+    "url": "/wealth/components/NetWorthBox",
+    "content": "\"use client\"; function fmt(n: number) ); } const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const INPUT = \"gaia-input rounded-lg px-3 py-1.5\"; const BUTTON = \"gaia-border gaia-surface rounded-lg px-3 py-1.5 text-sm font-semibold shadow-sm\"; const TABLE_WRAPPER = \"mt-2 rounded-lg border gaia-border bg-[color-mix(in_srgb,var(--gaia-surface)_88%,transparent)]\"; const total = useMemo(() => items.reduce((s, i) => s + i.amount, 0), [items]); function add() ]; saveNetItems(next); setItems(next); setName(\"Cash\"); setAmount(0); setIsCert(false); } function remove(id: string) function snapshot() ]; saveNetSnaps(next); setSnaps(next); } return ( Net Worth setMonth(e.target.value)} /> Snapshot Items setName(e.target.value)} /> setAmount(Number(e.target.value))} /> setIsCert(e.target.checked)} /> Certificate Add Name Type Amount : it ); saveNetItems(next); setItems(next); }} /> Certificate remove(i.id)} > Delete ))} Total: Snapshots Month Total ))} ); } // Export a compact NetWorthBox for use elsewhere (merged from NetWorthBox.tsx) Net Worth )} Liquid Savings )} Monthly Expenses )} Months of Buffer months (Gap: )} ) )} · $ `} % ); }"
+  },
+  {
+    "url": "/wealth/components/PlansCombined",
+    "content": "\"use client\"; const MONTH_NAMES = [ \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\", ]; interface PlansTabViewProps const defaultStartDate = () => new Date().toISOString().slice(0, 10); const addYears = (dateStr: string, years: number) => ; })(); const [showInvestmentForm, setShowInvestmentForm] = useState(false); const [invName, setInvName] = useState(\"Certificate\"); const [invPrincipal, setInvPrincipal] = useState (25000); const [invStartDate, setInvStartDate] = useState (defaultStartDate()); const [invEndDate, setInvEndDate] = useState ( addYears(defaultStartDate(), 3) ); const [invApr, setInvApr] = useState ( settings.aprSchedule?.[0]?.aprPercent ?? 17 ); const [invMonthlyRev, setInvMonthlyRev] = useState (null); const handleAddInvestment = () => ; const saveInvestmentFromForm = () => catch (e) }; const certificatePrincipal = (() => catch (e) })(); const investments = (() => catch (e) })(); const removeInvestment = (id: string) => catch (e) }; const startPrincipalEGP = settings.startingPrincipalEgp && settings.startingPrincipalEgp > 0 ? settings.startingPrincipalEgp : inferredPrincipalFromNet; const reinvestFraction = settings.reinvest ? (settings.reinvestPercent ?? 100) / 100 : 0; const planCalculations = , get currentMonthlyInterest() , get progressPct() , get simulation() catch (e) })(); const currentMonthlyInterest = this.currentMonthlyInterest; if (currentMonthlyInterest >= this.targetEGP) ; } return simulateMonthsToMonthlyInterest( currentPrincipal, monthlyEgpContribution, currentAprDecimal, this.targetEGP, reinvestFraction ); }, get isComplete() , }, C: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, B: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, A: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, } as const; const activePlan = settings.activePlan ?? \"D\"; const planKeys = [\"D\", \"C\", \"B\", \"A\"] as const; const selectedPlanData = planCalculations[selectedPlan]; return ( /> ))} · $ `} Add Investment Progress % Target monthly (EGP): EGP Target principal (EGP): EGP Current monthly interest (EGP): EGP Monthly deposit EGP active Principal-heavy deposits converted into smooth monthly income. Certificate Principal APR Monthly yield Start Date End Date Actions placeholder=\"Certificate name\" /> setInvPrincipal( e.target.value === \"\" ? \"\" : Number(e.target.value) ) } /> setInvApr(Number(e.target.value))} /> setInvMonthlyRev( e.target.value === \"\" ? null : Number(e.target.value) ) } /> } /> setInvEndDate(e.target.value)} /> Save setShowInvestmentForm(false)} > Cancel )} EGP % EGP removeInvestment(inv.id)} className=\"inline-flex items-center rounded-full border border-red-100 px-3 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-50\" title=\"Remove investment\" > Remove ); }) )} )} , selectedPlanData.targetEGP ); return (simRes.rows as MonthRow[]).map((r, idx) => $ `} ); }); })()} , selectedPlanData.targetEGP ); if ( !simRes.continuationYears || simRes.continuationYears.length === 0 ) return null; // toggleable continuation table return ( ); })()} )} ); } function ContinuationTable( : ) className=\"cursor-pointer select-none\" aria-hidden > Year Age Monthly Interest (Dec) Active Principal (Dec) Net Worth (Dec) ); })} )} ); }"
+  },
+  {
+    "url": "/wealth/components/PlansTabView",
+    "content": "\"use client\"; const MONTH_NAMES = [ \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\", ]; interface PlansTabViewProps const defaultStartDate = () => new Date().toISOString().slice(0, 10); const addYears = (dateStr: string, years: number) => ; })(); // handler to add investment from the Plan card UI const [showInvestmentForm, setShowInvestmentForm] = useState(false); const [invName, setInvName] = useState(\"Certificate\"); const [invPrincipal, setInvPrincipal] = useState (25000); const [invStartDate, setInvStartDate] = useState (defaultStartDate()); const [invEndDate, setInvEndDate] = useState ( addYears(defaultStartDate(), 3) ); const [invApr, setInvApr] = useState ( settings.aprSchedule?.[0]?.aprPercent ?? 17 ); const [invMonthlyRev, setInvMonthlyRev] = useState (null); const handleAddInvestment = () => ; const saveInvestmentFromForm = () => catch (e) }; // Sum explicit certificate-like net items (new investments use isCertificate=true) const certificatePrincipal = (() => catch (e) })(); // list of investments for display const investments = (() => catch (e) })(); const removeInvestment = (id: string) => catch (e) }; const startPrincipalEGP = settings.startingPrincipalEgp && settings.startingPrincipalEgp > 0 ? settings.startingPrincipalEgp : inferredPrincipalFromNet; const reinvestFraction = settings.reinvest ? (settings.reinvestPercent ?? 100) / 100 : 0; // Calculate plan metrics const planCalculations = , get currentMonthlyInterest() , get progressPct() , get simulation() catch (e) })(); // Get current monthly interest const currentMonthlyInterest = this.currentMonthlyInterest; // If we're already at target, return 0 months if (currentMonthlyInterest >= this.targetEGP) ; } return simulateMonthsToMonthlyInterest( currentPrincipal, monthlyEgpContribution, currentAprDecimal, this.targetEGP, reinvestFraction ); }, get isComplete() , }, C: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, B: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, A: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, }; const activePlan = settings.activePlan ?? \"D\"; const planKeys = [\"D\", \"C\", \"B\", \"A\"] as const; const selectedPlanData = planCalculations[selectedPlan]; return ( /> ))} · $ `} Add Investment Progress % Target monthly (EGP): EGP Target principal (EGP): EGP Current monthly interest (EGP): EGP Monthly deposit EGP active Principal-heavy deposits converted into smooth monthly income. Certificate Principal APR Monthly yield Start Date End Date Actions placeholder=\"Certificate name\" /> setInvPrincipal( e.target.value === \"\" ? \"\" : Number(e.target.value) ) } /> setInvApr(Number(e.target.value))} /> setInvMonthlyRev( e.target.value === \"\" ? null : Number(e.target.value) ) } /> } /> setInvEndDate(e.target.value)} /> Save setShowInvestmentForm(false)} > Cancel )} EGP % EGP removeInvestment(inv.id)} className=\"inline-flex items-center rounded-full border border-red-100 px-3 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-50\" title=\"Remove investment\" > Remove ); }) )} )} , selectedPlanData.targetEGP ); return (simRes.rows as MonthRow[]).map((r, idx) => $ `} ); }); })()} , selectedPlanData.targetEGP ); if ( !simRes.continuationYears || simRes.continuationYears.length === 0 ) return null; return ( Post‑target trajectory (reinvest-only to age 60) Month Age Monthly Interest Active Principal Cash Net Worth `} ); })} ); })()} )} ); }"
+  },
+  {
+    "url": "/wealth/components/PlansView",
+    "content": "\"use client\"; const MONTH_NAMES = [ \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\", ]; interface PlansViewProps // Helper function to format months display function monthsDisplay(m: number | null): string month$ `; if (months === 0) return `$ year$ `; return `$ y $ m`; } })(); // Infer principal from net worth if no certificates explicitly tracked const inferredPrincipalFromNet = (() => catch (e) })(); const startPrincipalEGP = settings.startingPrincipalEgp && settings.startingPrincipalEgp > 0 ? settings.startingPrincipalEgp : inferredPrincipalFromNet; const reinvestFraction = settings.reinvest ? (settings.reinvestPercent ?? 100) / 100 : 0; // Calculate plan metrics const planCalculations = , get currentMonthlyInterest() , get progressPct() , get simulation() catch (e) })(); // Get current monthly interest const currentMonthlyInterest = this.currentMonthlyInterest; // If we're already at target, return 0 months if (currentMonthlyInterest >= this.targetEGP) ; } return simulateMonthsToMonthlyInterest( currentPrincipal, monthlyEgpContribution, currentAprDecimal, this.targetEGP, reinvestFraction ); }, get isComplete() , }, C: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, B: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, A: , get currentMonthlyInterest() , get progressPct() , get simulation() , get isComplete() , }, }; return ( · $ `} Progress % Monthly payout (EGP): EGP Target principal (EGP): EGP Current interest (EGP): EGP Months to target: Monthly deposit EGP ))} ); }"
+  },
+  {
+    "url": "/wealth/components/PlansViewWithTabs",
+    "content": "\"use client\"; interface PlansViewProps const TAB_BUTTON = \"px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200\"; })(); const startPrincipalEGP = settings.startingPrincipalEgp && settings.startingPrincipalEgp > 0 ? settings.startingPrincipalEgp : inferredPrincipalFromNet; const reinvestFraction = settings.reinvest ? (settings.reinvestPercent ?? 100) / 100 : 0; // Calculate all plan metrics const planCalculations = , get currentMonthlyInterest() catch (e) }, get progressPct() , get simulation() , }, C: , get currentMonthlyInterest() , get progressPct() , get simulation() , }, B: , get currentMonthlyInterest() , get progressPct() , get simulation() , }, A: , get currentMonthlyInterest() , get progressPct() , get simulation() , }, }; // Build plan display objects const planDisplays = [ , , , , ]; const activePlan = settings.activePlan ?? \"D\"; const selectedPlanData = planDisplays.find((p) => p.type === selectedPlan)!; return ( /> ))} · $ `} Progress % Target monthly (EGP): EGP Target principal (EGP): EGP Current monthly interest (EGP): EGP Monthly deposit EGP ); }"
+  },
+  {
+    "url": "/wealth/components/ProgressBarAnimated",
+    "content": "\"use client\"; interface Props ); }"
+  },
+  {
+    "url": "/wealth/components/ResetSettings",
+    "content": "\"use client\"; \"use client\"; return ( Reset Settings ); }"
+  },
+  {
+    "url": "/wealth/components/SettingsBar",
+    "content": "interface Props setSettings(next); }; const updateExpense = (id: string, amount: number) => ; next.expenses = next.expenses.map((e) => e.id === id ? : e ); setSettings(next); }; const updateApr = (v: number) => as typeof settings; const valid = Math.max(0.1, v); // If schedule is empty initialize a single entry. Otherwise update all entries if (!next.aprSchedule || next.aprSchedule.length === 0) ]; } else )); } setSettings(next); }; return ( Monthly income (KD) updateField(\"monthlyIncomeKD\", Number(e.target.value)) } /> FX (EGP per KD) updateField(\"fxEgpPerKd\", Number(e.target.value))} /> Live APR (%) updateApr(Number(e.target.value))} /> Monthly expenses updateExpense(exp.id, Number(e.target.value))} className=\"p-1 rounded border gaia-border w-full\" /> ))} updateField(\"reinvest\", e.target.checked)} /> Reinvest interest (ON) Plan D target (EGP/month) updateField(\"planDTargetMonthlyEgp\", Number(e.target.value)) } /> Plan C target (EGP/month) updateField(\"planCTargetMonthlyEgp\", Number(e.target.value)) } /> Starting principal (EGP) updateField(\"startingPrincipalEgp\", Number(e.target.value)) } /> Reinvest % updateField(\"reinvestPercent\", Number(e.target.value)) } /> ); }"
+  },
+  {
+    "url": "/wealth/components/Simulator",
+    "content": "\"use client\"; function fmt(n: number) ); } const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const INPUT = \"gaia-input rounded-lg px-3 py-1.5\"; const BUTTON_BASE = \"rounded-lg px-3 py-1.5 text-sm font-semibold shadow-sm transition-colors\"; interface SimulatorProps const [baseB, setBaseB] = useState (() => ( )); const resA: SimResult = useMemo(() => simulate(\"Plan A\", baseA), [baseA]); const resB: SimResult = useMemo(() => simulate(\"Plan B\", baseB), [baseB]); const res = tab === \"A\" ? resA : resB; return ( Savings Simulator 3y certs; 15%+10% floor; reinvest interest & maturities until age 60 Start: Dec 2025. Deposits for 7 years, then auto‑reinvest monthly if ≥ 1,000 EGP. setTab(\"A\")} > Plan A — /mo setTab(\"B\")} > Plan B — /mo Year Age Deposited YTD Monthly Interest (Dec) Active Principal (Dec) Net Worth (Dec) ))} Plan A deposit setBaseA( ) } /> Plan B deposit setBaseB( ) } /> Deposited total EGP Active principal (end) EGP Cash (end) EGP Net worth (end) EGP ); }"
+  },
+  {
+    "url": "/wealth/components/TabNav",
+    "content": "interface TabNavProps ); }"
+  },
+  {
+    "url": "/wealth/components/WealthBars",
+    "content": "'use client'; type Datum = ; function expScale(value: number, min: number, max: number, k = 1.6) ); })} Exponential height mapping emphasizes growth without changing your data. ); }"
+  },
+  {
+    "url": "/wealth/components/WealthLevels",
+    "content": "\"use client\"; // NetWorthBox removed to avoid duplicating the main NetWorth panel type WealthView = \"levels\" | \"plans\"; const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; }); // persist settings when changed useEffect(() => catch (e) }, [settings]); // compute derived values const monthlyExpensesKD = settings.expenses.reduce( (s, e) => s + e.amountKD, 0 ); const monthlySurplusKD = Math.max( 0, settings.monthlyIncomeKD - monthlyExpensesKD ); const monthlyEgpContribution = monthlySurplusKD * settings.fxEgpPerKd; const monthlyExpensesEGP = monthlyExpensesKD * settings.fxEgpPerKd; // APRs const aprSchedule = settings.aprSchedule; const currentAprPercent = aprSchedule[0]?.aprPercent ?? aprSchedule[aprSchedule.length - 1]?.aprPercent ?? 0; const currentAprDecimal = currentAprPercent / 100; // Plan D targets (certificates) const planDMonthlyTargetEGP = settings.planDTargetMonthlyEgp; const livePrincipalTargetEGP = principalForMonthlyPayout( planDMonthlyTargetEGP, currentAprDecimal ); // range across schedule const aprPercents = aprSchedule.map((r) => r.aprPercent); const minApr = Math.min(...aprPercents); const maxApr = Math.max(...aprPercents); const principalAtMaxApr = principalForMonthlyPayout( planDMonthlyTargetEGP, maxApr / 100 ); const principalAtMinApr = principalForMonthlyPayout( planDMonthlyTargetEGP, minApr / 100 ); // infer starting principal from net items if not set const inferredPrincipalFromNet = (() => catch (e) })(); const startPrincipalEGP = settings.startingPrincipalEgp && settings.startingPrincipalEgp > 0 ? settings.startingPrincipalEgp : inferredPrincipalFromNet; const reinvestFraction = settings.reinvest ? (settings.reinvestPercent ?? 100) / 100 : 0; // simulate months to reach target assuming starting principal and reinvest fraction const sim = simulateMonthsToMonthlyInterest( startPrincipalEGP, monthlyEgpContribution, currentAprDecimal, planDMonthlyTargetEGP, reinvestFraction ); // Compute real metrics in EGP: liquid savings = sum of non-certificate net items; netWorth = sum of all net items const = ; const allNetItems = loadNetItems(); const liquidSavingsEGP = allNetItems .filter((i) => !i.isCertificate) .reduce((s, i) => s + i.amount, 0); const netWorthEGP = allNetItems.reduce((s, i) => s + i.amount, 0); const monthsOfBuffer = monthlyExpensesEGP > 0 ? Number((liquidSavingsEGP / monthlyExpensesEGP).toFixed(1)) : 0; const metrics: FinancialMetrics = ; const plansRef = useRef (null); const jumpToPlans = () => ); }; return ( Wealth 2.0 — Progress & Plans Plans ); }"
+  },
+  {
+    "url": "/wealth/components/WealthLevelsWithTabs",
+    "content": "\"use client\"; type TabType = \"plans\" | \"levels\"; const PANEL = \"gaia-surface rounded-xl border gaia-border p-4 shadow-sm\"; const TAB_BUTTON = \"px-4 py-2 text-sm font-medium transition-colors\"; const ACTIVE_TAB = `$ bg-primary text-primary-foreground rounded-lg shadow-sm`; const INACTIVE_TAB = `$ text-muted-foreground hover:text-foreground`; }); // persist settings when changed useEffect(() => catch (e) }, [settings]); // compute derived values const monthlyExpensesKD = settings.expenses.reduce( (s, e) => s + e.amountKD, 0 ); const monthlySurplusKD = Math.max( 0, settings.monthlyIncomeKD - monthlyExpensesKD ); const monthlyEgpContribution = monthlySurplusKD * settings.fxEgpPerKd; const monthlyExpensesEGP = monthlyExpensesKD * settings.fxEgpPerKd; // APRs const aprSchedule = settings.aprSchedule; const currentAprPercent = aprSchedule[0]?.aprPercent ?? aprSchedule[aprSchedule.length - 1]?.aprPercent ?? 0; const currentAprDecimal = currentAprPercent / 100; // Plan D targets (certificates) const planDMonthlyTargetEGP = settings.planDTargetMonthlyEgp; const livePrincipalTargetEGP = principalForMonthlyPayout( planDMonthlyTargetEGP, currentAprDecimal ); // range across schedule const aprPercents = aprSchedule.map((r) => r.aprPercent); const minApr = Math.min(...aprPercents); const maxApr = Math.max(...aprPercents); const principalAtMaxApr = principalForMonthlyPayout( planDMonthlyTargetEGP, maxApr / 100 ); const principalAtMinApr = principalForMonthlyPayout( planDMonthlyTargetEGP, minApr / 100 ); // infer starting principal from net items if not set const inferredPrincipalFromNet = (() => catch (e) })(); const startPrincipalEGP = settings.startingPrincipalEgp && settings.startingPrincipalEgp > 0 ? settings.startingPrincipalEgp : inferredPrincipalFromNet; const reinvestFraction = settings.reinvest ? (settings.reinvestPercent ?? 100) / 100 : 0; // simulate months to reach target assuming starting principal and reinvest fraction const sim = simulateMonthsToMonthlyInterest( startPrincipalEGP, monthlyEgpContribution, currentAprDecimal, planDMonthlyTargetEGP, reinvestFraction ); // Friendly display for months: if simulator returned the max cap (e.g. 1200) // show a clearer message like \"600+\" or \"—\" instead of the raw large cap. const simMonthsDisplay = (() => )(); // Compute metrics const allNetItems = loadNetItems(); const liquidSavingsEGP = allNetItems .filter((i) => !i.isCertificate) .reduce((s, i) => s + i.amount, 0); const netWorthEGP = allNetItems.reduce((s, i) => s + i.amount, 0); const monthsOfBuffer = monthlyExpensesEGP > 0 ? Number((liquidSavingsEGP / monthlyExpensesEGP).toFixed(1)) : 0; const metrics: FinancialMetrics = ; return ( Wealth 2.0 — Progress & Plans setActiveTab(\"plans\")} > Plans setActiveTab(\"levels\")} > Levels Plan D · Catching my Breath Target monthly (EGP): Live APR: % Live principal target: EGP Range (best→worst): — EGP Monthly EGP contribution (surplus × FX): EGP ); }"
+  },
+  {
+    "url": "/wealth/components/WealthTopSummary",
+    "content": "\"use client\"; function fmt(n: number) ); } Certificates (principal) EGP Net worth EGP Monthly surplus (EGP) EGP Expenses: EGP ); }"
+  },
+  {
+    "url": "/wealth/components/WealthViewToggle",
+    "content": "interface WealthViewToggleProps return ( handleViewChange('levels')} className= `} > Levels handleViewChange('plans')} className= `} > Plans ); }"
+  },
+  {
+    "url": "/wealth",
+    "content": "\"use client\"; }"
+  },
+  {
+    "url": "/wealth/lib/calculations",
+    "content": "/** * Calculate months of buffer (liquid savings divided by monthly expenses). * Returns a number rounded to 1 decimal place. If monthlyExpenses ): number ; } } // Fallback: lowest level return ; } /** * Calculate plan progress and related derived fields. * Keeps the previous signature and returns a Plan-like object with extra fields. */ metrics: FinancialMetrics, _currentStage: WealthStage, planType: PlanType ): Plan & // estimate months to reach 1×ME using simple linear model if monthlyDeposit provided if (monthlyDeposit > 0) break; } case \"C\": case \"B\": case \"A\": } return ; } /** * Pick an active plan: returns the first incomplete plan in order D → C → B → A. */ return calculatePlanProgress(metrics, currentStage, \"A\"); } /** * Required principal to get a desired monthly payout at a given APR (decimal). * aprDecimal is expected as decimal (e.g. 0.16 for 16%). */ monthlyPayoutEGP: number, aprDecimal: number ): number ; } // End-of-month updates: add contribution and reinvested part of interest principal += contrib + monthlyInterest * reinv; } const monthlyInterest = principal * monthlyRate; return ; }"
+  },
+  {
+    "url": "/wealth/lib/exchangeRate",
+    "content": "\"use client\"; interface ExchangeRateResponse interface StoredRate // Using local API route to avoid CORS issues const BASE_URL = \"/api/exchange-rate\"; ); } const data: ExchangeRateResponse = await response.json(); console.log(\"API Response:\", data); if (!data.success) // Check if we have both rates if (!data.quotes?.USDEGP || !data.quotes?.USDKWD) // Calculate EGP/KWD rate const egpPerKwd = data.quotes.USDEGP / data.quotes.USDKWD; if (isNaN(egpPerKwd) || egpPerKwd (STORAGE_KEY, null); } function storeRate(rate: number, timestamp: number) ); } catch (error) } } // Otherwise fetch a new rate const result = await fetchExchangeRate(); if (result) ; } // If fetch failed and we have a stored rate, return it as cached if (stored) ; } // Last resort - return 0 if we have no data at all return ; }"
+  },
+  {
+    "url": "/wealth/lib/persistence",
+    "content": "\"use client\"; planDTargetMonthlyEgp: number; // default 5000 startingPrincipalEgp?: number; // existing certificates principal in EGP planCTargetMonthlyEgp?: number; // Plan C monthly certificate income target (EGP) activePlan?: \"A\" | \"B\" | \"C\" | \"D\"; reinvestPercent?: number; // 0..100 percent of interest to reinvest plansCollapsed?: boolean; // persist Plans collapsed state } const STORAGE_KEY = \"gaia_wealth_settings_v2\"; , , , , ], reinvest: true, // start with a simple flat 17% APR schedule by default aprSchedule: [ ], planDTargetMonthlyEgp: 1000, // Plan D: Basic stability (1,000 EGP/month) startingPrincipalEgp: 0, planCTargetMonthlyEgp: 3000, // Plan C: Comfortable buffer (3,000 EGP/month) activePlan: \"D\", reinvestPercent: 100, plansCollapsed: true, }; } }"
+  },
+  {
+    "url": "/wealth/lib/sim",
+    "content": "\"use client\"; /** * Updated assumptions per user: * - During first 7 years (deposit horizon), each month opens a cert for (base deposit + any accumulated pot). * Pot accumulates: monthly interest from existing certs + matured principals. * - After 7 years, user stops base deposits but keeps reinvesting *everything* (monthly interest + matured principals). * A new cert is opened whenever the pot >= minReinvest (e.g., 1,000 EGP). Remainder ( sum + (c.principal * c.rate) / 12, 0 ); pot += monthlyInterest; // 2) Maturities at end of month -> principal returned; add to pot (to be re-invested) const nextCerts: Cert[] = []; for (const c of certs) ); depositsThisYear += pot; totalDeposited += pot; pot = 0; } } // 4) For reporting, any leftover pot under min threshold is considered cash remainder cash = pot; // 5) December snapshot if (month === 11) // 6) Next month month += 1; if (month >= 12) } const totals = ; return ; } /** * Simulate but stop adding base monthly deposits as soon as the monthly * interest (sum of coupons) reaches or exceeds `targetMonthlyEGP`. * After that point, the behavior is identical to `simulate`: all pot and * maturities are reinvested when >= minReinvest. */ planName: string, input: SimInput, targetMonthlyEGP: number ): SimResult ); depositsThisMonth = pot; totalDeposited += pot; pot = 0; } } // 4) For reporting, any leftover pot under min threshold is considered cash remainder cash = pot; // 5) Compute monthly interest after processing maturities and opening new certs. // This treats the newly opened certificate(s) as contributing to the month's // interest for the purposes of determining whether the monthly target is met. const monthlyInterestAfter = certs.reduce( (sum, c) => sum + (c.principal * c.rate) / 12, 0 ); // 6) Push monthly snapshot (use the post-processing monthly interest so the // display and stop-check align with the client's expectation that a new // deposit increases monthly coupons immediately) const activePrincipal = certs.reduce((s, c) => s + c.principal, 0); pushMonthRow( rows, year, month, depositsThisMonth, monthlyInterestAfter, activePrincipal, cash ); // 7) If we've reached or exceeded the target this month (based on the // post-processing monthly interest), compute totals AND generate a // continuation trajectory that assumes no further base deposits and // only reinvestment until age 60 (Dec 2051). if (monthlyInterestAfter >= targetMonthlyEGP) ; // Build continuationYears: clones current state and simulates forward with // base deposits disabled (reinvest-only) up to Dec 2051. We aggregate // into yearly (Dec) snapshots so the post-target trajectory is yearly. const continuationYears: YearRow[] = []; // Clone certs (make shallow copies) and local vars for continuation sim let contCerts: Cert[] = certs.map((c) => ( )); let contPot = pot; let contCash = cash; let contYear = year; let contMonth = month; const contLastYear = 2051; const contFinalMonthIndex = 11; // December let contMonthsElapsed = 0; const contMaxMonths = 600; // advance month-by-month but only push Dec snapshots as YearRow entries let depositsThisYear = 0; while ( contMonthsElapsed sum + (c.principal * c.rate) / 12, 0 ); contPot += contMonthlyInterest; // maturities const nextContCerts: Cert[] = []; for (const c of contCerts) ); depositsThisYear += contPot; contPot = 0; } // cash remainder is pot under minReinvest contCash = contPot; // If December, push a yearly snapshot if (contMonth === 11) // advance month contMonth += 1; if (contMonth >= 12) contMonthsElapsed += 1; } return ; } // 8) Next month month += 1; if (month >= 12) monthsElapsed += 1; } // If we exit loop without reaching target, return what we have const totals = ; return ; }"
+  },
+  {
+    "url": "/wealth/lib/store",
+    "content": "\"use client\"; const K = ; function g (k: string, fb: T): T function s (k: string, v: T) g (K.pf, ); // Helpers /** * Add an investment (net item marked as certificate) and create an initial * income transaction representing the first month's revenue. * * params: * - name: label for the investment * - principal: amount (positive) * - annualRatePercent: APR as percent (e.g. 17 for 17%) * - startDate?: ISO date string to use for the initial income txn (defaults to today) * * Returns the created NetItem id. */ items.push(item); saveNetItems(items); // compute monthly revenue and create an income transaction for the start date const date = startDate ? new Date(startDate) : new Date(); const iso = date.toISOString(); // compute monthly revenue and create an income transaction for the start date const txs = loadTx(); txs.push( principal $ APR $ %`, }); saveTx(txs); return nidVal; }"
+  },
+  {
+    "url": "/wealth/lib/types",
+    "content": "// Optional continuation years representing the trajectory AFTER a target was // reached when no further base deposits are made and only reinvestment is // performed (useful to show growth-only trajectory up to age 60). These // entries are annual (`YearRow`) snapshots (Dec) rather than monthly rows. continuationYears?: YearRow[]; }"
+  },
+  {
+    "url": "/wealth/lib/wealthCalculations",
+    "content": "/** * Determine the active plan based on current metrics */ const planType = nextPlanType[stage.level]; const targetAmount = Math.ceil( (planType === \"D\" ? 1000 // 1,000 EGP/month : planType === \"C\" ? 3000 // 3,000 EGP/month : planType === \"B\" ? 5000 // 5,000 EGP/month : 10000) / // 10,000 EGP/month for Plan A 1000 ) * 1000; // Round up to nearest 1000 // Use calculatePlanProgress to return the full Plan object (includes currentProgress/isComplete) return calculatePlanProgress(metrics, stage, planType as PlanType) as Plan; } /** * Calculate months of buffer (liquid savings divided by monthly expenses). * Returns a number rounded to 1 decimal place. If monthlyExpenses ): number ; } } // Fallback: lowest level return ; } /** * Calculate the principal amount needed to generate a desired monthly payout * based on APR and reinvestment fraction. */ desiredMonthlyPayout: number, aprDecimal: number, reinvestFraction = 0 ): number /** * Simulate number of months needed to reach a target monthly interest payout * given a starting principal, monthly contribution, APR, and reinvestment fraction. */ startPrincipal: number, monthlyContribution: number, aprDecimal: number, targetMonthlyInterest: number, reinvestFraction = 0 ): ; } // If monthly contribution is too small to ever reach target, show maxMonths if ( monthlyContribution = targetAmount, }; } /** * Calculate wealth snapshot from a serialized storage snapshot. */ snapshot: Record ): number if (v && v.total) } catch } return wealthSnapshot; }"
+  },
+  {
+    "url": "/wealth/lib/wealthLevels",
+    "content": "| \"L0-Broke\" | \"L1-Poor\" | \"L2-GettingBy\" | \"L3-BasicSafety\" | \"L4-SolidSafety\" | \"L5-SecureBuffer\" | \"L6-StrongBuffer\" | \"L7-LaunchInvesting\" | \"L8-WealthBuilding\" | \"L9-Wealthy\"; // Level thresholds configuration , , , , , , , , , , ]; > = , C: , B: , A: , };"
+  },
+  {
+    "url": "/wealth",
+    "content": ""
+  },
+  {
+    "url": "/wealth/tracker",
+    "content": "# GAIA v1.3 — Week 6: Wealth (Updated) - Centralized Sync/Backup -> **/sync**. Removed Wealth page Export/Import. - Keep: Simulator (Plans A/B, reinvest after 7y, min reinvest 1,000 EGP), WealthLevels. Files affected: - app/wealth/page.tsx — removed and its import."
+  }
+]

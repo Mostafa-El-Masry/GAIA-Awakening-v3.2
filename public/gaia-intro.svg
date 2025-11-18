@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00C4CB"/>
+      <stop offset="50%" stop-color="#337EFF"/>
+      <stop offset="100%" stop-color="#954DFF"/>
+    </linearGradient>
+    <mask id="m">
+      <rect width="1024" height="1024" fill="#000"/>
+      <!-- thick ring -->
+      <circle cx="512" cy="512" r="420" fill="#fff"/>
+      <circle cx="512" cy="512" r="250" fill="#000"/>
+      <!-- diagonal slice -->
+      <polygon points="339.5517423021307,518.435552024057 424.96643734804877,710.2800981290031 1064.4482576978692,425.56444797594304 979.0335626519512,233.71990187099686" fill="#000"/>
+      <!-- inner bar -->
+      <rect x="552" y="442" width="320" height="140" rx="70" ry="70" fill="#fff"/>
+      <!-- bar tip notch -->
+      <polygon points="832,568 992,512 832,456" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#g)" mask="url(#m)"/>
+</svg>

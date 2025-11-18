@@ -1,0 +1,95 @@
+*** Begin Patch
+*** Update File: app/apollo/(tabs)/tower/data/tracks.ts
+@@
+-export type Node = {
+-  id: string;
+-  tier: 1 | 2 | 3 | 4 | 5;
+-  title: string;
+-};
++export type Module = {
++  id: string;
++  title: string;
++  summary: string;
++  lessons: number;
++  projects: number;
++};
+ 
+-export type Track = {
++export type Track = {
+   id: string;
+   title: string;
+-  description: string;
+-  nodes: Node[];
++  description: string;
++  modules: Module[];
+ };
+-
+-function makeNodes(prefix: string): Node[] {
+-  return [
+-    { id: ${prefix}-t1, tier: 1, title: "Foundations" },
+-    { id: ${prefix}-t2, tier: 2, title: "Core Patterns" },
+-    { id: ${prefix}-t3, tier: 3, title: "Applied Skills" },
+-    { id: ${prefix}-t4, tier: 4, title: "Projects" },
+-    { id: ${prefix}-t5, tier: 5, title: "Mastery" },
+-  ];
+-}
++
++function modules(prefix: string, data: Array<Omit<Module, "id">>): Module[] {
++  return data.map((m, index) => ({
++    id: ${prefix}-m,
++    ...m,
++  }));
++}
+@@
+-    nodes: makeNodes("html"),
++    modules: modules("html", [
++      {
++        title: "Semantic structure",
++        summary: "Landmarks, headings, lists, and copy that screen readers love.",
++        lessons: 18,
++        projects: 2,
++      },
++      {
++        title: "Forms & inputs",
++        summary: "Labels, validation, and advanced controls for real data entry.",
++        lessons: 12,
++        projects: 2,
++      },
++      {
++        title: "Tables & data",
++        summary: "Accessible tables, figures, and micro layouts for structured info.",
++        lessons: 9,
++        projects: 1,
++      },
++      {
++        title: "Media & embeds",
++        summary: "Images, video, and external embeds with fallbacks and captions.",
++        lessons: 7,
++        projects: 1,
++      },
++    ]),
+   },
+@@
+-    nodes: makeNodes("css"),
++    modules: modules("css", [
++      {
++        title: "Layout systems",
++        summary: "Flexbox, grid, and responsive strategies.",
++        lessons: 20,
++        projects: 3,
++      },
++      {
++        title: "Design tokens",
++        summary: "Variables, theming, and utility layers.",
++        lessons: 14,
++        projects: 2,
++      },
++      {
++        title: "Animation & polish",
++        summary: "Transitions, keyframes, and high-fidelity UI states.",
++        lessons: 11,
++        projects: 1,
++      },
++    ]),
+   },
+*** End Patch

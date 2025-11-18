@@ -1,0 +1,27 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+html.no-scroll,
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100dvh; /* mobile-correct */
+}

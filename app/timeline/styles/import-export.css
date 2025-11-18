@@ -1,0 +1,2 @@
+.timeline .tl-iobox{display:flex;gap:8px;align-items:center}
+.timeline .tl-btn{appearance:none;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:6px 10px;background:#fff;font-weight:700;cursor:pointer}

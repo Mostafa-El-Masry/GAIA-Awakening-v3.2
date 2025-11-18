@@ -1,0 +1,7 @@
+.timeline .tl-bar{border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:8px;background:#fff}
+.timeline .tl-row{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.timeline .tl-title{font-weight:800;letter-spacing:.03em}
+.timeline .tl-left,.timeline .tl-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.timeline .tl-select{appearance:none;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:6px 10px;background:#fff}
+.timeline .tl-check{display:inline-flex;gap:6px;align-items:center}
+.timeline .tl-hint{opacity:.6;font-size:12px}

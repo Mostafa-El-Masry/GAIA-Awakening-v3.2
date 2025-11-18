@@ -1,0 +1,16 @@
+.timeline{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+.timeline .tl-shell{max-width:1200px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.timeline .tl-header{display:flex;flex-direction:column;gap:4px}
+.timeline .tl-title{font-size:24px;font-weight:800;letter-spacing:.02em}
+.timeline .tl-sub{opacity:.7}
+.timeline .tl-tools{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+@media (max-width:900px){.timeline .tl-tools{grid-template-columns:1fr}}
+.timeline .tl-list{display:flex;flex-direction:column;gap:8px}
+.timeline .tl-card{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;border:1px solid rgba(0,0,0,.06);border-radius:12px;background:#fff;padding:10px}
+.timeline .tl-chip{width:10px;height:10px;border-radius:999px;margin-top:8px}
+.timeline .tl-card-title{font-weight:800}
+.timeline .tl-card-meta{opacity:.6;font-size:12px}
+.timeline .tl-card-note{margin-top:4px}
+.timeline .tl-btn{appearance:none;border:1px solid rgba(0,0,0,.1);border-radius:10px;padding:6px 10px;background:#fff;font-weight:700;cursor:pointer}
+.timeline .tl-link{text-decoration:underline}
