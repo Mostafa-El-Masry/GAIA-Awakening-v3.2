@@ -29,6 +29,15 @@ let realtimeChannel: RealtimeChannel | null = null;
 const readyListeners = new Set<ReadyListener>();
 const storageListeners = new Set<StorageListener>();
 
+function formatError(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  try {
+    return JSON.stringify(err);
+  } catch {
+    return String(err);
+  }
+}
+
 function resolveSupabaseClient(): SupabaseClient | null {
   if (!isSupabaseConfigured) return null;
   try {
@@ -348,7 +357,11 @@ async function persist(key: string, value: string | null) {
       .from(STORAGE_TABLE)
       .delete()
       .match({ user_id: activeUserId, key });
-    if (error) console.error("Failed to delete user storage value:", error);
+    if (error)
+      console.warn(
+        "Failed to delete user storage value; continuing without persistence:",
+        formatError(error)
+      );
     return;
   }
   const { error } = await supabase
@@ -356,7 +369,11 @@ async function persist(key: string, value: string | null) {
     .upsert([{ user_id: activeUserId, key, value }], {
       onConflict: "user_id,key",
     });
-  if (error) console.error("Failed to persist user storage value:", error);
+  if (error)
+    console.warn(
+      "Failed to persist user storage value; continuing without persistence:",
+      formatError(error)
+    );
 }
 
 export function getItem(key: string): string | null {
